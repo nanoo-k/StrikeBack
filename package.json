@@ -1,7 +1,5 @@
-// package.json
-
 {
-	"name":	"node-api"
+	"name":	"node-api",
 	"main":	"server.js",
 	"dependencies": {
 		"express": "~4.0.0",
