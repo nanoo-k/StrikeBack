@@ -1,15 +1,11 @@
+// var Sequelize = require('sequelize');
+
 module.exports = function(sequelize, DataTypes) {
   var User = sequelize.define('User', {
     username: DataTypes.STRING,
-    password: DataTypes.STRING
-    // phone: { DataTypes.INTEGER, allowNull: true, unique: true },
-    // email: { DataTypes.EMAIL, allowNull: true, unique: true }
-  // }, {
-  //   classMethods: {
-  //     associate: function(models) {
-  //       User.hasMany(models.Roles)
-  //     }
-  //   }
+    password: DataTypes.STRING,
+    phone: { type: DataTypes.BIGINT, allowNull: true },
+    email: { type: DataTypes.STRING, allowNull: true }
   })
  
   return User

@@ -19,15 +19,17 @@ app.use(bodyParser.json())
 db
   .sequelize
   .sync({ force: true })
-  .complete(function(err) {
-    if (err) {
-      throw err[0]
-    } else {
-      http.createServer(app).listen(app.get('port'), function(){
-        console.log('Express server striking back on port ' + app.get('port'))
-      })
-    }
-  })
+
+db
+  .sequelize
+  .authenticate()
+  .complete(function(err){
+      if (!!err) {
+          console.log('Unable to connect to database:', err)
+      } else {
+          console.log('Connection has been established successfully.')
+      }
+  });
 
 
 // ROUTES FOR OUR API
@@ -49,24 +51,24 @@ router.get('/', function(req, res) {
 // more routes for our API will happen here
 
 // on routes that end in /bears
-// router.route('/bears')
-// //    create a bear (accessed at POST http://localhost:8080/api/bears)
-//     .post(function(req, res){
-//         var user = db.User.build({
-//           username: req.body.username,
-//           password: req.body.password,
-//           phone: req.body.phone,
-//           email: req.body.email
-//         })
+router.route('/bears')
+//    create a bear (accessed at POST http://localhost:8080/api/bears)
+    .post(function(req, res){
+        var user = db.User.build({
+          username: req.body.username,
+          password: req.body.password,
+          phone: req.body.phone,
+          email: req.body.email
+        })
          
-//         user
-//           .save()
-//           .complete(function(err) {
-//             if (!!err) 
-//                 res.send(err);
-//             res.json({ message: 'User created!' });
-//           })
-//     })
+        user
+          .save()
+          .complete(function(err) {
+            if (!!err) 
+                res.send(err);
+            res.json({ message: 'User created!' });
+          })
+    });
 
     // .get(function(req, res){
     //     db.User
