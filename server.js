@@ -75,11 +75,11 @@ router.route('/bears')
 
     .get(function(req, res){
         Bear
-          .find()
+          .findAll()
           .complete(function(err, bears) {
             if (!!err)
               res.send(err);
-          
+
             console.log(bears);
             res.json(bears);
           });
