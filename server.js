@@ -79,28 +79,24 @@ router.route('/bears')
           .complete(function(err, bears) {
             if (!!err)
               res.send(err);
-          
+
             res.json(bears);
           });
-
-        // Bear.find(function(err, bears){
-        //     if (err)
-        //         res.send(err);
-
-        //     res.json(bears);
-        // });
     });
 
-// router.route('/bears/:bear_id')
+router.route('/bears/:bear_id')
 
-//     // get the bear with that id (accessed at GET http://localhost:8080/api/bears/:bear_id)
-//     .get(function(req, res){
-//         // Bear.findById(req.params.bear_id, function(err, bear){
-//         //     if (err)
-//         //         res.send(err);
-//         //     res.json(bear);
-//         // });
-//     })
+    // get the bear with that id (accessed at GET http://localhost:8080/api/bears/:bear_id)
+    .get(function(req, res){
+        Bear
+          .find(req.params.bear_id)
+          .complete(function(err, bears) {
+            if (!!err)
+              res.send(err);
+
+            res.json(bears);
+          });
+    });
 
 //     // update the bear with this id (accessed at PUT http://localhost:8080/api/bears/:bear_id)
 //     .put(function(req, res){
