@@ -16,9 +16,9 @@ var express         = require('express')
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-db
-  .sequelize
-  .sync({ force: true })
+// db
+//   .sequelize
+//   .sync({ force: true })
 
 db
   .sequelize
@@ -68,18 +68,18 @@ router.route('/bears')
                 res.send(err);
             res.json({ message: 'User created!' });
           })
+    })
+
+    .get(function(req, res){
+        db.User
+          .findAll()
+          .complete(function(err, users) {
+            if (!!err)
+              res.send(err);
+
+            res.json(users);
+          });
     });
-
-    // .get(function(req, res){
-    //     db.User
-    //       .findAll()
-    //       .complete(function(err, users) {
-    //         if (!!err)
-    //           res.send(err);
-
-    //         res.json(users);
-    //       });
-    // });
 
 // router.route('/bears/:bear_id')
 
