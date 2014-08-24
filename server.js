@@ -7,7 +7,7 @@
 var express    = require('express'); 		// call express
 var app        = express(); 				// define our app using express
 var bodyParser = require('body-parser');
-// var Bear       = require('./app/models/bear');
+var Bear       = require('./app/models/bear');
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -20,7 +20,6 @@ app.use(bodyParser.json());
 
 var Sequelize = require('sequelize')
     , sequelize = new Sequelize('Bears', 'postgres', 'tuttut', {
-    // , sequelize = new Sequelize('postgres://postgres:W31lc0m#@localhost:5432/Bears', {
         host: 'localhost',
         dialect: 'postgres',
         port: 5432

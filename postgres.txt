@@ -1,4 +1,4 @@
-pass: (welcome)
+pass: tuttut 
 port: 5432
 
 pgAdmin as GUI
