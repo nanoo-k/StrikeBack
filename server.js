@@ -19,7 +19,8 @@ app.use(bodyParser.json());
 // mongoose.connect('127.0.0.1:27017/beardb'); // connect to our database
 
 var Sequelize = require('sequelize')
-    , sequelize = new Sequelize('Bears', 'postgres', '', {
+    , sequelize = new Sequelize('Bears', 'postgres', 'tuttut', {
+    // , sequelize = new Sequelize('postgres://postgres:W31lc0m#@localhost:5432/Bears', {
         host: 'localhost',
         dialect: 'postgres',
         port: 5432
@@ -27,7 +28,7 @@ var Sequelize = require('sequelize')
 sequelize
     .authenticate()
     .complete(function(err){
-        if (!err) {
+        if (!!err) {
             console.log('Unable to connect to database:', err)
         } else {
             console.log('Connection has been established successfully.')
@@ -57,68 +58,68 @@ router.get('/', function(req, res) {
 // more routes for our API will happen here
 
 // on routes that end in /bears
-router.route('/bears')
-//    create a bear (accessed at POST http://localhost:8080/api/bears)
-    .post(function(req, res){
-        var bear = {};
-        // var bear = new Bear(); // create new instance of bear model
-        bear.name = req.body.name; // set the bear's name (comes from the request)
+// router.route('/bears')
+// //    create a bear (accessed at POST http://localhost:8080/api/bears)
+//     .post(function(req, res){
+//         // var bear = {};
+//         // var bear = new Bear(); // create new instance of bear model
+//         // bear.name = req.body.name; // set the bear's name (comes from the request)
 
-//        save the bear and check for errors
-        // bear.save(function(err){
-        //     if (err)
-        //         res.send(err);
+// //        save the bear and check for errors
+//         // bear.save(function(err){
+//         //     if (err)
+//         //         res.send(err);
 
-        //     res.json({ message: 'Bear created!' });
-        // });
-    })
+//         //     res.json({ message: 'Bear created!' });
+//         // });
+//     })
 
-    .get(function(req, res){
-        // Bear.find(function(err, bears){
-        //     if (err)
-        //         res.send(err);
+//     .get(function(req, res){
+//         // Bear.find(function(err, bears){
+//         //     if (err)
+//         //         res.send(err);
 
-        //     res.json(bears);
-        // });
-    });
+//         //     res.json(bears);
+//         // });
+//     });
 
-router.route('/bears/:bear_id')
+// router.route('/bears/:bear_id')
 
-    // get the bear with that id (accessed at GET http://localhost:8080/api/bears/:bear_id)
-    .get(function(req, res){
-        // Bear.findById(req.params.bear_id, function(err, bear){
-        //     if (err)
-        //         res.send(err);
-        //     res.json(bear);
-        // });
-    })
+//     // get the bear with that id (accessed at GET http://localhost:8080/api/bears/:bear_id)
+//     .get(function(req, res){
+//         // Bear.findById(req.params.bear_id, function(err, bear){
+//         //     if (err)
+//         //         res.send(err);
+//         //     res.json(bear);
+//         // });
+//     })
 
-    // update the bear with this id (accessed at PUT http://localhost:8080/api/bears/:bear_id)
-    .put(function(req, res){
-        // Bear.findById(req.params.bear_id, function(err, bear){
-        //     if (err)
-        //         res.send(err)
+//     // update the bear with this id (accessed at PUT http://localhost:8080/api/bears/:bear_id)
+//     .put(function(req, res){
+//         // Bear.findById(req.params.bear_id, function(err, bear){
+//         //     if (err)
+//         //         res.send(err)
 
-        //     bear.name = req.body.name;
+//         //     bear.name = req.body.name;
 
-        //     bear.save(function(err){
-        //         if (err)
-        //             res.send(err)
+//         //     bear.save(function(err){
+//         //         if (err)
+//         //             res.send(err)
 
-        //         res.json({ message: "Bear updated!" });
-        //     });
-        // });
-    })
+//         //         res.json({ message: "Bear updated!" });
+//         //     });
+//         // });
+//     })
 
-    .delete(function(req, res){
-        // Bear.remove({
-        //     _id: req.params.bear_id
-        // }, function(err, bear){
-        //     if (err)
-        //         res.send(err);
-        //     res.json({ message: 'Succesfully deleted' });
-        // });
-    });
+//     .delete(function(req, res){
+//         // Bear.remove({
+//         //     _id: req.params.bear_id
+//         // }, function(err, bear){
+//         //     if (err)
+//         //         res.send(err);
+//         //     res.json({ message: 'Succesfully deleted' });
+//         // });
+//     });
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
