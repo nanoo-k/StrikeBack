@@ -6,25 +6,15 @@
 // call the packages we need
 var express         = require('express')
     , app           = express()
-    // , routes        = require('./routes')
+    , routes        = require('./routes')
     , bodyParser    = require('body-parser')
-    , db            = require('./models/db')
-    , Bear          = require('./app/models/bear')
+    , db            = require('./models')
+    , port          = process.env.PORT || 8080
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
-app.set('port', process.env.PORT || 3000)
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(express.logger('dev'))
 app.use(bodyParser.json())
-app.use(express.urlencoded())
-app.use(app.router)
-app.use(express.static(path.join(__dirname, 'public')))
-
-// development only
-if ('development' === app.get('env')) {
-  app.use(express.errorHandler())
-}
 
 db
   .sequelize
@@ -53,41 +43,41 @@ router.use(function(req, res, next) {
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function(req, res) {
-	res.json({ message: 'hooray! welcome to our api!' });	
+	res.json({ message: 'Hooray! welcome to our api!' });	
 });
 
 // more routes for our API will happen here
 
 // on routes that end in /bears
-router.route('/bears')
-//    create a bear (accessed at POST http://localhost:8080/api/bears)
-    .post(function(req, res){
-        var user = db.User.build({
-          username: req.body.username,
-          password: req.body.password,
-          phone: req.body.phone,
-          email: req.body.email
-        })
+// router.route('/bears')
+// //    create a bear (accessed at POST http://localhost:8080/api/bears)
+//     .post(function(req, res){
+//         var user = db.User.build({
+//           username: req.body.username,
+//           password: req.body.password,
+//           phone: req.body.phone,
+//           email: req.body.email
+//         })
          
-        user
-          .save()
-          .complete(function(err) {
-            if (!!err) 
-                res.send(err);
-            res.json({ message: 'User created!' });
-          })
-    })
+//         user
+//           .save()
+//           .complete(function(err) {
+//             if (!!err) 
+//                 res.send(err);
+//             res.json({ message: 'User created!' });
+//           })
+//     })
 
-    .get(function(req, res){
-        db.User
-          .findAll()
-          .complete(function(err, users) {
-            if (!!err)
-              res.send(err);
+    // .get(function(req, res){
+    //     db.User
+    //       .findAll()
+    //       .complete(function(err, users) {
+    //         if (!!err)
+    //           res.send(err);
 
-            res.json(users);
-          });
-    });
+    //         res.json(users);
+    //       });
+    // });
 
 // router.route('/bears/:bear_id')
 
