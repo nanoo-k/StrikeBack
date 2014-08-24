@@ -62,74 +62,77 @@ router.get('/', function(req, res) {
 router.route('/bears')
 //    create a bear (accessed at POST http://localhost:8080/api/bears)
     .post(function(req, res){
-        var user = Bear.build({
-          name: req.body.name
+        var user = db.User.build({
+          username: req.body.username,
+          password: req.body.password,
+          phone: req.body.phone,
+          email: req.body.email
         })
          
-        bear
+        user
           .save()
           .complete(function(err) {
             if (!!err) 
                 res.send(err);
-            res.json({ message: 'Bear created!' });
+            res.json({ message: 'User created!' });
           })
     })
 
     .get(function(req, res){
-        Bear
+        db.User
           .findAll()
-          .complete(function(err, bears) {
+          .complete(function(err, users) {
             if (!!err)
               res.send(err);
 
-            res.json(bears);
+            res.json(users);
           });
     });
 
-router.route('/bears/:bear_id')
+// router.route('/bears/:bear_id')
 
-    // get the bear with that id (accessed at GET http://localhost:8080/api/bears/:bear_id)
-    .get(function(req, res){
-        Bear
-          .find(req.params.bear_id)
-          .complete(function(err, bears) {
-            if (!!err)
-              res.send(err);
+//     // get the bear with that id (accessed at GET http://localhost:8080/api/bears/:bear_id)
+//     .get(function(req, res){
+//         Bear
+//           .find(req.params.bear_id)
+//           .complete(function(err, bears) {
+//             if (!!err)
+//               res.send(err);
 
-            res.json(bears);
-          });
-    })
+//             res.json(bears);
+//           });
+//     })
 
-    // update the bear with this id (accessed at PUT http://localhost:8080/api/bears/:bear_id)
-    .put(function(req, res){
+//     // update the bear with this id (accessed at PUT http://localhost:8080/api/bears/:bear_id)
+//     .put(function(req, res){
 
-        Bear
-          .find(req.params.bear_id)
-          .complete(function(err, bear) {
+//         Bear
+//           .find(req.params.bear_id)
+//           .complete(function(err, bear) {
             
-            bear.name = req.body.name;
+//             bear.name = req.body.name;
 
-            bear
-              .save()
-              .complete(function(err) {
-                if (!!err) 
-                    res.send(err);
-                res.json({ message: 'Bear updated!' });
-              })
-          });
-    })
+//             bear
+//               .save()
+//               .complete(function(err) {
+//                 if (!!err) 
+//                     res.send(err);
+//                 res.json({ message: 'Bear updated!' });
+//               })
+//           });
+//     })
 
-    .delete(function(req, res){
-        Bear
-            .find(req.params.bear_id)
-            .complete(function(err, bear){
-                bear.destroy().success(function(err){
-                    if (!!err)
-                        res.send(err);
-                    res.json({ message: 'I can\'t believe you killed bear!' });
-                });
-            });
-    });
+    // .delete(function(req, res){
+    //     Bear
+    //         .find(req.params.bear_id)
+    //         .complete(function(err, bear){
+    //             bear.destroy().success(function(err){
+    //                 if (!!err)
+    //                     res.send(err);
+    //                 res.json({ message: 'I can\'t believe you killed bear!' });
+    //             });
+    //         });
+    // });
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api

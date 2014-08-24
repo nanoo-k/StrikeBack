@@ -1,0 +1,78 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'H:\\Program Files\\nodejs\\\\node.exe',
+1 verbose cli   'H:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'install',
+1 verbose cli   '--save',
+1 verbose cli   'fs' ]
+2 info using npm@1.4.3
+3 info using node@v0.10.26
+4 verbose node symlink H:\Program Files\nodejs\\node.exe
+5 warn package.json node-api@ No description
+6 warn package.json node-api@ No repository field.
+7 warn package.json node-api@ No README data
+8 warn package.json path@0.4.9 path is also the name of a node core module.
+9 verbose readDependencies using package.json deps
+10 verbose cache add [ 'fs', null ]
+11 verbose cache add name=undefined spec="fs" args=["fs",null]
+12 verbose parsed url { protocol: null,
+12 verbose parsed url   slashes: null,
+12 verbose parsed url   auth: null,
+12 verbose parsed url   host: null,
+12 verbose parsed url   port: null,
+12 verbose parsed url   hostname: null,
+12 verbose parsed url   hash: null,
+12 verbose parsed url   search: null,
+12 verbose parsed url   query: null,
+12 verbose parsed url   pathname: 'fs',
+12 verbose parsed url   path: 'fs',
+12 verbose parsed url   href: 'fs' }
+13 silly lockFile 3f4bb586-fs fs
+14 verbose lock fs C:\Users\Annie\AppData\Roaming\npm-cache\3f4bb586-fs.lock
+15 silly lockFile 3f4bb586-fs fs
+16 silly lockFile 3f4bb586-fs fs
+17 verbose addNamed [ 'fs', '' ]
+18 verbose addNamed [ null, '*' ]
+19 silly lockFile a107b96b-fs fs@
+20 verbose lock fs@ C:\Users\Annie\AppData\Roaming\npm-cache\a107b96b-fs.lock
+21 silly addNameRange { name: 'fs', range: '*', hasData: false }
+22 verbose url raw fs
+23 verbose url resolving [ 'https://registry.npmjs.org/', './fs' ]
+24 verbose url resolved https://registry.npmjs.org/fs
+25 info trying registry request attempt 1 at 12:38:50
+26 http GET https://registry.npmjs.org/fs
+27 http 404 https://registry.npmjs.org/fs
+28 silly registry.get cb [ 404,
+28 silly registry.get   { date: 'Sun, 24 Aug 2014 19:38:53 GMT',
+28 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+28 silly registry.get     etag: '"5BQZWWEVHQEXWCPP0V3B1TODR"',
+28 silly registry.get     'content-type': 'application/json',
+28 silly registry.get     'cache-control': 'max-age=0',
+28 silly registry.get     'content-length': '397',
+28 silly registry.get     'accept-ranges': 'bytes',
+28 silly registry.get     via: '1.1 varnish',
+28 silly registry.get     age: '0',
+28 silly registry.get     'x-served-by': 'cache-lax1433-LAX',
+28 silly registry.get     'x-cache': 'MISS',
+28 silly registry.get     'x-cache-hits': '0',
+28 silly registry.get     'x-timer': 'S1408909133.408078,VS0,VE175',
+28 silly registry.get     vary: 'Accept',
+28 silly registry.get     'keep-alive': 'timeout=10, max=50',
+28 silly registry.get     connection: 'Keep-Alive' } ]
+29 silly addNameRange number 2 { name: 'fs', range: '*', hasData: true }
+30 silly addNameRange versions [ 'fs', [] ]
+31 error TypeError: Cannot read property 'latest' of undefined
+31 error     at next (H:\Program Files\nodejs\node_modules\npm\lib\cache.js:744:35)
+31 error     at H:\Program Files\nodejs\node_modules\npm\lib\cache.js:732:5
+31 error     at saved (H:\Program Files\nodejs\node_modules\npm\node_modules\npm-registry-client\lib\get.js:148:7)
+31 error     at H:\Program Files\nodejs\node_modules\npm\node_modules\graceful-fs\polyfills.js:133:7
+31 error     at Object.oncomplete (fs.js:107:15)
+32 error If you need help, you may report this *entire* log,
+32 error including the npm and node versions, at:
+32 error     <http://github.com/npm/npm/issues>
+33 error System Windows_NT 6.1.7601
+34 error command "H:\\Program Files\\nodejs\\\\node.exe" "H:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install" "--save" "fs"
+35 error cwd H:\Libraries\Websites\Strike\www
+36 error node -v v0.10.26
+37 error npm -v 1.4.3
+38 error type non_object_property_load
+39 verbose exit [ 1, true ]

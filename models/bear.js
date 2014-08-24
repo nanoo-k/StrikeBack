@@ -15,8 +15,8 @@
 //         }
 //     });
 
-var Bear = sequelize.define('Bear', {
-	name: Sequelize.STRING
-});
+// var Bear = sequelize.define('Bear', {
+// 	name: Sequelize.STRING
+// });
 
-return Bear;	
+// return Bear;	

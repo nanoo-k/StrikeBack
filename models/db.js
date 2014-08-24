@@ -2,12 +2,13 @@ var fs        = require('fs')
   , path      = require('path')
   , Sequelize = require('sequelize')
   , lodash    = require('lodash')
-  , sequelize = new Sequelize('Bears', 'postgres', 'tuttut'){
+  , db        = {}
+
+var sequelize = new Sequelize('Bears', 'postgres', 'tuttut', {
                         host: 'localhost',
                         dialect: 'postgres',
                         port: 5432
-                    }
-  , db        = {}
+                    })
 
 fs
   .readdirSync(__dirname)
