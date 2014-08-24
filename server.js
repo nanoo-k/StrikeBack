@@ -96,24 +96,40 @@ router.route('/bears/:bear_id')
 
             res.json(bears);
           });
-    });
+    })
 
-//     // update the bear with this id (accessed at PUT http://localhost:8080/api/bears/:bear_id)
-//     .put(function(req, res){
-//         // Bear.findById(req.params.bear_id, function(err, bear){
-//         //     if (err)
-//         //         res.send(err)
+    // update the bear with this id (accessed at PUT http://localhost:8080/api/bears/:bear_id)
+    .put(function(req, res){
 
-//         //     bear.name = req.body.name;
+        Bear
+          .find(req.params.bear_id)
+          .complete(function(err, bear) {
+            
+            bear.name = req.body.name;
 
-//         //     bear.save(function(err){
-//         //         if (err)
-//         //             res.send(err)
+            bear
+              .save()
+              .complete(function(err) {
+                if (!!err) 
+                    res.send(err);
+                res.json({ message: 'Bear updated!' });
+              })
+          });
 
-//         //         res.json({ message: "Bear updated!" });
-//         //     });
-//         // });
-//     })
+        // Bear.findById(req.params.bear_id, function(err, bear){
+        //     if (err)
+        //         res.send(err)
+
+        //     bear.name = req.body.name;
+
+        //     bear.save(function(err){
+        //         if (err)
+        //             res.send(err)
+
+        //         res.json({ message: "Bear updated!" });
+        //     });
+        // });
+    })
 
 //     .delete(function(req, res){
 //         // Bear.remove({
