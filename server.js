@@ -79,8 +79,7 @@ router.route('/bears')
           .complete(function(err, bears) {
             if (!!err)
               res.send(err);
-
-            console.log(bears);
+          
             res.json(bears);
           });
 
