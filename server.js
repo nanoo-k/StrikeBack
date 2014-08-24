@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 // mongoose.connect('127.0.0.1:27017/beardb'); // connect to our database
 
 var Sequelize = require('sequelize')
-    , sequelize = new Sequelize('Bears', 'postgres', 'W31lc0m#', {
+    , sequelize = new Sequelize('Bears', 'postgres', '', {
         host: 'localhost',
         dialect: 'postgres',
         port: 5432
