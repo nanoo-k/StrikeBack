@@ -115,31 +115,19 @@ router.route('/bears/:bear_id')
                 res.json({ message: 'Bear updated!' });
               })
           });
-
-        // Bear.findById(req.params.bear_id, function(err, bear){
-        //     if (err)
-        //         res.send(err)
-
-        //     bear.name = req.body.name;
-
-        //     bear.save(function(err){
-        //         if (err)
-        //             res.send(err)
-
-        //         res.json({ message: "Bear updated!" });
-        //     });
-        // });
     })
 
-//     .delete(function(req, res){
-//         // Bear.remove({
-//         //     _id: req.params.bear_id
-//         // }, function(err, bear){
-//         //     if (err)
-//         //         res.send(err);
-//         //     res.json({ message: 'Succesfully deleted' });
-//         // });
-//     });
+    .delete(function(req, res){
+        Bear
+            .find(req.params.bear_id)
+            .complete(function(err, bear){
+                bear.destroy().success(function(err){
+                    if (!!err)
+                        res.send(err);
+                    res.json({ message: 'I can\'t believe you killed bear!' });
+                });
+            });
+    });
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
