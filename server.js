@@ -51,7 +51,7 @@ router.get('/', function(req, res) {
 // more routes for our API will happen here
 
 // on routes that end in /bears
-router.route('/bears')
+router.route('/users')
 //    create a bear (accessed at POST http://localhost:8080/api/bears)
     .post(function(req, res){
         var user = db.User.build({
@@ -81,50 +81,53 @@ router.route('/bears')
           });
     });
 
-// router.route('/bears/:bear_id')
+router.route('/users/:user_id')
 
-//     // get the bear with that id (accessed at GET http://localhost:8080/api/bears/:bear_id)
-//     .get(function(req, res){
-//         Bear
-//           .find(req.params.bear_id)
-//           .complete(function(err, bears) {
-//             if (!!err)
-//               res.send(err);
+    // get the bear with that id (accessed at GET http://localhost:8080/api/bears/:bear_id)
+    .get(function(req, res){
+        db.User
+          .find(req.params.user_id)
+          .complete(function(err, users) {
+            if (!!err)
+              res.send(err);
 
-//             res.json(bears);
-//           });
-//     })
+            res.json(users);
+          });
+    })
 
-//     // update the bear with this id (accessed at PUT http://localhost:8080/api/bears/:bear_id)
-//     .put(function(req, res){
+    // update the bear with this id (accessed at PUT http://localhost:8080/api/bears/:bear_id)
+    .put(function(req, res){
 
-//         Bear
-//           .find(req.params.bear_id)
-//           .complete(function(err, bear) {
+        db.User
+          .find(req.params.user_id)
+          .complete(function(err, user) {
             
-//             bear.name = req.body.name;
+            user.username = req.body.username;
+            user.password = req.body.password;
+            user.phone = req.body.phone;
+            user.email = req.body.email;
 
-//             bear
-//               .save()
-//               .complete(function(err) {
-//                 if (!!err) 
-//                     res.send(err);
-//                 res.json({ message: 'Bear updated!' });
-//               })
-//           });
-//     })
+            user
+              .save()
+              .complete(function(err) {
+                if (!!err) 
+                    res.send(err);
+                res.json({ message: 'User updated.' });
+              })
+          });
+    })
 
-    // .delete(function(req, res){
-    //     Bear
-    //         .find(req.params.bear_id)
-    //         .complete(function(err, bear){
-    //             bear.destroy().success(function(err){
-    //                 if (!!err)
-    //                     res.send(err);
-    //                 res.json({ message: 'I can\'t believe you killed bear!' });
-    //             });
-    //         });
-    // });
+    .delete(function(req, res){
+        db.User
+            .find(req.params.user_id)
+            .complete(function(err, bear){
+                bear.destroy().success(function(err){
+                    if (!!err)
+                        res.send(err);
+                    res.json({ message: 'User removed' });
+                });
+            });
+    });
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
