@@ -4,39 +4,41 @@
 // =============================================================================
 
 // call the packages we need
-var express    = require('express'); 		// call express
-var app        = express(); 				// define our app using express
-var bodyParser = require('body-parser');
-var Bear       = require('./app/models/bear');
+var express         = require('express')
+    , app           = express()
+    // , routes        = require('./routes')
+    , bodyParser    = require('body-parser')
+    , db            = require('./models/db')
+    , Bear          = require('./app/models/bear')
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.set('port', process.env.PORT || 3000)
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.logger('dev'))
+app.use(bodyParser.json())
+app.use(express.urlencoded())
+app.use(app.router)
+app.use(express.static(path.join(__dirname, 'public')))
 
-// var mongoose   = require('mongoose');
-//mongoose.connect('mongodb://127.0.0.1/:27017'); // connect to our database
-// mongoose.connect('127.0.0.1:27017/beardb'); // connect to our database
+// development only
+if ('development' === app.get('env')) {
+  app.use(express.errorHandler())
+}
 
-var Sequelize = require('sequelize')
-    , sequelize = new Sequelize('Bears', 'postgres', 'tuttut', {
-        host: 'localhost',
-        dialect: 'postgres',
-        port: 5432
-    });
-sequelize
-    .authenticate()
-    .complete(function(err){
-        if (!!err) {
-            console.log('Unable to connect to database:', err)
-        } else {
-            console.log('Connection has been established successfully.')
-        }
-    });
+db
+  .sequelize
+  .sync({ force: true })
+  .complete(function(err) {
+    if (err) {
+      throw err[0]
+    } else {
+      http.createServer(app).listen(app.get('port'), function(){
+        console.log('Express server striking back on port ' + app.get('port'))
+      })
+    }
+  })
 
-
-
-var port = process.env.PORT || 8080; 		// set our port
 
 // ROUTES FOR OUR API
 // =============================================================================
@@ -60,7 +62,7 @@ router.get('/', function(req, res) {
 router.route('/bears')
 //    create a bear (accessed at POST http://localhost:8080/api/bears)
     .post(function(req, res){
-        var bear = Bear.build({
+        var user = Bear.build({
           name: req.body.name
         })
          
@@ -136,4 +138,4 @@ app.use('/api', router);
 // START THE SERVER
 // =============================================================================
 app.listen(port);
-console.log('Magic happens on port ' + port);
+console.log('Strike back on port ' + port);
