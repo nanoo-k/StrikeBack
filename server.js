@@ -50,69 +50,69 @@ router.get('/', function(req, res) {
 
 // more routes for our API will happen here
 
-router.route('/cause')
+// router.route('/cause')
 
-    // Get a specific cause
-    .get(function(req, res){
+//     // Get a specific cause
+//     .get(function(req, res){
 
-    })
+//     })
 
-    // Create a cause
-    .post(function(req, res){
+//     // Create a cause
+//     .post(function(req, res){
 
-    })
+//     })
 
-    // Edit a cause
-    .put(function(req, res){
+//     // Edit a cause
+//     .put(function(req, res){
 
-    })
+//     })
 
-    // Delete a cause
-    .delete(function(req, res){
+//     // Delete a cause
+//     .delete(function(req, res){
 
-    });
+//     });
 
-router.route('/user')
+// router.route('/user')
 
-    // Get a specific user
-    .get(function(req, res){
+//     // Get a specific user
+//     .get(function(req, res){
 
-    })
+//     })
 
-    // Create a user
-    .post(function(req, res){
+//     // Create a user
+//     .post(function(req, res){
 
-    })
+//     })
 
-    // Edit a user
-    .put(function(req, res){
+//     // Edit a user
+//     .put(function(req, res){
 
-    })
+//     })
 
-    // Delete a user
-    .delete(function(req, res){
+//     // Delete a user
+//     .delete(function(req, res){
 
-    });
+//     });
 
-router.route('/cause/register')
+// router.route('/cause/register')
 
-    // Get list of registered users
-    .get(function(req, res){
+//     // Get list of registered users
+//     .get(function(req, res){
 
-    })
+//     })
 
-    // Add user to a cause
-    .post(function(req, res){
+//     // Add user to a cause
+//     .post(function(req, res){
 
-    })
+//     })
 
-    // Delete user from a cause
-    .delete(function(req, res){
+//     // Delete user from a cause
+//     .delete(function(req, res){
 
-    });
+//     });
 
 
-router.route('/cause/:cause_id')
+// router.route('/cause/:cause_id')
 
 
 
@@ -142,7 +142,7 @@ router.route('/users')
                 res.send(err);
             res.json({ message: 'User created!' });
           })
-    })
+    });
 
     .get(function(req, res){
         db.User
@@ -152,7 +152,7 @@ router.route('/users')
               res.send(err);
 
             res.json(users);
-          });
+          })
     });
 
 router.route('/users/:user_id')
