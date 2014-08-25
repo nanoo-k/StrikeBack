@@ -45,12 +45,86 @@ router.use(function(req, res, next) {
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function(req, res) {
-	res.json({ message: 'Hooray! welcome to our api!' });	
+	res.json({ message: 'Strike back!' });	
 });
 
 // more routes for our API will happen here
 
-// on routes that end in /bears
+router.route('/cause')
+
+    // Get a specific cause
+    .get(function(req, res){
+
+    })
+
+    // Create a cause
+    .post(function(req, res){
+
+    })
+
+    // Edit a cause
+    .put(function(req, res){
+
+    })
+
+    // Delete a cause
+    .delete(function(req, res){
+
+    });
+
+router.route('/user')
+
+    // Get a specific user
+    .get(function(req, res){
+
+    })
+
+    // Create a user
+    .post(function(req, res){
+
+    })
+
+    // Edit a user
+    .put(function(req, res){
+
+    })
+
+    // Delete a user
+    .delete(function(req, res){
+
+    });
+
+router.route('/cause/register')
+
+    // Get list of registered users
+    .get(function(req, res){
+
+    })
+
+    // Add user to a cause
+    .post(function(req, res){
+
+    })
+
+    // Delete user from a cause
+    .delete(function(req, res){
+
+    });
+
+
+router.route('/cause/:cause_id')
+
+
+
+
+
+
+
+
+
+
+
+// on routes that end in /users
 router.route('/users')
 //    create a bear (accessed at POST http://localhost:8080/api/bears)
     .post(function(req, res){

@@ -1,0 +1,18 @@
+RESOURCE		VERB	ACTION
+
+/cause			GET	Show causes
+/cause			POST	Create cause
+/cause/:cause_id	GET	Show cause page
+/cause/:cause_id	PUT	Edit cause
+/cause/:cause_id	DELETE	Delete cause
+
+/user			GET	Show list of users
+/user			POST	Register a user
+/user/:user_id		GET	Show specific user
+/user/:user_id		PUT	Edit specific user
+/user/:user_id		DELETE	Delete user
+
+
+RESOURCE				VERB	ACTION
+
+/cause/:cause_id/user/:user_id		POST	Register user to a cause
