@@ -142,7 +142,7 @@ router.route('/users')
                 res.send(err);
             res.json({ message: 'User created!' });
           })
-    });
+    })
 
     .get(function(req, res){
         db.User
