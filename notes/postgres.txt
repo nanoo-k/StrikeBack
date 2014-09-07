@@ -1,0 +1,13 @@
+pass: tuttut 
+port: 5432
+
+pgAdmin as GUI
+
+
+From H:\Program Files\PostgreSQL\9.3\bin
+initdb.exe "H:\Program Files\PostgreSQL\9.3\data"
+"pg_ctl" -D "H:\Program Files\PostgreSQL\9.3\data" -l logfile start
+
+psql -h localhost -U postgres Bears
+
+
