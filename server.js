@@ -10,6 +10,7 @@ var express         = require('express')
     , bodyParser    = require('body-parser')
     , db            = require('./models')
     , port          = process.env.PORT || 8080
+    , path          = require('path')
 
 app.set('views', path.join(__dirname, '../app'));
 app.set('view engine', 'ejs');
@@ -118,15 +119,6 @@ router.get('/', function(req, res) {
 
 
 // router.route('/cause/:cause_id')
-
-
-
-
-
-
-
-
-
 
 
 // on routes that end in /users
