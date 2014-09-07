@@ -18,7 +18,7 @@ define([
 
         regions: {
             content: "#content",
-            actionbar: Navigation,
+            navigation: Navigation,
             modal: Modal
         },
 
