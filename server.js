@@ -11,6 +11,11 @@ var express         = require('express')
     , db            = require('./models')
     , port          = process.env.PORT || 8080
 
+app.set('views', path.join(__dirname, '../app'));
+app.set('view engine', 'ejs');
+
+app.use(express.static(path.join(__dirname, '../app')));
+
 // configure app to use bodyParser()
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }))

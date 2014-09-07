@@ -132,7 +132,7 @@ define(['underscore', 'backbone', 'jquery'], function (_, Backbone, $) {
         },
 
         nojs: function () {
-        },
+        }
 
 
     });
