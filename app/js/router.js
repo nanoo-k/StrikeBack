@@ -9,16 +9,12 @@ define(['underscore', 'backbone', 'jquery'], function (_, Backbone, $) {
 
         routes: {
             '' : 'index',
-            'verify/:code': 'verify',
-            'invite/:code' : 'invite',
-            'reset/:code' : 'reset',
-            'platform' : 'platform',
-            'network/:section' : 'networkConfig',
-            'solution/:id/:section' : 'solutionConfig',
-            'solution/:id/:section/:sectionId' : 'solutionConfig',
-            'content/:contentId' : 'contentEdit',
-            'content/:contentId/property/:propertyId' : 'contentEdit',
-            'content/:contentId/property/:propertyId/add' : 'contentAdd',
+            // 'verify/:code': 'verify',
+            // 'invite/:code' : 'invite',
+            // 'reset/:code' : 'reset',
+            'campaign/:campaign_id' : 'campaign',
+            'user/:user_id' : 'user',
+            'dashboard/:campaign_id' : 'dashboard',
             'error': 'error',
             '*catchAll': 'catchAll'
         },
@@ -32,45 +28,58 @@ define(['underscore', 'backbone', 'jquery'], function (_, Backbone, $) {
             window.location.href = "/network";
         },
 
-        platform: function() {
-            this.loadPage("/platform");
+        campaign: function(id) {
+            this.loadPage("campaign", {Campaign: id});
         },
 
-        verify: function (code) {
-            require(['page/verify'], function (obj) {
-                var view = obj.regions.content;
-                obj.layout.content.show(view)
-                view.setCode(code);
-            });
+        user: function(id) {
+            this.loadPage("user", {User: id});
         },
 
-        networkConfig: function(section) {
-            this.loadPage("network", {Section: section});
+        dashboard: function(campaign_id) {
+            this.loadPage("dashboard", {Campaign: campaign_id});
         },
 
-        solutionConfig: function(id, section, sectionId) {
-            this.loadPage("solution-config", {Id: id, Section: section, SectionId: sectionId});
-        },
 
-        contentEdit: function(contentId, propertyId, action) {
-            this.loadPage("content", {contentId: contentId, propertyId: propertyId, action: action});
-        },
+        // platform: function() {
+        //     this.loadPage("/platform");
+        // },
 
-        contentAdd: function(contentId, propertyId, action) {
-            this.loadPage("contentAdd", {contentId: contentId, propertyId: propertyId, action: action});
-        },
+        // verify: function (code) {
+        //     require(['page/verify'], function (obj) {
+        //         var view = obj.regions.content;
+        //         obj.layout.content.show(view)
+        //         view.setCode(code);
+        //     });
+        // },
+
+        // networkConfig: function(section) {
+        //     this.loadPage("network", {Section: section});
+        // },
+
+        // solutionConfig: function(id, section, sectionId) {
+        //     this.loadPage("solution-config", {Id: id, Section: section, SectionId: sectionId});
+        // },
+
+        // contentEdit: function(contentId, propertyId, action) {
+        //     this.loadPage("content", {contentId: contentId, propertyId: propertyId, action: action});
+        // },
+
+        // contentAdd: function(contentId, propertyId, action) {
+        //     this.loadPage("contentAdd", {contentId: contentId, propertyId: propertyId, action: action});
+        // },
 
         // nvVersion: function(id) {
         //      this.loadPage("solution-config", {Id: id, Section: section, SectionId: sectionId});
         // },
 
-        invite: function(hash) {
-            this.loadPage("invite", {hash: hash});
-        },
+        // invite: function(hash) {
+        //     this.loadPage("invite", {hash: hash});
+        // },
 
-        reset: function(infoHash) {
-            this.loadPage("reset", {infoHash: infoHash});
-        },
+        // reset: function(infoHash) {
+        //     this.loadPage("reset", {infoHash: infoHash});
+        // },
 
         catchAll: function () {
             this.loadPage(document.location.pathname);
