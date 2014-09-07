@@ -204,6 +204,14 @@ router.route('/users/:user_id')
 // all of our routes will be prefixed with /api
 app.use('/api', router);
 
+app.use(function(req, res, next) {
+    if (req.url.indexOf(".") >= 0) {
+        next();
+        return;
+    }
+    res.render('index');
+});
+
 // START THE SERVER
 // =============================================================================
 app.listen(port);
