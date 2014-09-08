@@ -9,7 +9,7 @@ define([
     'text!/js/template/global.ejs',
     'less!/style/global.less',
     'marionette'
-], function ($, _, Backbone, Navigation, Modal, Template) {
+], function ($, _, Backbone, ActionBar, Modal, Template) {
 
     var GlobalLayout = Backbone.Marionette.Layout.extend({
         template: Template,
@@ -18,7 +18,7 @@ define([
 
         regions: {
             content: "#content",
-            navigation: Navigation,
+            actionBar: ActionBar,
             modal: Modal
         },
 
@@ -28,7 +28,7 @@ define([
         title: function(title) {
             // this.actionbar.title(title);
             // document.title = "Workbench :: " + title;
-        },
+        }
     });
 
     var layout = new GlobalLayout();

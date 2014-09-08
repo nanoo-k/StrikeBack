@@ -8,12 +8,12 @@ define([
     'marionette',
 ], function ( $, _, layout, Template) {
 
-    var TestView = Marionette.ItemView.extend({
+    var TestView = Backbone.Marionette.ItemView.extend({
         template: Template
     });
 
     return {
-        title: 'Network',
+        title: 'Test',
         layout: layout,
         regions: {
             content: TestView
