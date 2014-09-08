@@ -11,6 +11,7 @@ var express         = require('express')
     , db            = require('./models')
     , port          = process.env.PORT || 8080
     , path          = require('path')
+    , http          = require('http')
 
 app.set('views', path.join(__dirname, '/app'));
 app.set('view engine', 'ejs');
@@ -214,5 +215,9 @@ app.use(function(req, res, next) {
 
 // START THE SERVER
 // =============================================================================
-app.listen(port);
-console.log('Strike back on port ' + port);
+// app.listen(port);
+// console.log('Strike back on port ' + port);
+
+http.createServer(app).listen(port, function () {
+    console.log('Express server listening on port ' + port);
+});

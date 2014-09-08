@@ -12,7 +12,7 @@ define([
 ], function ($, _, Backbone, ActionBar, Modal, Template) {
 
     var GlobalLayout = Backbone.Marionette.Layout.extend({
-        template: Template,
+        template: _.template(Template),
 
         el: 'body',
 

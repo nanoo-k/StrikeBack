@@ -9,7 +9,7 @@ define([
 ], function ( $, _, layout, Template) {
 
     var TestView = Backbone.Marionette.ItemView.extend({
-        template: Template
+        template: _.template(Template)
     });
 
     return {
