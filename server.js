@@ -12,10 +12,10 @@ var express         = require('express')
     , port          = process.env.PORT || 8080
     , path          = require('path')
 
-app.set('views', path.join(__dirname, '../app'));
+app.set('views', path.join(__dirname, '/app'));
 app.set('view engine', 'ejs');
 
-app.use(express.static(path.join(__dirname, '../app')));
+app.use(express.static(path.join(__dirname, '/app')));
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
