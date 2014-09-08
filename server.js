@@ -206,6 +206,7 @@ router.route('/users/:user_id')
 app.use('/api', router);
 
 app.use(function(req, res, next) {
+    // if (req.url.indexOf(".") >= 0)
     if (req.url.indexOf(".") >= 0) {
         next();
         return;
