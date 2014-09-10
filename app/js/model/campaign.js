@@ -33,7 +33,7 @@ define([
 
         url: function(){
             // return "/api/users/" + this.get("Id");
-            return "/api/users/1";
+            return "/api/campaigns/3";
         }
     });
 

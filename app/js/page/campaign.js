@@ -5,7 +5,7 @@ define([
     'underscore',
     'layout/global',
     'model/campaign',
-    'text!/js/template/test.ejs',
+    'text!/js/template/campaign.ejs',
     'marionette',
 ], function ( $, _, layout, Campaign, Template) {
 
@@ -17,10 +17,16 @@ define([
             this.model = new Campaign();
             this.model.fetch({
                 success: $.proxy(function(){
-                    console.log(this.model);
+                    this.setAttrs();
                 }, this)
             });
             
+        },
+
+        setAttrs: function(){
+            this.$el.find('#name').html(this.model.get('name'));
+            this.$el.find('#target').html(this.model.get('target'));
+            this.$el.find('#callToAction').html(this.model.get('callToAction'));
         }
 
 
