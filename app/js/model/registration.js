@@ -6,17 +6,16 @@ define([
     'underscore'
 ], function (Backbone, $, _) {
 
-    var Campaign = Backbone.Model.extend({
+    var Registration = Backbone.Model.extend({
 
         defaults: {
             Description: ' '
         },
 
         url: function(){
-            // return "/api/users/" + this.get("Id");
-            return "/api/users";
+            return "/api/register";
         }
     });
 
-    return Campaign;
+    return Registration;
 });

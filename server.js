@@ -118,6 +118,26 @@ router.get('/', function(req, res) {
 
 //     });
 
+router.route('/register')
+  .post(function(req, res){
+
+      // Need to figure out a way to get userId and campaignId. I'll need to check whether the user sent up has an Id, and if not, register the user.
+
+      // At this moment, there's no way to have a user send up their userId, so just first create that user and then use the userId from that. I still need to send up the campaign model (or at least the Id) during the save.
+
+      var registration = db.Registrations.build({
+        campaignId: req.body.campaignId,
+        userId: req.body.userId
+      })
+
+      registration
+        .save()
+        .complete(function(err) {
+          if (!!err)
+              res.send(err);
+          res.json({ message: 'User registered to campaign'});
+        })
+  });
 
 // router.route('/cause/:cause_id')
 router.route('/campaigns')
@@ -133,7 +153,7 @@ router.route('/campaigns')
           .complete(function(err) {
             if (!!err) 
                 res.send(err);
-            res.json({ message: 'Campaign created!' });
+            res.json(campaign);
           })
     })
 
@@ -176,7 +196,7 @@ router.route('/campaigns/:campaign_id')
             .complete(function(err) {
               if (!!err) 
                   res.send(err);
-              res.json({ message: 'Campaign updated.' });
+              res.json(campaign);
             })
         });
   })
@@ -208,7 +228,7 @@ router.route('/users')
         .complete(function(err) {
           if (!!err) 
               res.send(err);
-          res.json({ message: 'User created!' });
+          res.json(user);
         })
   })
 
@@ -252,7 +272,7 @@ router.route('/users/:user_id')
             .complete(function(err) {
               if (!!err) 
                   res.send(err);
-              res.json({ message: 'User updated.' });
+              res.json(user);
             })
         });
   })

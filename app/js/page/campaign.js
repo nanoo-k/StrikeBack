@@ -5,10 +5,11 @@ define([
     'underscore',
     'layout/global',
     'model/campaign',
+    'model/registration',
     'model/user',
     'text!/js/template/campaign.ejs',
     'marionette',
-], function ( $, _, layout, Campaign, User, Template) {
+], function ( $, _, layout, Campaign, User, Registration, Template) {
 
     var TestView = Backbone.Marionette.ItemView.extend({
         template: _.template(Template),
@@ -36,6 +37,8 @@ define([
         },
 
         onUserJoin: function(){
+
+            // Create user and save it to DB
             var user = new User();
             user.set({
                 'username' : this.$el.find('#email').val(),
@@ -44,11 +47,26 @@ define([
                 'password': this.$el.find('#password').val()
             });
 
-            user.save({
-                success: function(model){
-                    console.log(model);
+            user.save({}, {
+                success: function(model, response){
+                    console.log('User created.');
                 }
             });
+
+            console.log(user);
+
+            // Create registration ticket and save it to DB
+            // registration = new Registration();
+            // registration.set({
+            //     campaignId : this.model.get('id'),
+            //     userId : user.get('id')
+            // });
+
+            // registration.save({}, {
+            //     success: function(model){
+            //         console.log('User registered to campaign.');
+            //     }
+            // });
         }
 
 
