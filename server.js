@@ -9,7 +9,7 @@ var express         = require('express')
     , routes        = require('./routes')
     , bodyParser    = require('body-parser')
     , db            = require('./models')
-    , port          = process.env.PORT || 8080
+    , port          = process.env.PORT || 80
     , path          = require('path')
     , http          = require('http')
 
@@ -120,86 +120,154 @@ router.get('/', function(req, res) {
 
 
 // router.route('/cause/:cause_id')
-
-
-// on routes that end in /users
-router.route('/users')
-//    create a bear (accessed at POST http://localhost:8080/api/bears)
-    .post(function(req, res){
-        var user = db.User.build({
-          username: req.body.username,
-          password: req.body.password,
-          phone: req.body.phone,
-          email: req.body.email
+router.route('/campaigns')
+  .post(function(req, res){
+        var campaign = db.Campaign.build({
+          name: req.body.name,
+          target: req.body.target,
+          callToAction: req.body.callToAction
         })
          
-        user
+        campaign
           .save()
           .complete(function(err) {
             if (!!err) 
                 res.send(err);
-            res.json({ message: 'User created!' });
+            res.json({ message: 'Campaign created!' });
           })
     })
 
-    .get(function(req, res){
-        db.User
-          .findAll()
-          .complete(function(err, users) {
-            if (!!err)
-              res.send(err);
+  .get(function(req, res){
+      db.Campaign
+        .findAll()
+        .complete(function(err, campaigns) {
+          if (!!err)
+            res.send(err);
 
-            res.json(users);
-          })
-    });
+          res.json(campaigns);
+        })
+  });
+
+router.route('/campaigns/:campaign_id')
+  .get(function(req, res){
+      db.Campaign
+        .find(req.params.campaign_id)
+        .complete(function(err, campaign) {
+          if (!!err)
+            res.send(err);
+
+          res.json(campaign);
+        });
+  })
+
+  // update the bear with this id (accessed at PUT http://localhost:8080/api/bears/:bear_id)
+  .put(function(req, res){
+
+      db.Campaign
+        .find(req.params.campaign_id)
+        .complete(function(err, campaign) {
+          
+          campaign.name = req.body.name;
+          campaign.target = req.body.target;
+          campaign.callToAction = req.body.callToAction;
+
+          campaign
+            .save()
+            .complete(function(err) {
+              if (!!err) 
+                  res.send(err);
+              res.json({ message: 'Campaign updated.' });
+            })
+        });
+  })
+
+  .delete(function(req, res){
+      db.Campaign
+          .find(req.params.campaign_id)
+          .complete(function(err, campaign){
+              campaign.destroy().success(function(err){
+                  if (!!err)
+                      res.send(err);
+                  res.json({ message: 'Campaign removed' });
+              });
+          });
+  });
+
+// on routes that end in /users
+router.route('/users')
+  .post(function(req, res){
+      var user = db.User.build({
+        username: req.body.username,
+        password: req.body.password,
+        phone: req.body.phone,
+        email: req.body.email
+      })
+       
+      user
+        .save()
+        .complete(function(err) {
+          if (!!err) 
+              res.send(err);
+          res.json({ message: 'User created!' });
+        })
+  })
+
+  .get(function(req, res){
+      db.User
+        .findAll()
+        .complete(function(err, users) {
+          if (!!err)
+            res.send(err);
+
+          res.json(users);
+        })
+  });
 
 router.route('/users/:user_id')
+  .get(function(req, res){
+      db.User
+        .find(req.params.user_id)
+        .complete(function(err, users) {
+          if (!!err)
+            res.send(err);
 
-    // get the bear with that id (accessed at GET http://localhost:8080/api/bears/:bear_id)
-    .get(function(req, res){
-        db.User
+          res.json(users);
+        });
+  })
+
+  // update the bear with this id (accessed at PUT http://localhost:8080/api/bears/:bear_id)
+  .put(function(req, res){
+
+      db.User
+        .find(req.params.user_id)
+        .complete(function(err, user) {
+          
+          user.username = req.body.username;
+          user.password = req.body.password;
+          user.phone = req.body.phone;
+          user.email = req.body.email;
+
+          user
+            .save()
+            .complete(function(err) {
+              if (!!err) 
+                  res.send(err);
+              res.json({ message: 'User updated.' });
+            })
+        });
+  })
+
+  .delete(function(req, res){
+      db.User
           .find(req.params.user_id)
-          .complete(function(err, users) {
-            if (!!err)
-              res.send(err);
-
-            res.json(users);
+          .complete(function(err, user){
+              user.destroy().success(function(err){
+                  if (!!err)
+                      res.send(err);
+                  res.json({ message: 'User removed' });
+              });
           });
-    })
-
-    // update the bear with this id (accessed at PUT http://localhost:8080/api/bears/:bear_id)
-    .put(function(req, res){
-
-        db.User
-          .find(req.params.user_id)
-          .complete(function(err, user) {
-            
-            user.username = req.body.username;
-            user.password = req.body.password;
-            user.phone = req.body.phone;
-            user.email = req.body.email;
-
-            user
-              .save()
-              .complete(function(err) {
-                if (!!err) 
-                    res.send(err);
-                res.json({ message: 'User updated.' });
-              })
-          });
-    })
-
-    .delete(function(req, res){
-        db.User
-            .find(req.params.user_id)
-            .complete(function(err, bear){
-                bear.destroy().success(function(err){
-                    if (!!err)
-                        res.send(err);
-                    res.json({ message: 'User removed' });
-                });
-            });
-    });
+  });
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
