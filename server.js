@@ -23,9 +23,9 @@ app.use(express.static(path.join(__dirname, '/app')));
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-// db
-//   .sequelize
-//   .sync({ force: true })
+db
+  .sequelize
+  .sync();
 
 db
   .sequelize
@@ -121,9 +121,9 @@ router.get('/', function(req, res) {
 router.route('/register')
   .post(function(req, res){
 
-      // Need to figure out a way to get userId and campaignId. I'll need to check whether the user sent up has an Id, and if not, register the user.
+//       // Need to figure out a way to get userId and campaignId. I'll need to check whether the user sent up has an Id, and if not, register the user.
 
-      // At this moment, there's no way to have a user send up their userId, so just first create that user and then use the userId from that. I still need to send up the campaign model (or at least the Id) during the save.
+//       // At this moment, there's no way to have a user send up their userId, so just first create that user and then use the userId from that. I still need to send up the campaign model (or at least the Id) during the save.
 
       var registration = db.Registrations.build({
         campaignId: req.body.campaignId,
@@ -134,8 +134,20 @@ router.route('/register')
         .save()
         .complete(function(err) {
           if (!!err)
-              res.send(err);
-          res.json({ message: 'User registered to campaign'});
+              res.send(err, registration);
+          res.json(registration);
+        })
+  })
+
+  // Get all registrations
+  .get(function(req, res) {
+    db.Registrations
+        .findAll()
+        .complete(function(err, registrations) {
+          if (!!err)
+            res.send(err);
+
+          res.json(registrations);
         })
   });
 
@@ -150,7 +162,7 @@ router.route('/campaigns')
          
         campaign
           .save()
-          .complete(function(err) {
+          .complete(function(err, campaign) {
             if (!!err) 
                 res.send(err);
             res.json(campaign);
@@ -193,7 +205,7 @@ router.route('/campaigns/:campaign_id')
 
           campaign
             .save()
-            .complete(function(err) {
+            .complete(function(err, campaign) {
               if (!!err) 
                   res.send(err);
               res.json(campaign);
@@ -216,20 +228,23 @@ router.route('/campaigns/:campaign_id')
 // on routes that end in /users
 router.route('/users')
   .post(function(req, res){
+      
+      // console.log(req);
+
       var user = db.User.build({
         username: req.body.username,
         password: req.body.password,
         phone: req.body.phone,
         email: req.body.email
-      })
+      });
        
       user
         .save()
-        .complete(function(err) {
+        .complete(function(err, user) {
           if (!!err) 
               res.send(err);
           res.json(user);
-        })
+        });
   })
 
   .get(function(req, res){
@@ -240,7 +255,7 @@ router.route('/users')
             res.send(err);
 
           res.json(users);
-        })
+        });
   });
 
 router.route('/users/:user_id')
@@ -269,7 +284,7 @@ router.route('/users/:user_id')
 
           user
             .save()
-            .complete(function(err) {
+            .complete(function(err, user) {
               if (!!err) 
                   res.send(err);
               res.json(user);

@@ -9,7 +9,7 @@ define([
     'model/user',
     'text!/js/template/campaign.ejs',
     'marionette',
-], function ( $, _, layout, Campaign, User, Registration, Template) {
+], function ( $, _, layout, Campaign, Registration, User, Template) {
 
     var TestView = Backbone.Marionette.ItemView.extend({
         template: _.template(Template),
@@ -39,34 +39,35 @@ define([
         onUserJoin: function(){
 
             // Create user and save it to DB
-            var user = new User();
-            user.set({
+            this.user = new User();
+            this.user.set({
                 'username' : this.$el.find('#email').val(),
                 'email': this.$el.find('#email').val(),
                 'phone': this.$el.find('#phone').val(),
                 'password': this.$el.find('#password').val()
             });
 
-            user.save({}, {
-                success: function(model, response){
+            this.user.save({}, {
+                success: $.proxy(function(model, response){
                     console.log('User created.');
-                }
+                    this.registerUser();
+                }, this)
+            });
+        },
+
+        registerUser: function(){
+            // Create registration ticket and save it to DB
+            this.registration = new Registration();
+            this.registration.set({
+                campaignId : this.model.get('id'),
+                userId : this.user.get('id')
             });
 
-            console.log(user);
-
-            // Create registration ticket and save it to DB
-            // registration = new Registration();
-            // registration.set({
-            //     campaignId : this.model.get('id'),
-            //     userId : user.get('id')
-            // });
-
-            // registration.save({}, {
-            //     success: function(model){
-            //         console.log('User registered to campaign.');
-            //     }
-            // });
+            this.registration.save({}, {
+                success: function(model, response){
+                    console.log('User registered to campaign.');
+                }
+            });
         }
 
 

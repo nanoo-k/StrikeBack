@@ -8,10 +8,6 @@ define([
 
     var Registration = Backbone.Model.extend({
 
-        defaults: {
-            Description: ' '
-        },
-
         url: function(){
             return "/api/register";
         }

@@ -8,10 +8,6 @@ define([
 
     var Campaign = Backbone.Model.extend({
 
-        defaults: {
-            Description: ' '
-        },
-
         // relations: [
         //     {
         //         type: Backbone.HasMany,
