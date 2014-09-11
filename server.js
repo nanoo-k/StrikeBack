@@ -25,6 +25,7 @@ app.use(bodyParser.json())
 
 db
   .sequelize
+  // .sync({force: true});
   .sync();
 
 db

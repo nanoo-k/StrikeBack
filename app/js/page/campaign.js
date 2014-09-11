@@ -11,7 +11,7 @@ define([
     'marionette',
 ], function ( $, _, layout, Campaign, Registration, User, Template) {
 
-    var TestView = Backbone.Marionette.ItemView.extend({
+    var Campaign = Backbone.Marionette.ItemView.extend({
         template: _.template(Template),
 
         // Need to instantiate a campaign model
@@ -78,7 +78,7 @@ define([
         title: 'Campaign',
         layout: layout,
         regions: {
-            content: TestView
+            content: Campaign
         }
     }
 
