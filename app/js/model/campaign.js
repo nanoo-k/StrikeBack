@@ -8,28 +8,19 @@ define([
 
     var Campaign = Backbone.Model.extend({
 
-        // relations: [
-        //     {
-        //         type: Backbone.HasMany,
-        //         key: 'Versions',
-        //         relatedModel: Version,
-        //         collectionType: VersionCollection,
-        //         collectionOptions: function(application) {
-        //            return {'application': application};
-        //         }/*,
-        //         reverseRelation: {
-        //             key: "Application"
-        //         } */
-        //     }
-        // ],
-
-        // toJSON: function() {
-        //     return _.extend({Icon: "/api/campaign/" + this.get("Id")}, NV.Model.prototype.toJSON.call(this));
-        // }
+        initialize: function(options){
+            this.campaign.id = options.id;
+        },
 
         url: function(){
             // return "/api/users/" + this.get("Id");
-            return "/api/campaigns/3";
+            return "/api/campaigns/" + this.campaign.id;
+            // return "/api/campaigns/3";
+        },
+
+        select: function(){
+            this.set({selected: true});
+            this.collection.selectPost(this);
         }
     });
 

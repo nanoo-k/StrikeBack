@@ -11,7 +11,7 @@ define([
 ], function ( $, _, layout, Campaigns, Campaign, Template) {
 
     var Campaign = Backbone.Marionette.ItemView.extend({
-        template: _.template('<li><a href="/campaigns/<%= id %>"><%= name %></a></li> ')
+        template: _.template('<li><a href="/campaigns/<%= id %>"><%= name %></a></li> ')    
     });
 
     var Index = Backbone.Marionette.CollectionView.extend({

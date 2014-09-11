@@ -14,6 +14,11 @@ define([
     var Campaign = Backbone.Marionette.ItemView.extend({
         template: _.template(Template),
 
+        urlArgs: function(args){
+            var b;
+            // console.log(args);
+        },
+
         // Need to instantiate a campaign model
         initialize: function(options){
             this.model = new Campaign();

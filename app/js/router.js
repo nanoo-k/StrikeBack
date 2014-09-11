@@ -12,8 +12,8 @@ define(['underscore', 'backbone', 'jquery'], function (_, Backbone, $) {
             // 'verify/:code': 'verify',
             // 'invite/:code' : 'invite',
             // 'reset/:code' : 'reset',
-            'campaign/:campaign_id' : 'campaign',
-            'user/:user_id' : 'user',
+            'campaigns/:campaign_id' : 'campaign',
+            'users/:user_id' : 'user',
             'dashboard/:campaign_id' : 'dashboard',
             'error': 'error',
             '*catchAll': 'catchAll'
