@@ -9,19 +9,20 @@ define([
     var Campaign = Backbone.Model.extend({
 
         initialize: function(options){
+            this.campaign = {};
             this.campaign.id = options.id;
         },
 
         url: function(){
             // return "/api/users/" + this.get("Id");
-            return "/api/campaigns/" + this.campaign.id;
+            return "/api/campaigns/" + this.id;
             // return "/api/campaigns/3";
-        },
-
-        select: function(){
-            this.set({selected: true});
-            this.collection.selectPost(this);
         }
+
+        // select: function(){
+        //     this.set({selected: true});
+        //     this.collection.selectPost(this);
+        // }
     });
 
     return Campaign;

@@ -29,15 +29,15 @@ define(['underscore', 'backbone', 'jquery'], function (_, Backbone, $) {
         },
 
         campaign: function(id) {
-            this.loadPage("campaign", {Campaign: id});
+            this.loadPage("campaign", {CampaignId: id});
         },
 
         user: function(id) {
-            this.loadPage("user", {User: id});
+            this.loadPage("user", {UserId: id});
         },
 
         dashboard: function(campaign_id) {
-            this.loadPage("dashboard", {Campaign: campaign_id});
+            this.loadPage("dashboard", {CampaignId: campaign_id});
         },
 
 

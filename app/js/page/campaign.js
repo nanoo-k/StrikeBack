@@ -8,26 +8,36 @@ define([
     'model/registration',
     'model/user',
     'text!/js/template/campaign.ejs',
-    'marionette',
+    'marionette'
 ], function ( $, _, layout, Campaign, Registration, User, Template) {
 
-    var Campaign = Backbone.Marionette.ItemView.extend({
+    var CampaignView = Backbone.Marionette.ItemView.extend({
         template: _.template(Template),
 
         urlArgs: function(args){
-            var b;
-            // console.log(args);
-        },
-
-        // Need to instantiate a campaign model
-        initialize: function(options){
-            this.model = new Campaign();
+            this.model = new Campaign({id: args.CampaignId});
             this.model.fetch({
                 success: $.proxy(function(){
                     // I'm setting them after the fact like this and not in the templates bcuz this page initializes and renders without a model set, so there's no template!
                     this.setAttrs();
                 }, this)
             });
+            // console.log(args);
+        },
+
+        getModel: function(){
+
+        },
+
+        // Need to instantiate a campaign model
+        initialize: function(options){
+            // this.model = new Campaign();
+            // this.model.fetch({
+            //     success: $.proxy(function(){
+            //         // I'm setting them after the fact like this and not in the templates bcuz this page initializes and renders without a model set, so there's no template!
+            //         this.setAttrs();
+            //     }, this)
+            // });
             
         },
 
@@ -83,7 +93,7 @@ define([
         title: 'Campaign',
         layout: layout,
         regions: {
-            content: Campaign
+            content: CampaignView
         }
     }
 
