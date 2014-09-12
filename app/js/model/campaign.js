@@ -14,9 +14,13 @@ define([
         },
 
         url: function(){
-            // return "/api/users/" + this.get("Id");
-            return "/api/campaigns/" + this.id;
-            // return "/api/campaigns/3";
+            if (!_.isUndefined(this.id)) {
+                return "/api/campaigns/" + this.id;
+
+            } else {
+                // If this is a new campaign, we're POSTing to this API
+                return "/api/campaigns/";
+            }            
         }
 
         // select: function(){

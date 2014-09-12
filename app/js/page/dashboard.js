@@ -5,31 +5,49 @@ define([
     'underscore',
     'layout/global',
     'model/campaign',
-    'model/registration',
     'model/user',
-    'text!/js/template/campaign.ejs',
+    'text!/js/template/dashboard.ejs',
     'marionette',
-], function ( $, _, layout, Campaign, Registration, User, Template) {
+], function ( $, _, layout, Campaign, User, Template) {
 
     var TestView = Backbone.Marionette.ItemView.extend({
         template: _.template(Template),
 
-        // Need to instantiate a campaign model
+        // Need to instantiate a campaign model using args passed thru the URL
+        urlArgs: function(args){
+            if (args.isNew) {
+                this.model = new Campaign();
+
+            } else {
+                this.model = new Campaign({id: args.CampaignId});
+                this.model.fetch({
+                    success: $.proxy(function(){
+                        // I'm setting them after the fact like this and not in the templates bcuz this page initializes and renders without a model set, so there's no template!
+                        this.setAttrs();
+                    }, this)
+                });
+            }
+        },
+
         initialize: function(options){
-            this.model = new Campaign();
-            this.model.fetch({
-                success: $.proxy(function(){
-                    // I'm setting them after the fact like this and not in the templates bcuz this page initializes and renders without a model set, so there's no template!
-                    this.setAttrs();
-                }, this)
-            });
-            
+        },
+
+        events: {
+            "click #create": "onSave"
+        },
+
+        onSave: function(){
+            this.model.set({
+                name: this.$el.find('#name').val(),
+                target: this.$el.find('#target').val(),
+                callToAction: this.$el.find('#callToAction').val()
+            })
         },
 
         setAttrs: function(){
-            this.$el.find('#name').html(this.model.get('name'));
-            this.$el.find('#target').html(this.model.get('target'));
-            this.$el.find('#callToAction').html(this.model.get('callToAction'));
+            this.$el.find('#name').val(this.model.get('name'));
+            this.$el.find('#target').val(this.model.get('target'));
+            this.$el.find('#callToAction').val(this.model.get('callToAction'));
         }
 
 
@@ -37,7 +55,7 @@ define([
     });
 
     return {
-        title: 'Campaign',
+        title: 'Dashboard',
         layout: layout,
         regions: {
             content: TestView

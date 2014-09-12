@@ -5,19 +5,19 @@ define([
     'underscore',
     'layout/global',
     'collection/campaigns',
-    'model/campaign',
-    'text!/js/template/campaign.ejs',
-    'marionette',
-], function ( $, _, layout, Campaigns, Campaign, Template) {
+    'text!/js/template/index.ejs',
+    'marionette'
+], function ( $, _, layout, Campaigns, Template) {
 
-    var Campaign = Backbone.Marionette.ItemView.extend({
-        template: _.template('<li><a href="/campaigns/<%= id %>"><%= name %></a></li> ')    
+    var CampaignView = Backbone.Marionette.ItemView.extend({
+        template: _.template('<a href="/campaigns/<%= id %>"><%= name %></a>') ,
+        tagName: "li"   
     });
 
-    var Index = Backbone.Marionette.CollectionView.extend({
+    var Index = Backbone.Marionette.CompositeView.extend({
         template: _.template(Template),
 
-        itemView: Campaign,
+        itemView: CampaignView,
         itemViewContainer: '#campaigns',
 
         // Need to instantiate a campaign model
@@ -28,8 +28,15 @@ define([
                     console.log(this.collection);
                 }, this)
             });
-            
         }
+
+        // events: {
+        //     "click #add": "onAddCampaign"
+        // },
+
+        // onAddCampaign: function(){
+
+        // }
 
     });
 

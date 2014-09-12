@@ -14,11 +14,11 @@ define([
         url: function(){
             // return "/api/users/" + this.get("Id");
             return "/api/campaigns";
-        },
-
-        selectPost: function(post){
-            this.vent.trigger("post:selected", post);
         }
+
+        // selectPost: function(post){
+        //     this.vent.trigger("post:selected", post);
+        // }
     });
 
     return Campaigns;

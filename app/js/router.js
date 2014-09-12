@@ -37,7 +37,9 @@ define(['underscore', 'backbone', 'jquery'], function (_, Backbone, $) {
         },
 
         dashboard: function(campaign_id) {
-            this.loadPage("dashboard", {CampaignId: campaign_id});
+            ( !_.isUndefined(campaign_id) && campaign_id !== "new" ) ?
+                this.loadPage("dashboard", {CampaignId: campaign_id, isNew: false}) :
+                this.loadPage("dashboard", {isNew: true});
         },
 
 
