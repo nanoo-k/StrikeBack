@@ -9,8 +9,9 @@ define([
     var Campaign = Backbone.Model.extend({
 
         initialize: function(options){
+            options = options || {};
             this.campaign = {};
-            this.campaign.id = options.id;
+            if (!_.isUndefined(options.id)) this.campaign.id = options.id;
         },
 
         url: function(){

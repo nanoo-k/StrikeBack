@@ -33,7 +33,7 @@ define([
         },
 
         events: {
-            "click #create": "onSave"
+            "click #save": "onSave"
         },
 
         onSave: function(){
@@ -41,7 +41,8 @@ define([
                 name: this.$el.find('#name').val(),
                 target: this.$el.find('#target').val(),
                 callToAction: this.$el.find('#callToAction').val()
-            })
+            });
+            this.model.save();
         },
 
         setAttrs: function(){
