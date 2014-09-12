@@ -16,9 +16,11 @@ define([
         // Need to instantiate a campaign model using args passed thru the URL
         urlArgs: function(args){
             if (args.isNew) {
+                // If the user intends to create a new campaign, then just create an instance of the campaign model
                 this.model = new Campaign();
 
             } else {
+                // Else grab the campaign from the DB using the ID and represent it here.
                 this.model = new Campaign({id: args.CampaignId});
                 this.model.fetch({
                     success: $.proxy(function(){
