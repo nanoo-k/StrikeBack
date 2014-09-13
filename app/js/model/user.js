@@ -3,15 +3,31 @@
 define([
     'backbone',
     'jquery',
-    'underscore'
+    'underscore',
+    'backbone-relational'
 ], function (Backbone, $, _) {
 
-    var User = Backbone.Model.extend({
+    var User = Backbone.RelationalModel.extend({
         
         url: function(){
-            // return "/api/users/" + this.get("Id");
-            return "/api/users";
-        }
+            if (!_.isUndefined(this.id)) {
+                return "/api/users/" + this.id;
+
+            } else {
+                // If this is a new user, we're POSTing to this API
+                return "/api/users/";
+            }  
+        },
+
+        relations: [{
+            type: Backbone.HasMany,
+            key: 'RegisteredTo',
+            relatedModel: 'Registration'
+        },{
+            type: Backbone.HasMany,
+            key: 'Owns',
+            relatedModel: 'CampaignOwner'
+        }]
     });
 
     return User;

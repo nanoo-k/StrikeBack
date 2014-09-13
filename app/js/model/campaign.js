@@ -3,10 +3,11 @@
 define([
     'backbone',
     'jquery',
-    'underscore'
+    'underscore',
+    'backbone-relational'
 ], function (Backbone, $, _) {
 
-    var Campaign = Backbone.Model.extend({
+    var Campaign = Backbone.RelationalModel.extend({
 
         initialize: function(options){
             options = options || {};
@@ -22,7 +23,13 @@ define([
                 // If this is a new campaign, we're POSTing to this API
                 return "/api/campaigns/";
             }            
-        }
+        },
+
+        relations: [{
+            type: Backbone.HasMany,
+            key: 'owners',
+            relatedModel: 'User'
+        }]
 
         // select: function(){
         //     this.set({selected: true});

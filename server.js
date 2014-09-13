@@ -25,8 +25,8 @@ app.use(bodyParser.json())
 
 db
   .sequelize
-  // .sync({force: true});
-  .sync();
+  .sync({force: true});
+  // .sync();
 
 db
   .sequelize
@@ -126,48 +126,108 @@ router.route('/register')
 
 //       // At this moment, there's no way to have a user send up their userId, so just first create that user and then use the userId from that. I still need to send up the campaign model (or at least the Id) during the save.
 
-      var registration = db.Registrations.build({
-        campaignId: req.body.campaignId,
-        userId: req.body.userId
-      })
+      // var registration = db.Registrations.build({
+      //   campaignId: req.body.campaignId,
+      //   userId: req.body.userId
+      // })
 
-      registration
-        .save()
-        .complete(function(err) {
-          if (!!err)
-              res.send(err, registration);
-          res.json(registration);
-        })
+      // registration
+      //   .save()
+      //   .complete(function(err) {
+      //     if (!!err)
+      //         res.send(err, registration);
+      //     res.json(registration);
+      //   })
   })
 
   // Get all registrations
   .get(function(req, res) {
-    db.Registrations
-        .findAll()
-        .complete(function(err, registrations) {
-          if (!!err)
-            res.send(err);
+    // db.Registrations
+    //     .findAll()
+    //     .complete(function(err, registrations) {
+    //       if (!!err)
+    //         res.send(err);
 
-          res.json(registrations);
-        })
+    //       res.json(registrations);
+    //     })
   });
 
-// router.route('/cause/:cause_id')
 router.route('/campaigns')
+  // Send name, target, callToAction plus userId
   .post(function(req, res){
-        var campaign = db.Campaign.build({
-          name: req.body.name,
-          target: req.body.target,
-          callToAction: req.body.callToAction
-        })
-         
-        campaign
-          .save()
-          .complete(function(err, campaign) {
-            if (!!err) 
-                res.send(err);
-            res.json(campaign);
+
+      // var campaign = db.Campaign.build({
+      //   name: req.body.name,
+      //   target: req.body.target,
+      //   callToAction: req.body.callToAction
+      // });
+
+      var user = db.User.build({
+        username: "Miguel",
+        password: "password",
+        email: "email@blah.com",
+        phone: "4155187777"
+      });
+
+
+      // owner
+      //   .save()
+      //   .complete(function(err, campaignOwner){
+      //       campaign
+      //           .save()
+      //           .complete(function(err, camapign){
+      //               campaign.setCampaignOwners(campaignOwner).success(function(campaignOwner){
+      //                 console.log('success');
+      //               });
+      //           });
+      //   })
+
+      db.Campaign.create({
+        name: req.body.name,
+        target: req.body.target,
+        callToAction: req.body.callToAction
+      })
+        .success(function(campaign){
+          user.save().complete(function(err, owner){
+            // addOwner(), a method magically created by Sequelizer, will insert objects into the DB as owners of this campaign
+            campaign.addOwner(owner).success(function(campaignOwner){
+              campaignOwner.getOwns().success(function(owns){
+                // getOwns(), a method magically created by Sequelizer, gets all campaigns owned by this user and returns it as the 'owns'
+                res.send(owns);
+              })
+            })
           })
+        })
+
+        // The names 'addOwner' and 'getOwns' are defined by the 'as' property of the .hasMany relationships defined above
+
+        // var campaign = db.Campaign.build({
+        //   name: req.body.name,
+        //   target: req.body.target,
+        //   callToAction: req.body.callToAction
+        // })
+         
+        // // Save campaign to DB
+        // campaign
+        //   .save()
+        //   .complete(function(err, campaign) {
+        //     if (!!err) 
+        //         res.send(err);
+
+        //     // Save campaign-owner relationship to DB
+        //     var campaign_owner = db.CampaignOwner.build({
+        //       campaignId: campaign.id,
+        //       userId: res.body.user.id
+        //     });
+
+        //     campaign_owner
+        //       .save()
+        //       .complete(function(err, relationship) {
+        //         if (!!err) 
+        //           res.send(err);
+        //       })
+        //     res.json(campaign);
+        //   })
     })
 
   .get(function(req, res){

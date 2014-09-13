@@ -25,7 +25,22 @@ Object.keys(db).forEach(function(modelName) {
     db[modelName].associate(db)
   }
 })
+
+// describe relationships
+// var User     = db["User"],
+//     Campaign = db["Campaign"];
+
+  // User joins many campaigns. Campaign has many registered users.
+db["User"].hasMany(db["Campaign"], { as: "Registration", through: "Registrations" });
+db["Campaign"].hasMany(db["User"], { as: "Registration", through: "Registrations" });
+
+  // Campaign has many owners (as users). Users own many campaigns.
+db["Campaign"].hasMany(db["User"], { as: "Owner", through: "CampaignOwners" });
+db["User"].hasMany(db["Campaign"], { as: "Owns", through: "CampaignOwners" });
  
+
+// console.log(User);
+
 module.exports = lodash.extend({
   sequelize: sequelize,
   Sequelize: Sequelize

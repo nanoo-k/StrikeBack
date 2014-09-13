@@ -19,11 +19,17 @@ require.config({
                 'jquery'
             ],
             exports: 'Backbone'
-        }
+        },
+        'backbone-relational': {
+            deps: [
+                'backbone'
+            ]
+        },
 
     },
     paths: {
         backbone: 'bower_components/backbone/backbone',
+        'backbone-relational': 'bower_components/backbone-relational/backbone-relational',
         'jquery' : 'bower_components/jquery/jquery',
         'underscore': 'bower_components/underscore/underscore',
         'text': 'bower_components/requirejs-text/text',
