@@ -11,7 +11,7 @@ var express         = require('express')
     , db            = require('./models')
     , port          = process.env.PORT || 80
     , path          = require('path')
-    , http          = require('http')
+    , http          = require('http');
 
 app.set('views', path.join(__dirname, '/app'));
 app.set('view engine', 'ejs');
@@ -56,69 +56,6 @@ router.get('/', function(req, res) {
 	res.json({ message: 'Strike back!' });	
 });
 
-// more routes for our API will happen here
-
-// router.route('/cause')
-
-//     // Get a specific cause
-//     .get(function(req, res){
-
-//     })
-
-//     // Create a cause
-//     .post(function(req, res){
-
-//     })
-
-//     // Edit a cause
-//     .put(function(req, res){
-
-//     })
-
-//     // Delete a cause
-//     .delete(function(req, res){
-
-//     });
-
-// router.route('/user')
-
-//     // Get a specific user
-//     .get(function(req, res){
-
-//     })
-
-//     // Create a user
-//     .post(function(req, res){
-
-//     })
-
-//     // Edit a user
-//     .put(function(req, res){
-
-//     })
-
-//     // Delete a user
-//     .delete(function(req, res){
-
-//     });
-
-// router.route('/cause/register')
-
-//     // Get list of registered users
-//     .get(function(req, res){
-
-//     })
-
-//     // Add user to a cause
-//     .post(function(req, res){
-
-//     })
-
-//     // Delete user from a cause
-//     .delete(function(req, res){
-
-//     });
-
 router.route('/register')
   .post(function(req, res){
 
@@ -151,36 +88,20 @@ router.route('/register')
           })
         })
       });
-
-//       // Need to figure out a way to get userId and campaignId. I'll need to check whether the user sent up has an Id, and if not, register the user.
-
-//       // At this moment, there's no way to have a user send up their userId, so just first create that user and then use the userId from that. I still need to send up the campaign model (or at least the Id) during the save.
-
-      // var registration = db.Registrations.build({
-      //   campaignId: req.body.campaignId,
-      //   userId: req.body.userId
-      // })
-
-      // registration
-      //   .save()
-      //   .complete(function(err) {
-      //     if (!!err)
-      //         res.send(err, registration);
-      //     res.json(registration);
-      //   })
   })
 
-  // Get all registrations
+  // Get all registrations for particular campaign
+  // Returns list of users who have registered to this campaign
   .get(function(req, res) {
-    // db.Registrations
-    //     .findAll()
-    //     .complete(function(err, registrations) {
-    //       if (!!err)
-    //         res.send(err);
-
-    //       res.json(registrations);
-    //     })
+    db.Campaign.find({ where: { id: req.query.campaign_id } } )
+      .success(function(campaign){
+        campaign.getRegistrations()
+          .success(function(registrations){
+            res.send(registrations);
+          })
+      })
   });
+
 
 router.route('/campaigns')
   // Send name, target, callToAction plus userId
