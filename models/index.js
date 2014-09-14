@@ -31,8 +31,8 @@ Object.keys(db).forEach(function(modelName) {
 //     Campaign = db["Campaign"];
 
   // User joins many campaigns. Campaign has many registered users.
-db["User"].hasMany(db["Campaign"], { as: "Registration", through: "Registrations" });
-db["Campaign"].hasMany(db["User"], { as: "Registration", through: "Registrations" });
+db["User"].hasMany(db["Campaign"], { as: "Registrations", through: "Registrations" });
+db["Campaign"].hasMany(db["User"], { as: "Registrations", through: "Registrations" });
 
   // Campaign has many owners (as users). Users own many campaigns.
 db["Campaign"].hasMany(db["User"], { as: "Owner", through: "CampaignOwners" });

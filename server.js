@@ -25,8 +25,8 @@ app.use(bodyParser.json())
 
 db
   .sequelize
-  .sync({force: true});
-  // .sync();
+  // .sync({force: true});
+  .sync();
 
 db
   .sequelize
@@ -122,6 +122,34 @@ router.get('/', function(req, res) {
 router.route('/register')
   .post(function(req, res){
 
+    // Needs to take User model (username at least, but other attrs if user is new), and CampaignId
+
+    // Check if UserId came down.
+    db.User.findOrCreate({ username: req.body.user.username }, {
+      // Create user if this is a new user
+      username: req.body.user.username,
+      password: req.body.user.password,
+      phone: req.body.user.phone || null,
+      email: req.body.user.email || null
+      })
+      .success(function(user, created){
+
+        // Register user to this campaign
+        // Get the campaign
+        db.Campaign.find({ id:req.body.campaign.id }).complete(function(err, campaign){
+          // Register user to campaign
+          user.addRegistration(campaign)
+          .success(function(campaign){
+
+            // Return list of user's registrations
+            user.getRegistrations()
+              .success(function(registrations){
+                res.send(registrations);
+              })
+          })
+        })
+      });
+
 //       // Need to figure out a way to get userId and campaignId. I'll need to check whether the user sent up has an Id, and if not, register the user.
 
 //       // At this moment, there's no way to have a user send up their userId, so just first create that user and then use the userId from that. I still need to send up the campaign model (or at least the Id) during the save.
@@ -164,8 +192,8 @@ router.route('/campaigns')
         { username: req.body.user.username },
         {
           password: req.body.user.password,
-          email: req.body.user.email,
-          phone: req.body.user.phone
+          email: req.body.user.email || null,
+          phone: req.body.user.phone || null
         })
         .success(function(owner, created){
                 // Once we have our campaign owner, create the campaign and associate the owner
