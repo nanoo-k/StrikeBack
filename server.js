@@ -136,6 +136,8 @@ router.route('/register')
 
         // Register user to this campaign
         // Get the campaign
+        // (Do I really need to grab the whole campaign? Can't I just use the campaginId?)
+        // (Maybe I can define my own relationship setter that takes an optional userId and campaignId)
         db.Campaign.find({ id:req.body.campaign.id }).complete(function(err, campaign){
           // Register user to campaign
           user.addRegistration(campaign)
