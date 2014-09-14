@@ -156,78 +156,34 @@ router.route('/campaigns')
   // Send name, target, callToAction plus userId
   .post(function(req, res){
 
-      // var campaign = db.Campaign.build({
-      //   name: req.body.name,
-      //   target: req.body.target,
-      //   callToAction: req.body.callToAction
-      // });
 
-      var user = db.User.build({
-        username: "Miguel",
-        password: "password",
-        email: "email@blah.com",
-        phone: "4155187777"
-      });
+      // Check if username is in the DB system (all usernames are unique by default because only one person can have the given phone number or email address)
 
-
-      // owner
-      //   .save()
-      //   .complete(function(err, campaignOwner){
-      //       campaign
-      //           .save()
-      //           .complete(function(err, camapign){
-      //               campaign.setCampaignOwners(campaignOwner).success(function(campaignOwner){
-      //                 console.log('success');
-      //               });
-      //           });
-      //   })
-
-      db.Campaign.create({
-        name: req.body.name,
-        target: req.body.target,
-        callToAction: req.body.callToAction
-      })
-        .success(function(campaign){
-          user.save().complete(function(err, owner){
-            // addOwner(), a method magically created by Sequelizer, will insert objects into the DB as owners of this campaign
-            campaign.addOwner(owner).success(function(campaignOwner){
-              campaignOwner.getOwns().success(function(owns){
-                // getOwns(), a method magically created by Sequelizer, gets all campaigns owned by this user and returns it as the 'owns'
-                res.send(owns);
-              })
-            })
-          })
+      // Verify that the owner exists. If the owner doesn't exist, create it
+      db.User.findOrCreate(
+        { username: req.body.user.username },
+        {
+          password: req.body.user.password,
+          email: req.body.user.email,
+          phone: req.body.user.phone
         })
-
-        // The names 'addOwner' and 'getOwns' are defined by the 'as' property of the .hasMany relationships defined above
-
-        // var campaign = db.Campaign.build({
-        //   name: req.body.name,
-        //   target: req.body.target,
-        //   callToAction: req.body.callToAction
-        // })
-         
-        // // Save campaign to DB
-        // campaign
-        //   .save()
-        //   .complete(function(err, campaign) {
-        //     if (!!err) 
-        //         res.send(err);
-
-        //     // Save campaign-owner relationship to DB
-        //     var campaign_owner = db.CampaignOwner.build({
-        //       campaignId: campaign.id,
-        //       userId: res.body.user.id
-        //     });
-
-        //     campaign_owner
-        //       .save()
-        //       .complete(function(err, relationship) {
-        //         if (!!err) 
-        //           res.send(err);
-        //       })
-        //     res.json(campaign);
-        //   })
+        .success(function(owner, created){
+                // Once we have our campaign owner, create the campaign and associate the owner
+                db.Campaign.create({
+                  name: req.body.campaign.name,
+                  target: req.body.campaign.target,
+                  callToAction: req.body.campaign.callToAction
+                })
+                .success(function(campaign){
+                    // addOwner(), a method magically created by Sequelizer, will insert objects into the DB as owners of this campaign
+                    campaign.addOwner(owner).success(function(campaignOwner){
+                      campaignOwner.getOwns().success(function(owns){
+                        // getOwns(), a method magically created by Sequelizer, gets all campaigns owned by this user and returns it as the 'owns'
+                        res.send(owns);
+                      })
+                    })
+                });
+        });
     })
 
   .get(function(req, res){
