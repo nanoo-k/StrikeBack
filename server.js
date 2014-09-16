@@ -21,9 +21,9 @@ app.set('views', path.join(__dirname, '/app'));
 app.set('view engine', 'ejs');
 
 // required for passport
-// app.use(session({ secret: 'itstimetofightthepower' })); // session secret
-// app.use(passport.initialize());
-// app.use(passport.session()); // persistent login sessions
+app.use(session({ secret: 'iTt5sti1meT0f1ghtTth3ep0wer' })); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
 // app.use(flash()); // use connect-flash for flash messages stored in session
 
 
@@ -38,6 +38,8 @@ app.use(express.static(path.join(__dirname, '/app')));
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
+
+// Connect to DB =====================================
 db
   .sequelize
   // .sync({force: true});
@@ -54,7 +56,9 @@ db
       }
   });
 
+require('./config/passport')(passport); // pass passport for configuration
 
+// Render our default index.js page when a person first navigates to this url
 app.use(function(req, res, next) {
     // if (req.url.indexOf(".") >= 0)
     if (req.url.indexOf(".") >= 0) {
