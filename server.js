@@ -14,14 +14,21 @@ var express         = require('express')
     , passport      = require('passport')
     , flash         = require('connect-flash')
     , cookieParser  = require('cookie-parser')
-    , bodyParser    = require('body-parser');
-    // , session       = require('express-session');
+    , bodyParser    = require('body-parser')
+    , session       = require('express-session');
+    // , expressJwt    = require('express-jwt')
+    // , jwt           = require('jsonwebtoken');
 
 app.set('views', path.join(__dirname, '/app'));
 app.set('view engine', 'ejs');
 
+app.use(cookieParser()); // read cookies (needed for auth)
+app.use(bodyParser()); // get information from html forms
+
 // required for passport
-app.use(session({ secret: 'iTt5sti1meT0f1ghtTth3ep0wer' })); // session secret
+// app.use( express.cookieParser() );
+app.use(session({ secret: 'iTt5sti1meT0f1ghtTth3ep0wer'})); // session secret
+// app.use(session({ secret: 'iTt5sti1meT0f1ghtTth3ep0wer', cookie: { secure: false } })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 // app.use(flash()); // use connect-flash for flash messages stored in session
@@ -35,8 +42,8 @@ app.use(express.static(path.join(__dirname, '/app')));
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json())
+// app.use(bodyParser.urlencoded({ extended: true }))
+// app.use(bodyParser.json())
 
 
 // Connect to DB =====================================

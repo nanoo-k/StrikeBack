@@ -1,3 +1,6 @@
+    // var expressJwt    = require('express-jwt')
+    // , jwt             = require('jsonwebtoken');
+
 // router/routes.js
 module.exports = function(express, app, db, passport) {
   var router = express.Router(); 				// get an instance of the express Router
@@ -7,6 +10,19 @@ module.exports = function(express, app, db, passport) {
   //    do logging
       console.log('Something is happening.');
       next();
+  });
+
+  router.post('/login', function(req, res, next) {
+    passport.authenticate('local-signup', function(err, user, info) {
+          if (err) {
+            return next(err); // will generate a 500 error
+          }
+          // Generate a JSON response reflecting authentication status
+          if (! user) {
+            return res.send({ success : false, message : 'authentication failed' });
+          }
+          return res.send({ success : true, message : 'authentication succeeded' });
+    })(req, res, next)
   });
 
   // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
@@ -234,6 +250,10 @@ module.exports = function(express, app, db, passport) {
   // REGISTER OUR ROUTES -------------------------------
   // all of our routes will be prefixed with /api
   app.use('/api', router);
+  // app.use('/api', router, expressJwt({secret: secret}));
+
+  // app.use(express.json());
+  // app.use(express.urlencoded());
 
 
 // =====================================
