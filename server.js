@@ -63,7 +63,7 @@ db
       }
   });
 
-require('./config/passport')(passport); // pass passport for configuration
+require('./config/passport')(passport, db); // pass passport for configuration
 
 // Render our default index.js page when a person first navigates to this url
 app.use(function(req, res, next) {
