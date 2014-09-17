@@ -49,7 +49,7 @@ module.exports = function(passport, db) {
 
     		// find a user whose username is the same as the body username
     		// we are checking to see if the user trying to login already exists
-            db.User.find({ username: username }).complete(function(err, user){
+            db.User.find({ where :{ username: username } }).complete(function(err, user){
                 // if there are any errors, return the error
                 if (err)
                     return done(err);
@@ -57,6 +57,7 @@ module.exports = function(passport, db) {
                 // check to see if theres already a user with that email
                 if (user) {
                     // return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+                    // return done(null, false, {'message': 'That email is already taken.'});
                     return done(null, false, {'message': 'That email is already taken.'});
                 } else {
 
@@ -67,8 +68,8 @@ module.exports = function(passport, db) {
                         username: username,
                         password: password
                       })
-                      .success(function(user, created){
-                        return done(null, user);
+                      .success(function(user){
+                        return done(null, user, {'message': 'Success! You\'re in.' });
                       })
                       .error(function(err){
                         return done(err);

@@ -19,9 +19,9 @@ module.exports = function(express, app, db, passport) {
           }
           // Generate a JSON response reflecting authentication status
           if (! user) {
-            return res.send({ success : false, message : 'authentication failed' });
+            return res.send({ success : false, message : info.message });
           }
-          return res.send({ success : true, message : 'authentication succeeded' });
+          return res.send({ success : true, message : info.message });
     })(req, res, next)
   });
 
