@@ -1,19 +1,19 @@
-    // var expressJwt    = require('express-jwt')
-    // , jwt             = require('jsonwebtoken');
+    var jwt             = require('jwt-simple')
+    , moment            = require('moment');
 
 // router/routes.js
 module.exports = function(express, app, db, passport) {
-  var router = express.Router(); 				// get an instance of the express Router
+  var router = express.Router();        // get an instance of the express Router
 
-  // middleware to use for all requests
-  router.use(function(req, res, next) {
-  //    do logging
-      console.log('Something is happening.');
-      next();
+  // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
+  router.get('/', function(req, res) {
+    res.json({ message: 'Strike back!' });  
   });
 
-  router.post('/login', function(req, res, next) {
-    passport.authenticate('local-signup', function(err, user, info) {
+  // Exchange user credentials for a token
+  router.route('/token')
+    .post(function(req, res, next) {
+      passport.authenticate('local-login', function(err, user, info) {
           if (err) {
             return next(err); // will generate a 500 error
           }
@@ -21,14 +21,36 @@ module.exports = function(express, app, db, passport) {
           if (! user) {
             return res.send({ success : false, message : info.message });
           }
-          return res.send({ success : true, message : info.message });
-    })(req, res, next)
-  });
+            
+          var expires = moment().add('days', 7).valueOf();
+          var token = jwt.encode({
+            iss: user.id,
+            exp: expires
+          }, app.get('jwtTokenSecret'));
+           
+          res.json({
+            token : token,
+            expires: expires,
+            user: user.toJSON()
+          });
 
-  // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
-  router.get('/', function(req, res) {
-  	res.json({ message: 'Strike back!' });	
-  });
+          return res.send({ success : true, message : info.message });
+
+      })(req, res, next)
+    })
+
+    .get(function(req, res, next) {
+      passport.authenticate('local-signup', function(err, user, info) {
+          if (err) {
+            return next(err); // will generate a 500 error
+          }
+          // Generate a JSON response reflecting authentication status
+          if (! user) {
+            return res.send({ success : false, message : info.message });
+          }
+          return res.send({ success : true, message : info.message, user: user });
+      })(req, res, next)
+    });
 
   router.route('/register')
     .post(function(req, res){
@@ -250,18 +272,12 @@ module.exports = function(express, app, db, passport) {
   // REGISTER OUR ROUTES -------------------------------
   // all of our routes will be prefixed with /api
   app.use('/api', router);
-  // app.use('/api', router, expressJwt({secret: secret}));
 
-  // app.use(express.json());
-  // app.use(express.urlencoded());
-
-
-// =====================================
-  // LOGOUT ==============================
-  // =====================================
-  app.get('/logout', function(req, res) {
-    req.logout();
-    res.redirect('/');
+    // middleware to use for all requests
+  router.use(function(req, res, next) {
+  //    do logging
+      console.log('Something is happening.');
+      next();
   });
 }
 

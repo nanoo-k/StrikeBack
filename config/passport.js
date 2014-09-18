@@ -2,9 +2,7 @@
 
 // load all the things we need
 var LocalStrategy   = require('passport-local').Strategy;
-
-// load up the user model
-// var User       		= require('../models/user');
+// var HttpStrategy    = require('passport-http');
 
 // expose this function to our app using module.exports
 module.exports = function(passport, db) {
@@ -23,17 +21,17 @@ module.exports = function(passport, db) {
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
         db.User
-          .find({ id: id })
+          .find({ where: { id: id } })
           .complete(function(err, user){
             done(err, user);
         });
     });
 
- 	// =========================================================================
+    // =========================================================================
     // LOCAL SIGNUP ============================================================
     // =========================================================================
     // we are using named strategies since we have one for login and one for signup
-	// by default, if there was no name, it would just be called 'local'
+    // by default, if there was no name, it would just be called 'local'
 
     passport.use('local-signup', new LocalStrategy({
         // by default, local strategy uses username and password, we will override with email
@@ -47,8 +45,8 @@ module.exports = function(passport, db) {
         // User.findOne wont fire unless data is sent back
         process.nextTick(function() {
 
-    		// find a user whose username is the same as the body username
-    		// we are checking to see if the user trying to login already exists
+            // find a user whose username is the same as the body username
+            // we are checking to see if the user trying to login already exists
             db.User.find({ where :{ username: username } }).complete(function(err, user){
                 // if there are any errors, return the error
                 if (err)
@@ -91,26 +89,30 @@ module.exports = function(passport, db) {
         passwordField : 'password',
         passReqToCallback : true // allows us to pass back the entire request to the callback
     },
-    function(req, email, password, done) { // callback with email and password from our form
+    function(req, username, password, done) { // callback with email and password from our form
 
-        // find a user whose email is the same as the forms email
+        // find a user whose username is the same as the sent username
         // we are checking to see if the user trying to login already exists
-        // User.findOne({ 'local.email' :  email }, function(err, user) {
-        //     // if there are any errors, return the error before anything else
-        //     if (err)
-        //         return done(err);
+        db.User.find({ where :{ username: username } }).complete(function(err, user){
+            // if there are any errors, return the error
+            if (err)
+                return done(err);
 
-        //     // if no user is found, return the message
-        //     if (!user)
-        //         return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
 
-        //     // if the user is found but the password is wrong
-        //     if (!user.validPassword(password))
-        //         return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
+            // if no user is found, return the message
+            if (!user)
+                // res.send(401)
+                return done(null, false, {'message': 'No user found.'}); // req.flash is the way to set flashdata using connect-flash
 
-        //     // all is well, return successful user
-        //     return done(null, user);
-        // });
+            // if the user is found but the password is wrong
+            if (!user.verifyPassword(password))
+                // res.send(401)
+                return done(null, false, {'message': 'Oops! Wrong password.'}); // create the loginMessage and save it to session as flashdata
+
+            // all is well, return successful user
+            // res.send(200)
+            return done(null, user);
+        });
 
     }));
 
