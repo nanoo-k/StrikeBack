@@ -194,7 +194,7 @@ module.exports = function(express, app, db, passport) {
   router.route('/users')
     .post(function(req, res){
         var user = db.User.build({
-          username: req.body.username,
+          username: req,
           phone: req.body.phone,
           email: req.body.email,
           password: req.body.password
