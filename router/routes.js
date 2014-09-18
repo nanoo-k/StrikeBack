@@ -11,6 +11,7 @@ module.exports = function(express, app, db, passport) {
   });
 
   // Exchange user credentials for a token
+  // Takes username and unhashed password
   router.route('/token')
     .post(function(req, res, next) {
       passport.authenticate('local-login', function(err, user, info) {
@@ -19,7 +20,7 @@ module.exports = function(express, app, db, passport) {
           }
           // Generate a JSON response reflecting authentication status
           if (! user) {
-            return res.send({ success : false, message : info.message });
+            return res.status(401).send({ success : false, message : info.message });
           }
             
           var expires = moment().add('days', 7).valueOf();
