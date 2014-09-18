@@ -107,13 +107,13 @@ module.exports = function(passport, db) {
                 console.log(user.verifyPassword(password));
 
             // if the user is found but the password is wrong
-            if (!user.verifyPassword(password)) return done(null, false, {'message': 'Oops! Wrong password.'}); // create the loginMessage and save it to 
+            if (!user.verifyPassword(password))
+                return done(null, false, {'message': 'Oops! Wrong password.'}); // create the loginMessage and save it to 
                 // res.send(401)
-                // session as flashdata
 
             // all is well, return successful user
             // res.send(200)
-            return done(null, user);
+            return done(null, user, {message: 'All done!'});
         });
 
     }));

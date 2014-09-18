@@ -28,29 +28,28 @@ module.exports = function(express, app, db, passport) {
             exp: expires
           }, app.get('jwtTokenSecret'));
            
+          // This sends the token, expires and user info
           res.json({
             token : token,
             expires: expires,
             user: user.toJSON()
           });
 
-          return res.send({ success : true, message : info && info.message || "No msg." });
-
       })(req, res, next)
     })
 
-    .get(function(req, res, next) {
-      passport.authenticate('local-signup', function(err, user, info) {
-          if (err) {
-            return next(err); // will generate a 500 error
-          }
-          // Generate a JSON response reflecting authentication status
-          if (! user) {
-            return res.send({ success : false, message : info.message });
-          }
-          return res.send({ success : true, message : info.message, user: user });
-      })(req, res, next)
-    });
+    // .get(function(req, res, next) {
+    //   passport.authenticate('local-signup', function(err, user, info) {
+    //       if (err) {
+    //         return next(err); // will generate a 500 error
+    //       }
+    //       // Generate a JSON response reflecting authentication status
+    //       if (! user) {
+    //         return res.send({ success : false, message : info.message });
+    //       }
+    //       return res.send({ success : true, message : info.message, user: user });
+    //   })(req, res, next)
+    // });
 
   router.route('/register')
     .post(function(req, res){
