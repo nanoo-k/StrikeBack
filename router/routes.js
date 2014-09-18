@@ -193,16 +193,23 @@ module.exports = function(express, app, db, passport) {
   // on routes that end in /users
   router.route('/users')
     .post(function(req, res){
-        
-        // console.log(req);
-
         var user = db.User.build({
           username: req.body.username,
-          password: req.body.password,
           phone: req.body.phone,
-          email: req.body.email
+          email: req.body.email,
+          password: req.body.password
         });
-         
+
+        // user.setPassword(req.body.password, function(){
+        //   user
+        //   .save()
+        //   .complete(function(err, user) {
+        //     if (!!err) 
+        //         res.send(err);
+        //     res.json(user);
+        //   });
+        // });
+
         user
           .save()
           .complete(function(err, user) {
