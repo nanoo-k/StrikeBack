@@ -34,7 +34,7 @@ module.exports = function(express, app, db, passport) {
             user: user.toJSON()
           });
 
-          return res.send({ success : true, message : info.message });
+          return res.send({ success : true, message : info && info.message || "No msg." });
 
       })(req, res, next)
     })
@@ -199,16 +199,6 @@ module.exports = function(express, app, db, passport) {
           email: req.body.email,
           password: req.body.password
         });
-
-        // user.setPassword(req.body.password, function(){
-        //   user
-        //   .save()
-        //   .complete(function(err, user) {
-        //     if (!!err) 
-        //         res.send(err);
-        //     res.json(user);
-        //   });
-        // });
 
         user
           .save()

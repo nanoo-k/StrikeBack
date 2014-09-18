@@ -22,9 +22,7 @@ module.exports = function(sequelize, DataTypes) {
   },{
   	instanceMethods: {
       verifyPassword: function(password, done) {
-        return bcrypt.compare(password, this.password, function(err, res) {
-          return done(err, res);
-        });
+        return bcrypt.compareSync(password, this.password);
       }
     }
   })

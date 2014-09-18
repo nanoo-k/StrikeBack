@@ -104,10 +104,12 @@ module.exports = function(passport, db) {
                 // res.send(401)
                 return done(null, false, {'message': 'No user found.'}); // req.flash is the way to set flashdata using connect-flash
 
+                console.log(user.verifyPassword(password));
+
             // if the user is found but the password is wrong
-            if (!user.verifyPassword(password))
+            if (!user.verifyPassword(password)) return done(null, false, {'message': 'Oops! Wrong password.'}); // create the loginMessage and save it to 
                 // res.send(401)
-                return done(null, false, {'message': 'Oops! Wrong password.'}); // create the loginMessage and save it to session as flashdata
+                // session as flashdata
 
             // all is well, return successful user
             // res.send(200)
