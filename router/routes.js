@@ -24,7 +24,7 @@ module.exports = function(express, app, db, passport) {
           if (err) {
             return next(err); // will generate a 500 error
           }
-          // Generate a JSON response reflecting authentication status
+          
           if (! user) {
             return res.status(401).send({ success : false, message : info.message });
           }
@@ -43,7 +43,7 @@ module.exports = function(express, app, db, passport) {
           });
 
       })(req, res, next)
-    })
+    });
 
     // .get(function(req, res, next) {
     //   passport.authenticate('local-signup', function(err, user, info) {
@@ -163,7 +163,8 @@ module.exports = function(express, app, db, passport) {
           });
     })
 
-    // update the bear with this id (accessed at PUT http://localhost:8080/api/bears/:bear_id)
+    // Update campaign using dashboard
+    // Requires user token or user credentials
     .put(function(req, res){
 
         db.Campaign
@@ -184,6 +185,8 @@ module.exports = function(express, app, db, passport) {
           });
     })
 
+    // Delete campaign
+    // Requires user token or user credentials
     .delete(function(req, res){
         db.Campaign
             .find(req.params.campaign_id)

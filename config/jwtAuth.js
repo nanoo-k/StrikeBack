@@ -26,7 +26,7 @@ module.exports = function(req, res, next){
 		try {
 			var decoded = jwt.decode(token, secret())
 			if (decoded.exp <= Date.now()) {
-				res.end('Access token has expired', 400)	
+				res.end('Access token has expired. Log in again to get a new one.', 400)	
 			}
 			db.User.find({ where: { 'id': decoded.iss } }).complete(function(err, user){
 				if (!err) {	
