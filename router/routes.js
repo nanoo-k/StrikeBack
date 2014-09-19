@@ -11,17 +11,6 @@ module.exports = function(express, app, db, passport) {
     res.json({ message: 'Strike back!' });  
   });
 
-  /**
-  * A simple middleware to restrict access to authenticated users.
-  */
-  var requireAuth = function(req, res, next) {
-    if (!req.user) {
-      res.end('Not authorized', 401)
-    } else {
-      next()
-    }
-  }
-
   router.route('/checktoken')
     .get(jwtauth, requireAuth, function(req, res, next){
       res.send(req.user);
@@ -287,12 +276,23 @@ module.exports = function(express, app, db, passport) {
   // all of our routes will be prefixed with /api
   app.use('/api', router);
 
-    // middleware to use for all requests
+  // middleware to use for all requests
   router.use(function(req, res, next) {
   //    do logging
       console.log('Something is happening.');
       next();
   });
+
+  /**
+  * A simple middleware to restrict access to authenticated users.
+  */
+  var requireAuth = function(req, res, next) {
+    if (!req.user) {
+      res.end('Not authorized', 401)
+    } else {
+      next()
+    }
+  }
 }
 
 
