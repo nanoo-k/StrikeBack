@@ -16,7 +16,8 @@ var express         = require('express')
     , cookieParser  = require('cookie-parser')
     , bodyParser    = require('body-parser')
     , session       = require('express-session')
-    , jwt           = require('jwt-simple');
+    , jwt           = require('jwt-simple')
+    , secret        = require('./config/secret.js');
     // , expressJwt    = require('express-jwt')
     // , jwt           = require('jsonwebtoken');
 
@@ -26,7 +27,7 @@ app.set('view engine', 'ejs');
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser()); // get information from html forms
 
-app.set('jwtTokenSecret', 'iTt5sti1meT0f1ghtTth3ep0wer');
+app.set('jwtTokenSecret', secret());
 
 // required for passport
 // app.use( express.cookieParser() );

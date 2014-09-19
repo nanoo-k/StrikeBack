@@ -1,5 +1,6 @@
     var jwt             = require('jwt-simple')
-    , moment            = require('moment');
+    , moment            = require('moment')
+    , jwtauth           = require('../config/jwtAuth.js');
 
 // router/routes.js
 module.exports = function(express, app, db, passport) {
@@ -9,6 +10,22 @@ module.exports = function(express, app, db, passport) {
   router.get('/', function(req, res) {
     res.json({ message: 'Strike back!' });  
   });
+
+  /**
+  * A simple middleware to restrict access to authenticated users.
+  */
+  var requireAuth = function(req, res, next) {
+    if (!req.user) {
+      res.end('Not authorized', 401)
+    } else {
+      next()
+    }
+  }
+
+  router.route('/checktoken')
+    .get(jwtauth, requireAuth, function(req, res, next){
+      res.send(req.user);
+    });
 
   // Exchange user credentials for a token
   // Takes username and unhashed password
