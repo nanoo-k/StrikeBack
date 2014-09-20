@@ -1,6 +1,7 @@
-    var jwt             = require('jwt-simple')
-    , moment            = require('moment')
-    , jwtauth           = require('../config/jwtAuth.js');
+    var jwt                           = require('jwt-simple')
+    , moment                          = require('moment')
+    , jwtauth                         = require('../config/jwtAuth.js')
+    , checkTokenThenFindOrCreateUser  = require('../config/checkTokenThenFindOrCreateUser.js');
 
 // router/routes.js
 module.exports = function(express, app, db, passport) {
@@ -60,39 +61,63 @@ module.exports = function(express, app, db, passport) {
 
   // Register a user to a campaign
   router.route('/register')
-    .post(function(req, res){
+    .post(checkTokenThenFindOrCreateUser, function(req, res){
+
+      // One of these two are returned by checkTokenThenFindOrCreateUser
+      var user = req.user || req.token.user;
+
+      // Register user to this campaign
+      // Get the campaign
+      // (Do I really need to grab the whole campaign? Can't I just use the campaginId?)
+      // (Maybe I can define my own relationship setter that takes an optional userId and campaignId)
+      db.Campaign.find({ id:req.body.campaign.id }).complete(function(err, campaign){
+        // Register user to campaign
+        user.addRegistration(campaign)
+        .success(function(campaign){
+
+          // Return list of user's registrations
+          user.getRegistrations()
+            .success(function(registrations){
+              res.send(registrations);
+              // res.send({user: user, registrations: registrations});
+            })
+            // .error(function(err){
+            //   res.send(err);
+            // })
+        })
+      })
 
       // Ran this thru middle that checks for token, checks for existing user, and creates user if not existing
 
       // Needs to take User model (username at least, but other attrs if user is new), and CampaignId
 
       // Check if UserId came down.
-      db.User.findOrCreate({ username: req.body.user.username }, {
-        // Create user if this is a new user
-        username: req.body.user.username,
-        password: req.body.user.password,
-        phone: req.body.user.phone || null,
-        email: req.body.user.email || null
-        })
-        .success(function(user, created){
+      // db.User.findOrCreate({ username: req.body.user.username }, {
+      //   // Create user if this is a new user
+      //   username: req.body.user.username,
+      //   password: req.body.user.password,
+      //   phone: req.body.user.phone || null,
+      //   email: req.body.user.email || null
+      //   })
+      //   .success(function(user, created){
 
-          // Register user to this campaign
-          // Get the campaign
-          // (Do I really need to grab the whole campaign? Can't I just use the campaginId?)
-          // (Maybe I can define my own relationship setter that takes an optional userId and campaignId)
-          db.Campaign.find({ id:req.body.campaign.id }).complete(function(err, campaign){
-            // Register user to campaign
-            user.addRegistration(campaign)
-            .success(function(campaign){
+      //     // Register user to this campaign
+      //     // Get the campaign
+      //     // (Do I really need to grab the whole campaign? Can't I just use the campaginId?)
+      //     // (Maybe I can define my own relationship setter that takes an optional userId and campaignId)
+      //     db.Campaign.find({ id:req.body.campaign.id }).complete(function(err, campaign){
+      //       // Register user to campaign
+      //       user.addRegistration(campaign)
+      //       .success(function(campaign){
 
-              // Return list of user's registrations
-              user.getRegistrations()
-                .success(function(registrations){
-                  res.send(registrations);
-                })
-            })
-          })
-        });
+      //         // Return list of user's registrations
+      //         user.getRegistrations()
+      //           .success(function(registrations){
+      //             res.send(registrations);
+      //           })
+      //       })
+      //     })
+      //   });
     })
 
     // Get all registrations for particular campaign
