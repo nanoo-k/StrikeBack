@@ -11,10 +11,10 @@ module.exports = function(express, app, db, passport) {
     res.json({ message: 'Strike back!' });  
   });
 
-  router.route('/checktoken')
-    .get(jwtauth, requireAuth, function(req, res, next){
-      res.send(req.user);
-    });
+  // router.route('/checktoken')
+  //   .get(jwtauth, requireAuth, function(req, res, next){
+  //     res.send(req.user);
+  //   });
 
   // Exchange user credentials for a token
   // Takes username and unhashed password
@@ -58,8 +58,11 @@ module.exports = function(express, app, db, passport) {
     //   })(req, res, next)
     // });
 
+  // Register a user to a campaign
   router.route('/register')
     .post(function(req, res){
+
+      // Ran this thru middle that checks for token, checks for existing user, and creates user if not existing
 
       // Needs to take User model (username at least, but other attrs if user is new), and CampaignId
 
