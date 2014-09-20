@@ -78,12 +78,12 @@ module.exports = function(express, app, db, passport) {
           // Return list of user's registrations
           user.getRegistrations()
             .success(function(registrations){
-              res.send(registrations);
-              // res.send({user: user, registrations: registrations});
+              // res.send(registrations);
+              res.send({user: user, registrations: registrations});
             })
-            // .error(function(err){
-            //   res.send(err);
-            // })
+            .error(function(err){
+              res.send(err);
+            })
         })
       })
 
