@@ -3,6 +3,7 @@
     , _                                 = require('underscore')
     , jwtauth                           = require('../config/jwtAuth.js')
     , checkTokenOrFindUserOrCreateUser  = require('../config/checkTokenOrFindUserOrCreateUser.js')
+    , checkTokenOrFindUser              = require('../config/checkTokenOrFindUser.js')
 
 // router/routes.js
 module.exports = function(express, app, db, passport) {
@@ -159,7 +160,7 @@ module.exports = function(express, app, db, passport) {
 
     // Update campaign using dashboard
     // Requires user token or user credentials
-    .put(checkTokenOrFindUserOrCreateUser, function(req, res){
+    .put(checkTokenOrFindUser, function(req, res){
       var user = req.user || req.token.user;
 
       user.getOwns({ where: { id: req.body.campaign.id } })
@@ -181,7 +182,7 @@ module.exports = function(express, app, db, passport) {
 
     // Delete campaign
     // Requires user token or user credentials
-    .delete(checkTokenOrFindUserOrCreateUser, function(req, res){
+    .delete(checkTokenOrFindUser, function(req, res){
       var user = req.user || req.token.user;
 
       user.getOwns({ where: { id: req.body.campaign.id } })
@@ -204,28 +205,31 @@ module.exports = function(express, app, db, passport) {
       //     });
     })
 
-    .get(function(req, res){
+    // Get list of campaigns for homepage or get campaign for dashboard
+    .get(checkTokenOrFindUser function(req, res){
+        var user = req.user || req.token.user;
+
         if (req.query && req.query.campaign_id) {
           // If we've got a :campaign_id, use it to select specific campaign(s)
-          db.Campaign
-          .find({ where: { id: req.query.campaign_id } })
-          .complete(function(err, campaigns) {
-            if (!!err)
-              res.send(err);
+          db.User
+            .find({ where: { id: req.query.campaign_id } })
+            .complete(function(err, campaigns) {
+              if (!!err)
+                res.send(err);
 
-            res.json(campaigns);
-          })
+              res.json(campaigns);
+            })
 
         } else {
           // Else get all the campaigns (LIMIT 20)
           db.Campaign
-          .findAll({ limit: 20 })
-          .complete(function(err, campaigns) {
-            if (!!err)
-              res.send(err);
+            .findAll({ limit: 20 })
+            .complete(function(err, campaigns) {
+              if (!!err)
+                res.send(err);
 
-            res.json(campaigns);
-          })
+              res.json(campaigns);
+            })
         }
     });
 
@@ -276,7 +280,7 @@ module.exports = function(express, app, db, passport) {
     // })
 
     
-    .put(checkTokenOrFindUserOrCreateUser, function(req, res){
+    .put(checkTokenOrFindUser, function(req, res){
       var user = req.user || req.token.user;
 
         db.User
@@ -298,7 +302,7 @@ module.exports = function(express, app, db, passport) {
           });
     })
 
-    .delete(checkTokenOrFindUserOrCreateUser, function(req, res){
+    .delete(checkTokenOrFindUser, function(req, res){
       var user = req.user || req.token.user;
         db.User
             .find({ where: { id: user.id } })
