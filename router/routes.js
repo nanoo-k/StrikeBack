@@ -78,8 +78,8 @@ module.exports = function(express, app, db, passport) {
           // Return list of user's registrations
           user.getRegistrations()
             .success(function(registrations){
-              // res.send(registrations);
-              res.send({user: user, registrations: registrations});
+              obj = user.addUserTokenToResponse({ registrations: registrations }, req);
+              res.send(obj);
             })
             .error(function(err){
               res.send(err);

@@ -24,6 +24,7 @@
     "express-jwt": "^0.3.2",
     "jsonwebtoken": "^1.1.2",
     "jwt-simple": "^0.2.0",
-    "moment": "^2.8.3"
+    "moment": "^2.8.3",
+    "underscore": "^1.7.0"
   }
 }

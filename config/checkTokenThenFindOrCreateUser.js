@@ -47,7 +47,7 @@ module.exports = function(req, res, next){
 
 		  db.User.findOrCreate({ username: req.body.user.username }, {
 		        // Create user if this is a new user
-		        username: req.body.user.username,
+		        username: req,
 		        password: req.body.user.password,
 		        phone: req.body.user.phone || null,
 		        email: req.body.user.email || null
@@ -59,7 +59,7 @@ module.exports = function(req, res, next){
 
 		        	// If sent existing user (not created), check user password
 	        		switch (created) {
-	        			case true:
+	        			case false:
 	    					if (!user.verifyPassword(req.body.user.password))
 				        		// Move to next function without attaching user
 				        		// (I'll be looking for the user in the endpoint. If none exists, I'll send back info saying, "Deal with this fact!")
@@ -67,29 +67,17 @@ module.exports = function(req, res, next){
 			        			// Send JSON back, don't move on to API
 			        			res.send({succeed: false, message: "Right user. Wrong password."})
 
+		        			req.token = user.createUserToken();
+		        			next();
 			        		break;
 
-	        			case false:
-
-	        				  var expires = moment().add('days', 7).valueOf();
-					          var token = jwt.encode({
-					            iss: user.id,
-					            exp: expires
-				              }, secret);
-					           
-					          // This sends the token, expires and user info
-					          // Is identical to res.send() except that it converts non-JSON objs to JSON
-					          // Need to convert this so that it just passes an obj to be sent back to the user, but not sent yet.
-					          // Maybe use res.set() http://expressjs.com/api.html#res.send
-					          req.token({
-					            token : token,
-					            expires: expires,
-					            user: user
-					          });
-					          break;
+	        			case true:
+	        				req.token = user.createUserToken();
+	        				next();
+					        break;
 
 			            default:
-			            	res.send({success: false, message: "Not sure what happened. Maybe right user, maybe right password. Can't tell. Server problem."})
+			            	res.send({success: false, message: "Not sure what happened. Maybe right user, maybe right password. Can't tell. Server problem."});
 		            		break;
 
 	        		}
@@ -97,8 +85,6 @@ module.exports = function(req, res, next){
           		});
 
           // return next()
-
-        // })(req, res, next)
 
         // next()
 	}
