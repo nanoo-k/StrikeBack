@@ -31,24 +31,26 @@ module.exports = function(sequelize, DataTypes) {
         return bcrypt.compareSync(password, this.password);
       },
       createUserToken: function(){
-		  var expires = moment().add(7, 'days').valueOf();
-		  console.log(secret());
-          var token = jwt.encode({
-            iss: this.id,
-            exp: expires
-          }, secret());
 
-      		// console.log(this);
+        // Create token
+		    var expires = moment().add(7, 'days').valueOf();
+        var token = jwt.encode({
+          iss: this.id,
+          exp: expires
+        }, secret());
+
+      		
+        // Write token to DB with an expires column
            
-          // This sends the token, expires and user info
-          // Is identical to res.send() except that it converts non-JSON objs to JSON
-          // Need to convert this so that it just passes an obj to be sent back to the user, but not sent yet.
-          // Maybe use res.set() http://expressjs.com/api.html#res.send
-          return {
-            token : token,
-            expires: expires,
-            user: this
-          };
+        // This sends the token, expires and user info
+        // Is identical to res.send() except that it converts non-JSON objs to JSON
+        // Need to convert this so that it just passes an obj to be sent back to the user, but not sent yet.
+        // Maybe use res.set() http://expressjs.com/api.html#res.send
+        return {
+          token : token,
+          expires: expires,
+          user: this
+        };
       },
       addUserTokenToResponse: function(obj, user){
       	obj = obj || {};
