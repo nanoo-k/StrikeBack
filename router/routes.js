@@ -64,7 +64,7 @@ module.exports = function(express, app, db, passport) {
   router.route('/register')
     .post(checkTokenOrFindUserOrCreateUser, function(req, res){
 
-      // One of these two are returned by checkTokenThenFindOrCreateUser
+      // One of these two are returned by checkTokenOrFindUserOrCreateUser
       var user = req.user || req.token.user;
 
       // Register user to this campaign
@@ -94,7 +94,7 @@ module.exports = function(express, app, db, passport) {
     // req.query = { campaign_id }
     .get(checkTokenOrFindUserOrCreateUser, function(req, res) {
 
-      // One of these two are returned by checkTokenThenFindOrCreateUser
+      // One of these two are returned by checkTokenOrFindUserOrCreateUser
       var user = req.user || req.token.user;
       if (!_.isString(req.query.campaign_id)) {
         res.send({success: false, message: "You must include campaign_id as a query parameter"});
@@ -131,38 +131,68 @@ module.exports = function(express, app, db, passport) {
 
 
   router.route('/campaigns')
-    // Send name, target, callToAction plus userId
-    .post(function(req, res){
+    // Send name, target, callToAction plus user token/creds
+    .post(checkTokenOrFindUserOrCreateUser, function(req, res){
 
+      var user = req.user || req.token.user;
 
-        // Check if username is in the DB system (all usernames are unique by default because only one person can have the given phone number or email address)
+      if (_.isUndefined(req.campaign.name) || _.isUndefined(req.campaign.target) || _.isUndefined(req.campaign.callToAction)) res.send({success:false, message: "You must include each: the campaign name, target, and call to action."});
 
-        // Verify that the owner exists. If the owner doesn't exist, create it
-        db.User.findOrCreate(
-          { username: req.body.user.username },
-          {
-            password: req.body.user.password,
-            email: req.body.user.email || null,
-            phone: req.body.user.phone || null
-          })
-          .success(function(owner, created){
-                  // Once we have our campaign owner, create the campaign and associate the owner
-                  db.Campaign.create({
-                    name: req.body.campaign.name,
-                    target: req.body.campaign.target,
-                    callToAction: req.body.campaign.callToAction
-                  })
-                  .success(function(campaign){
-                      // addOwner(), a method magically created by Sequelizer, will insert objects into the DB as owners of this campaign
-                      campaign.addOwner(owner).success(function(campaignOwner){
-                        campaignOwner.getOwns().success(function(owns){
-                          // getOwns(), a method magically created by Sequelizer, gets all campaigns owned by this user and returns it as the 'owns'
-                          res.send(owns);
-                        })
-                      })
-                  });
-          });
+      // Once we have our campaign owner, create the campaign and associate the owner
+      db.Campaign.create({
+        name: req.body.campaign.name,
+        target: req.body.campaign.target,
+        callToAction: req.body.campaign.callToAction
       })
+      .success(function(campaign){
+          // addOwner(), a method magically created by Sequelizer, will insert objects into the DB as owners of this campaign
+          campaign.addOwner(user).success(function(campaignOwner){
+            campaignOwner.getOwns().success(function(owns){
+              // getOwns(), a method magically created by Sequelizer, gets all campaigns owned by this user and returns it as the 'owns'
+              res.send(owns);
+            })
+          })
+      });
+
+    })
+
+
+    // Update campaign using dashboard
+    // Requires user token or user credentials
+    .put(checkTokenOrFindUserOrCreateUser, function(req, res){
+      var user = req.user || req.token.user;
+
+        db.Campaign
+          .find(req.campaign.id)
+          .complete(function(err, campaign) {
+            
+            campaign.name = req.body.campaign.name;
+            campaign.target = req.body.campaign.target;
+            campaign.callToAction = req.body.campaign.callToAction;
+
+            campaign
+              .save()
+              .complete(function(err, campaign) {
+                if (!!err) 
+                    res.send(err);
+                res.json(campaign);
+              })
+          });
+    })
+
+    // Delete campaign
+    // Requires user token or user credentials
+    .delete(function(req, res){
+        db.Campaign
+            .find(req.params.campaign_id)
+            .complete(function(err, campaign){
+                campaign.destroy().success(function(err){
+                    if (!!err)
+                        res.send(err);
+                    res.json({ message: 'Campaign removed' });
+                });
+            });
+    });
 
     .get(function(req, res){
         // req.query
@@ -188,41 +218,6 @@ module.exports = function(express, app, db, passport) {
           });
     })
 
-    // Update campaign using dashboard
-    // Requires user token or user credentials
-    .put(function(req, res){
-
-        db.Campaign
-          .find(req.params.campaign_id)
-          .complete(function(err, campaign) {
-            
-            campaign.name = req.body.name;
-            campaign.target = req.body.target;
-            campaign.callToAction = req.body.callToAction;
-
-            campaign
-              .save()
-              .complete(function(err, campaign) {
-                if (!!err) 
-                    res.send(err);
-                res.json(campaign);
-              })
-          });
-    })
-
-    // Delete campaign
-    // Requires user token or user credentials
-    .delete(function(req, res){
-        db.Campaign
-            .find(req.params.campaign_id)
-            .complete(function(err, campaign){
-                campaign.destroy().success(function(err){
-                    if (!!err)
-                        res.send(err);
-                    res.json({ message: 'Campaign removed' });
-                });
-            });
-    });
 
   // on routes that end in /users
   router.route('/users')
