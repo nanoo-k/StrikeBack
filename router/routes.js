@@ -273,7 +273,7 @@ module.exports = function(express, app, db, passport) {
     //         res.json(users);
     //       });
     //   }
-    })
+    // })
 
     
     .put(checkTokenOrFindUserOrCreateUser, function(req, res){
