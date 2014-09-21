@@ -162,48 +162,63 @@ module.exports = function(express, app, db, passport) {
     .put(checkTokenOrFindUserOrCreateUser, function(req, res){
       var user = req.user || req.token.user;
 
-        db.Campaign
-          .find(req.campaign.id)
-          .complete(function(err, campaign) {
-            
-            campaign.name = req.body.campaign.name;
-            campaign.target = req.body.campaign.target;
-            campaign.callToAction = req.body.campaign.callToAction;
+      db.Campaign
+        .find(req.campaign.id)
+        .complete(function(err, campaign) {
+          
+          campaign.name = req.body.campaign.name;
+          campaign.target = req.body.campaign.target;
+          campaign.callToAction = req.body.campaign.callToAction;
 
-            campaign
-              .save()
-              .complete(function(err, campaign) {
-                if (!!err) 
-                    res.send(err);
-                res.json(campaign);
-              })
-          });
+          campaign
+            .save()
+            .complete(function(err, campaign) {
+              if (!!err) 
+                  res.send(err);
+              res.json(campaign);
+            })
+        });
     })
 
     // Delete campaign
     // Requires user token or user credentials
-    .delete(function(req, res){
-        db.Campaign
-            .find(req.params.campaign_id)
-            .complete(function(err, campaign){
-                campaign.destroy().success(function(err){
-                    if (!!err)
-                        res.send(err);
-                    res.json({ message: 'Campaign removed' });
-                });
-            });
-    });
+    .delete(checkTokenOrFindUserOrCreateUser, function(req, res){
+      var user = req.user || req.token.user;
+
+      db.Campaign
+          .find(req.body.campaign.id)
+          .complete(function(err, campaign){
+              campaign.destroy().success(function(err){
+                  if (!!err)
+                      res.send(err);
+                  res.json({ message: 'Campaign removed' });
+              });
+          });
+    })
 
     .get(function(req, res){
-        // req.query
-        db.Campaign
-          .findAll()
+        if (req.query && req.query.campaign_id) {
+          // If we've got a :campaign_id, use it to select specific campaign(s)
+          db.Campaign
+          .find({ where: { id: req.query.campaign_id } })
           .complete(function(err, campaigns) {
             if (!!err)
               res.send(err);
 
             res.json(campaigns);
           })
+
+        } else {
+          // Else get all the campaigns (LIMIT 20)
+          db.Campaign
+          .findAll({ limit: 20 })
+          .complete(function(err, campaigns) {
+            if (!!err)
+              res.send(err);
+
+            res.json(campaigns);
+          })
+        }
     });
 
   router.route('/campaigns/:campaign_id')
