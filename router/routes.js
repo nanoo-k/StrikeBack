@@ -239,8 +239,8 @@ module.exports = function(express, app, db, passport) {
     .post(function(req, res){
         var user = db.User.build({
           username: req,
-          phone: req.body.phone,
-          email: req.body.email,
+          phone: req.body.phone || null,
+          email: req.body.email || null,
           password: req.body.password
         });
 
