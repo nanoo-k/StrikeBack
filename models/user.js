@@ -50,8 +50,11 @@ module.exports = function(sequelize, DataTypes) {
             user: this
           };
       },
-      addUserTokenToResponse: function(obj, req){
-      	return (!_.isUndefined(req.token)) ? _.extend(obj, req.token) : obj;
+      addUserTokenToResponse: function(obj, user){
+      	obj = obj || {};
+      	user = (_.isUndefined(user.token)) ? user : user.token;
+
+      	return (!_.isUndefined(user)) ? _.extend(obj, user) : obj;
       }
     }
   })

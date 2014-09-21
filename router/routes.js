@@ -206,7 +206,7 @@ module.exports = function(express, app, db, passport) {
     })
 
     // Get list of campaigns for homepage or get campaign for dashboard
-    .get(checkTokenOrFindUser function(req, res){
+    .get(checkTokenOrFindUser, function(req, res){
         var user = req.user || req.token.user;
 
         if (req.query && req.query.campaign_id) {
@@ -249,6 +249,7 @@ module.exports = function(express, app, db, passport) {
           .complete(function(err, user) {
             if (!!err) 
                 res.send(err);
+            obj = user.addUserTokenToResponse({}, req);
             res.json(user);
           });
     })
