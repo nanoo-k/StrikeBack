@@ -24,7 +24,10 @@ var express         = require('express')
 app.set('views', path.join(__dirname, '/app'));
 app.set('view engine', 'ejs');
 
-app.use(cookieParser()); // read cookies (needed for auth)
+
+// MIDDLEWARE
+// =============================================================================
+// app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser()); // get information from html forms
 
 app.set('jwtTokenSecret', secret());
@@ -36,6 +39,7 @@ app.set('jwtTokenSecret', secret());
 app.use(passport.initialize());
 // app.use(passport.session()); // persistent login sessions
 // app.use(flash()); // use connect-flash for flash messages stored in session
+// app.set('jwtTokenSecret', 'iTt5sti1meT0f1ghtTth3ep0wer');
 
 // ROUTES FOR OUR API
 // =============================================================================
@@ -49,7 +53,24 @@ app.use(express.static(path.join(__dirname, '/app')));
 // app.use(bodyParser.json())
 
 
-// Connect to DB =====================================
+// Render our default index.js page when a person first navigates to this url
+app.use(function(req, res, next) {
+    // if (req.url.indexOf(".") >= 0)
+    if (req.url.indexOf(".") >= 0) {
+        next();
+        return;
+    }
+    res.render('index');
+});
+
+
+// ROUTES FOR OUR API
+// =============================================================================
+require('./router/routes.js')(express, app, db, passport); // load our routes and pass in our app and fully configured passport
+
+
+// Connect to DB
+// =============================================================================
 db
   .sequelize
   // .sync({force: true});
@@ -66,17 +87,7 @@ db
       }
   });
 
-require('./config/passport')(passport, db); // pass passport for configuration
-
-// Render our default index.js page when a person first navigates to this url
-app.use(function(req, res, next) {
-    // if (req.url.indexOf(".") >= 0)
-    if (req.url.indexOf(".") >= 0) {
-        next();
-        return;
-    }
-    res.render('index');
-});
+require('./config/passport')(passport, db); // pass passport for configurations
 
 // START THE SERVER
 // =============================================================================
