@@ -249,28 +249,30 @@ module.exports = function(express, app, db, passport) {
           });
     })
 
-    .get(function(req, res){
-      if (req.query && req.query.user_id) {
-        db.User
-          .find({ where: { id: req.query.user_id} })
-          .complete(function(err, users) {
-            if (!!err)
-              res.send(err);
+    // .get(checkTokenOrFindUserOrCreateUser, function(req, res){
+    //   var user = req.user || req.token.user;
 
-            res.json(users);
+    //   if (user) {
+    //     db.User
+    //       .find({ where: { id: req.query.user_id} })
+    //       .complete(function(err, users) {
+    //         if (!!err)
+    //           res.send(err);
 
-          });
+    //         res.json(users);
 
-      } else {
-        db.User
-          .findAll()
-          .complete(function(err, users) {
-            if (!!err)
-              res.send(err);
+    //       });
 
-            res.json(users);
-          });
-      }
+    //   } else {
+    //     db.User
+    //       .findAll()
+    //       .complete(function(err, users) {
+    //         if (!!err)
+    //           res.send(err);
+
+    //         res.json(users);
+    //       });
+    //   }
     })
 
     
