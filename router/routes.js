@@ -1,7 +1,8 @@
-    var jwt                           = require('jwt-simple')
-    , moment                          = require('moment')
-    , jwtauth                         = require('../config/jwtAuth.js')
-    , checkTokenThenFindOrCreateUser  = require('../config/checkTokenThenFindOrCreateUser.js');
+    var jwt                             = require('jwt-simple')
+    , moment                            = require('moment')
+    , _                                 = require('underscore')
+    , jwtauth                           = require('../config/jwtAuth.js')
+    , checkTokenOrFindUserOrCreateUser  = require('../config/checkTokenOrFindUserOrCreateUser.js')
 
 // router/routes.js
 module.exports = function(express, app, db, passport) {
@@ -61,7 +62,7 @@ module.exports = function(express, app, db, passport) {
 
   // Register a user to a campaign
   router.route('/register')
-    .post(checkTokenThenFindOrCreateUser, function(req, res){
+    .post(checkTokenOrFindUserOrCreateUser, function(req, res){
 
       // One of these two are returned by checkTokenThenFindOrCreateUser
       var user = req.user || req.token.user;
@@ -86,50 +87,46 @@ module.exports = function(express, app, db, passport) {
             })
         })
       })
-
-      // Ran this thru middle that checks for token, checks for existing user, and creates user if not existing
-
-      // Needs to take User model (username at least, but other attrs if user is new), and CampaignId
-
-      // Check if UserId came down.
-      // db.User.findOrCreate({ username: req.body.user.username }, {
-      //   // Create user if this is a new user
-      //   username: req.body.user.username,
-      //   password: req.body.user.password,
-      //   phone: req.body.user.phone || null,
-      //   email: req.body.user.email || null
-      //   })
-      //   .success(function(user, created){
-
-      //     // Register user to this campaign
-      //     // Get the campaign
-      //     // (Do I really need to grab the whole campaign? Can't I just use the campaginId?)
-      //     // (Maybe I can define my own relationship setter that takes an optional userId and campaignId)
-      //     db.Campaign.find({ id:req.body.campaign.id }).complete(function(err, campaign){
-      //       // Register user to campaign
-      //       user.addRegistration(campaign)
-      //       .success(function(campaign){
-
-      //         // Return list of user's registrations
-      //         user.getRegistrations()
-      //           .success(function(registrations){
-      //             res.send(registrations);
-      //           })
-      //       })
-      //     })
-      //   });
     })
 
     // Get all registrations for particular campaign
     // Returns list of users who have registered to this campaign
-    .get(function(req, res) {
-      db.Campaign.find({ where: { id: req.query.campaign_id } } )
+    // req.query = { campaign_id }
+    .get(checkTokenOrFindUserOrCreateUser, function(req, res) {
+
+      // One of these two are returned by checkTokenThenFindOrCreateUser
+      var user = req.user || req.token.user;
+      if (!_.isString(req.query.campaign_id)) {
+        res.send({success: false, message: "You must include campaign_id as a query parameter"});
+      }
+
+      // Check if campaign is owned by user
+      // Pshhh will I have to create my own getOwns() func that accepts a campaign_id?
+      user.getOwns({ where: {id: req.query.campaign_id} })
         .success(function(campaign){
-          campaign.getRegistrations()
-            .success(function(registrations){
-              res.send(registrations);
-            })
+          // If found, return list of users
+          if (!_.isEmpty(campaign)) {
+            // Might have to re-hanlde this part to deal with the fact that the campaigns are returned in an array
+            campaign[0].getRegistrations()
+              .success(function(registrations){
+                res.send(registrations);
+              })
+          } else {
+            // Else say, "You don't own such-and-such :campaign_id"
+            res.send({success: false, message: "Either campaign " + req.query.campaign_id + " doesn't exist or you do not own it."});            
+          }
         })
+        .error(function(campaign){
+          // 
+        })
+
+      // db.Campaign.find({ where: { id: req.query.campaign_id } } )
+      //   .success(function(campaign){
+      //     campaign.getRegistrations()
+      //       .success(function(registrations){
+      //         res.send(registrations);
+      //       })
+      //   })
     });
 
 
@@ -168,7 +165,7 @@ module.exports = function(express, app, db, passport) {
       })
 
     .get(function(req, res){
-        req.query
+        // req.query
         db.Campaign
           .findAll()
           .complete(function(err, campaigns) {
