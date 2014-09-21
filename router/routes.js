@@ -162,15 +162,14 @@ module.exports = function(express, app, db, passport) {
     .put(checkTokenOrFindUserOrCreateUser, function(req, res){
       var user = req.user || req.token.user;
 
-      db.Campaign
-        .find(req.campaign.id)
+      user.getOwns({ where: { id: req.body.campaign.id } })
         .complete(function(err, campaign) {
           
-          campaign.name = req.body.campaign.name;
-          campaign.target = req.body.campaign.target;
-          campaign.callToAction = req.body.campaign.callToAction;
+          campaign[0].name = req.body.campaign.name;
+          campaign[0].target = req.body.campaign.target;
+          campaign[0].callToAction = req.body.campaign.callToAction;
 
-          campaign
+          campaign[0]
             .save()
             .complete(function(err, campaign) {
               if (!!err) 
@@ -185,15 +184,24 @@ module.exports = function(express, app, db, passport) {
     .delete(checkTokenOrFindUserOrCreateUser, function(req, res){
       var user = req.user || req.token.user;
 
-      db.Campaign
-          .find(req.body.campaign.id)
-          .complete(function(err, campaign){
-              campaign.destroy().success(function(err){
-                  if (!!err)
-                      res.send(err);
-                  res.json({ message: 'Campaign removed' });
-              });
-          });
+      user.getOwns({ where: { id: req.body.campaign.id } })
+        .complete(function(err, campaign){
+            campaign[0].destroy().success(function(err){
+                if (!!err)
+                    res.send(err);
+                res.json({ message: 'Campaign removed' });
+            });
+        });
+
+      // db.Campaign
+      //     .find(req.body.campaign.id)
+      //     .complete(function(err, campaign){
+      //         campaign.destroy().success(function(err){
+      //             if (!!err)
+      //                 res.send(err);
+      //             res.json({ message: 'Campaign removed' });
+      //         });
+      //     });
     })
 
     .get(function(req, res){
@@ -221,18 +229,6 @@ module.exports = function(express, app, db, passport) {
         }
     });
 
-  router.route('/campaigns/:campaign_id')
-    .get(function(req, res){
-        db.Campaign
-          .find(req.params.campaign_id)
-          .complete(function(err, campaign) {
-            if (!!err)
-              res.send(err);
-
-            res.json(campaign);
-          });
-    })
-
 
   // on routes that end in /users
   router.route('/users')
@@ -254,6 +250,18 @@ module.exports = function(express, app, db, passport) {
     })
 
     .get(function(req, res){
+      if (req.query && req.query.user_id) {
+        db.User
+          .find({ where: { id: req.query.user_id} })
+          .complete(function(err, users) {
+            if (!!err)
+              res.send(err);
+
+            res.json(users);
+
+          });
+
+      } else {
         db.User
           .findAll()
           .complete(function(err, users) {
@@ -262,25 +270,15 @@ module.exports = function(express, app, db, passport) {
 
             res.json(users);
           });
-    });
-
-  router.route('/users/:user_id')
-    .get(function(req, res){
-        db.User
-          .find(req.params.user_id)
-          .complete(function(err, users) {
-            if (!!err)
-              res.send(err);
-
-            res.json(users);
-          });
+      }
     })
 
-    // update the bear with this id (accessed at PUT http://localhost:8080/api/bears/:bear_id)
-    .put(function(req, res){
+    
+    .put(checkTokenOrFindUserOrCreateUser, function(req, res){
+      var user = req.user || req.token.user;
 
         db.User
-          .find(req.params.user_id)
+          .find({ where: { id: user.id } })
           .complete(function(err, user) {
             
             user.username = req.body.username;
@@ -298,9 +296,10 @@ module.exports = function(express, app, db, passport) {
           });
     })
 
-    .delete(function(req, res){
+    .delete(checkTokenOrFindUserOrCreateUser, function(req, res){
+      var user = req.user || req.token.user;
         db.User
-            .find(req.params.user_id)
+            .find({ where: { id: user.id } })
             .complete(function(err, user){
                 user.destroy().success(function(err){
                     if (!!err)
