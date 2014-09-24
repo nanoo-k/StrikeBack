@@ -206,24 +206,30 @@ module.exports = function(express, app, db, passport) {
     })
 
     // Get list of campaigns for homepage or get campaign for dashboard
+    // Query parameters:
+    //    getAll      =   true|false
+    //    limit       =   num, default (20)
+    //    campaign_id =   :campaign_id
     .get(checkTokenOrFindUser, function(req, res){
         var user = req.user || req.token.user;
 
-        if (req.query && req.query.campaign_id) {
+        if (user && req.query && req.query.campaign_id) {
           // If we've got a :campaign_id, use it to select specific campaign(s)
-          db.User
+          user
             .find({ where: { id: req.query.campaign_id } })
             .complete(function(err, campaigns) {
-              if (!!err)
+                if (!!err)
                 res.send(err);
 
               res.json(campaigns);
             })
 
-        } else {
+        } else if (req.query && req.query.getAll){
           // Else get all the campaigns (LIMIT 20)
+          var limit = req.query.limit || 20;
+
           db.Campaign
-            .findAll({ limit: 20 })
+            .findAll({ limit: limit })
             .complete(function(err, campaigns) {
               if (!!err)
                 res.send(err);
@@ -232,7 +238,6 @@ module.exports = function(express, app, db, passport) {
             })
         }
     });
-
 
   // on routes that end in /users
   router.route('/users')
@@ -254,31 +259,38 @@ module.exports = function(express, app, db, passport) {
           });
     })
 
-    // .get(checkTokenOrFindUserOrCreateUser, function(req, res){
-    //   var user = req.user || req.token.user;
+    // User gets info about themselves from login or token
+    // This supplies getOwns() and getRegistrations() info about the user
+    // 
+    // Query parameters:
+    //    getOwns = true|false
+    //    getRegistrations = true|false
+    // 
+    .get(checkTokenOrFindUser, function(req, res){
+      var user = req.user || req.token.user;
 
-    //   if (user) {
-    //     db.User
-    //       .find({ where: { id: req.query.user_id} })
-    //       .complete(function(err, users) {
-    //         if (!!err)
-    //           res.send(err);
+      if (user) {
 
-    //         res.json(users);
+        // If user requests to get the campaigns owned, include them
+        if (req.query.getOwns){
+          user.getOwns().success(function(campaignsOwned){
+            user.owns = campaignsOwned;
+          });
+        }
+        
+        // If user requests to get the campaigns joined, include them
+        if (req.query.getRegistrations){
+          user.getRegistrations().success(function(campaignsJoined){
+            user.joined = campaignsJoined;
+          });
+        }
+        
+        res.send(user);
 
-    //       });
-
-    //   } else {
-    //     db.User
-    //       .findAll()
-    //       .complete(function(err, users) {
-    //         if (!!err)
-    //           res.send(err);
-
-    //         res.json(users);
-    //       });
-    //   }
-    // })
+      } else {
+        res.send({success: false, message: "checkTokenOrFindUser failed to return a user."});
+      }
+    })
 
     
     .put(checkTokenOrFindUser, function(req, res){
