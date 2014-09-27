@@ -211,9 +211,16 @@ module.exports = function(express, app, db, passport) {
     //    limit       =   num, default (20)
     //    campaign_id =   :campaign_id
     .get(checkTokenOrFindUser, function(req, res){
-        var user = req.user || req.token.user;
+        if (!_.isUndefined(req.user)) {
+          var user = req.user
+        } else if (!_.isUndefined(req.token) && !_.isUndefined(req.token.user)) {
+          var user = req.token.user;
+        }
 
-        if (user && req.query && req.query.campaign_id) {
+        // Set up our defaults
+
+
+        if (!_.isUndefined(user) && !_.isUndefined(req.query) && !_.isUndefined(req.query.campaign_id)) {
           // If we've got a :campaign_id, use it to select specific campaign(s)
           user
             .find({ where: { id: req.query.campaign_id } })
@@ -224,7 +231,7 @@ module.exports = function(express, app, db, passport) {
               res.json(campaigns);
             })
 
-        } else if (req.query && req.query.getAll){
+        } else if (!_.isUndefined(req.query) && !_.isUndefined(req.query.getAll) && req.query.getAll === "true"){
           // Else get all the campaigns (LIMIT 20)
           var limit = req.query.limit || 20;
 
@@ -234,8 +241,11 @@ module.exports = function(express, app, db, passport) {
               if (!!err)
                 res.send(err);
 
-              res.json(campaigns);
-            })
+              // res.json({campaigns: campaigns});
+              res.send({campaigns: new Array()});
+            });
+        } else {
+          res.json({success: false, message: "Must include query params: getAll (true|false) and limit (defaults to 20), or a campaign_id."});
         }
     });
 

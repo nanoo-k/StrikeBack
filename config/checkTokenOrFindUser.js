@@ -47,27 +47,25 @@ module.exports = function(req, res, next){
 		// Place token, expires and user in res.json if creds pass
 
 		  // Check for existence of user
-		  if (_.isUndefined(req.body.user)) res.send({success: false, message: "If this is a POST, must include user. If this is a GET, must include user token."});
+		  if (_.isUndefined(req.body.user)) {
+		  	next();
+		  } else {
+		  	  // I don't want this to be findOrCreate. I want the user to say, "I'm looking for an existing user, not creating a new one."
+			  db.User.find({ username: req.body.user.username })
+	  			// .error(function(err){
+	  			// 	res.send(err);
+	  			// })
+		        .success(function(err, user){
+	        		if (!!err)
+	              		res.send(err);
 
-		  // I don't want this to be findOrCreate. I want the user to say, "I'm looking for an existing user, not creating a new one."
-		  db.User.find({ username: req.body.user.username })
-  			// .error(function(err){
-  			// 	res.send(err);
-  			// })
-	        .success(function(err, user){
-        		if (!!err)
-              		res.send(err);
-
-              	if (user.verifyPassword(req.body.user.password)){
-              		res.send({success: false, message: "Wrong password"});
-              	} else {
-              		req.token = user.createUserToken();
-					next();
-              	}
-      		});
-
-          // return next()
-
-        // next()
+	              	if (user.verifyPassword(req.body.user.password)){
+	              		res.send({success: false, message: "Wrong password"});
+	              	} else {
+	              		req.token = user.createUserToken();
+						next();
+	              	}
+	      		});
+		  }
 	}
 }
