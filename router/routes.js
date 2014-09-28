@@ -1,6 +1,7 @@
     var jwt                             = require('jwt-simple')
     , moment                            = require('moment')
     , _                                 = require('underscore')
+    , async                             = require('async')
     , jwtauth                           = require('../config/jwtAuth.js')
     , checkTokenOrFindUserOrCreateUser  = require('../config/checkTokenOrFindUserOrCreateUser.js')
     , checkTokenOrFindUser              = require('../config/checkTokenOrFindUser.js')
@@ -411,25 +412,47 @@ module.exports = function(express, app, db, passport) {
     //    getRegistrations = true|false
     // 
     .get(checkTokenOrFindUser, function(req, res){
-      var user = req.user || req.token.user;
+        if (!_.isUndefined(req.user)) {
+          var user = req.user
+        } else if (!_.isUndefined(req.token) && !_.isUndefined(req.token.user)) {
+          var user = req.token.user;
+        }
 
       if (user) {
 
+        // Array to hold async tasks
+        var asyncTasks = [];
+
         // If user requests to get the campaigns owned, include them
-        if (req.query.getOwns){
-          user.getOwns().success(function(campaignsOwned){
-            user.owns = campaignsOwned;
-          });
-        }
+        asyncTasks.push(function(callback){
+          if (req.query.getOwns === "true"){
+            user.getOwns().success(function(campaignsOwned){
+              user.selectedValues.campaignOwned = campaignsOwned;
+              user.dataValues.campaignOwned = campaignsOwned;
+
+              callback();
+            });
+          }
+        });
         
         // If user requests to get the campaigns joined, include them
-        if (req.query.getRegistrations){
-          user.getRegistrations().success(function(campaignsJoined){
-            user.joined = campaignsJoined;
-          });
-        }
+        asyncTasks.push(function(callback){
+          if (req.query.getRegistrations === "true"){
+            user.getRegistrations().success(function(campaignsJoined){
+              user.selectedValues.campaignsJoined = campaignsJoined;
+              user.dataValues.campaignsJoined = campaignsJoined;
+              
+              callback();
+            });
+          }
+        });
         
-        res.send(user);
+        // Now we have an array of functions doing async tasks
+        // Execute all async tasks in the asyncTasks array
+        async.parallel(asyncTasks, function(){
+          // All tasks are done now, so send back user
+          res.send(user);
+        });
 
       } else {
         res.send({success: false, message: "checkTokenOrFindUser failed to return a user."});
