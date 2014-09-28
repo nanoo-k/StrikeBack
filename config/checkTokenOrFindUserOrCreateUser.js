@@ -47,7 +47,7 @@ module.exports = function(req, res, next){
 		// Place token, expires and user in res.json if creds pass
 
 		  // Check for existence of user
-		  if (_.isUndefined(req.body.user)) res.send({success: false, message: "If this is a POST, must include user. If this is a GET, must include user token."});
+		  if (_.isUndefined(req.body.user)) res.send({success: false, message: "If this is a POST, must include user or token. If this is a GET, must include user token."});
 
 		  // I don't want this to be findOrCreate. I want the user to say, "I'm looking for an existing user, not creating a new one."
 		  db.User.findOrCreate({ username: req.body.user.username }, {

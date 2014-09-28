@@ -176,7 +176,8 @@ module.exports = function(express, app, db, passport) {
               user.selectedValues.campaignsOwned = owns;
               user.dataValues.campaignsOwned = owns;
               // If a token was generated, send it back as a property 'token' on the user obj
-              if (_.isUndefined(req.token)) {
+              if (!_.isUndefined(req.token)) {
+                req.token.user = user.id;
                 user.selectedValues.token = req.token;
                 user.dataValues.token = req.token;
               }
