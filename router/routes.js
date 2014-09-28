@@ -133,11 +133,32 @@ module.exports = function(express, app, db, passport) {
 
   router.route('/campaigns')
     // Send name, target, callToAction plus user token/creds
+
+    /**
+     *  expects...
+        "campaign": {
+          "name":         (string),
+          "callToAction": (string),
+          "target":       (BIGINT)
+        }
+      */
     .post(checkTokenOrFindUserOrCreateUser, function(req, res){
+        if (!_.isUndefined(req.user)) {
+          var user = req.user
+        } else if (!_.isUndefined(req.token) && !_.isUndefined(req.token.user)) {
+          var user = req.token.user;
+        }
 
-      var user = req.user || req.token.user;
+      if (_.isUndefined(user)) res.send({success:false, message: "You must include either a user token or user credentials (username and pass)."});
 
-      if (_.isUndefined(req.campaign.name) || _.isUndefined(req.campaign.target) || _.isUndefined(req.campaign.callToAction)) res.send({success:false, message: "You must include each: the campaign name, target, and call to action."});
+      if (
+          _.isUndefined(req.body.campaign)
+          || _.isUndefined(req.body.campaign.name)
+          || _.isUndefined(req.body.campaign.target)
+          || _.isUndefined(req.body.campaign.callToAction)
+      ) {
+        res.send({success:false, message: "You must include a campaign object in the request body: { campaign: { name: (string), callToAction: (string), target: (BIGINT) } }."});
+      }
 
       // Once we have our campaign owner, create the campaign and associate the owner
       db.Campaign.create({
@@ -149,8 +170,17 @@ module.exports = function(express, app, db, passport) {
           // addOwner(), a method magically created by Sequelizer, will insert objects into the DB as owners of this campaign
           campaign.addOwner(user).success(function(campaignOwner){
             campaignOwner.getOwns().success(function(owns){
-              // getOwns(), a method magically created by Sequelizer, gets all campaigns owned by this user and returns it as the 'owns'
-              res.send(owns);
+              // getOwns(), a method magically created by Sequelizer, gets all campaigns owned by this user and returns it as the 'owns' obj
+
+              // The owns obj should be a property of the user obj
+              user.selectedValues.campaignsOwned = owns;
+              user.dataValues.campaignsOwned = owns;
+              // If a token was generated, send it back as a property 'token' on the user obj
+              if (_.isUndefined(req.token)) {
+                user.selectedValues.token = req.token;
+                user.dataValues.token = req.token;
+              }
+              res.send(user);
             })
           })
       });
@@ -262,6 +292,7 @@ module.exports = function(express, app, db, passport) {
     .post(function(req, res, next){
 
       // Set defaults
+      // (Should send res error if certain fields aren't present, like if username is 'email' but there's no 'email' present)
       email = req.body.email,
       phone = req.body.phone,
       username = req.body.username,
