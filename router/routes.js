@@ -432,6 +432,8 @@ module.exports = function(express, app, db, passport) {
 
               callback();
             });
+          } else {
+            callback();
           }
         });
         
@@ -444,6 +446,8 @@ module.exports = function(express, app, db, passport) {
               
               callback();
             });
+          } else {
+            callback();
           }
         });
         
