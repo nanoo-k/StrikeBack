@@ -215,7 +215,20 @@ module.exports = function(express, app, db, passport) {
     // Update campaign using dashboard
     // Requires user token or user credentials
     .put(checkTokenOrFindUser, function(req, res){
-      var user = req.user || req.token.user;
+        if (!_.isUndefined(req.user)) {
+          var user = req.user
+        } else if (!_.isUndefined(req.token) && !_.isUndefined(req.token.user)) {
+          var user = req.token.user;
+        }
+
+      if (
+          _.isUndefined(req.body.campaign.id)
+          || _.isUndefined(req.body.campaign.name)
+          || _.isUndefined(req.body.campaign.callToAction)
+          || _.isUndefined(req.body.campaign.target)
+      ) {
+        res.send({success: false, message: "You forgot to include something about the campaign. Make the campaign obj look like this: campaign: { name: (string), callToAction: (string), target: (BIGINT) }"}); 
+      }
 
       user.getOwns({ where: { id: req.body.campaign.id } })
         .complete(function(err, campaign) {
@@ -237,14 +250,24 @@ module.exports = function(express, app, db, passport) {
     // Delete campaign
     // Requires user token or user credentials
     .delete(checkTokenOrFindUser, function(req, res){
-      var user = req.user || req.token.user;
+        if (!_.isUndefined(req.user)) {
+          var user = req.user
+        } else if (!_.isUndefined(req.token) && !_.isUndefined(req.token.user)) {
+          var user = req.token.user;
+        }
+
+      if (
+          _.isUndefined(req.body.campaign.id)
+      ) {
+        res.send({success: false, message: "You forgot to include the id of the campaign to be deleted."}); 
+      }
 
       user.getOwns({ where: { id: req.body.campaign.id } })
         .complete(function(err, campaign){
-            campaign[0].destroy().success(function(err){
+            campaign[0].destroy().complete(function(err){
                 if (!!err)
                     res.send(err);
-                res.json({ message: 'Campaign removed' });
+                res.json({success: true, message: 'Campaign removed' });
             });
         });
 
