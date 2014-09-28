@@ -270,16 +270,6 @@ module.exports = function(express, app, db, passport) {
                 res.json({success: true, message: 'Campaign removed' });
             });
         });
-
-      // db.Campaign
-      //     .find(req.body.campaign.id)
-      //     .complete(function(err, campaign){
-      //         campaign.destroy().success(function(err){
-      //             if (!!err)
-      //                 res.send(err);
-      //             res.json({ message: 'Campaign removed' });
-      //         });
-      //     });
     })
 
     // Get list of campaigns for homepage or get campaign for dashboard
@@ -295,11 +285,11 @@ module.exports = function(express, app, db, passport) {
         }
 
         // Turn campaign_ids into an array
-         var campaign_ids = (!_.isUndefined(req.query.campaign_ids)) ? req.query.campaign_ids.split(",") : null;
+        var campaign_ids = (!_.isUndefined(req.query.campaign_ids)) ? req.query.campaign_ids.split(",") : null;
 
 
         // Get a user's campaigns with the given Id
-        if (!_.isUndefined(user)) {
+        if (!_.isUndefined(user) && !_.isUndefined(req.query.getAll) && req.query.getAll != "true") {
           if (!_.isUndefined(req.query) && !_.isNull(campaign_ids)) {
             // If we've got a :campaign_id, use it to select specific campaign(s)
             user
@@ -332,8 +322,8 @@ module.exports = function(express, app, db, passport) {
               if (!!err)
                 res.send(err);
 
-              // res.json({campaigns: campaigns});
-              res.send({campaigns: new Array()});
+              res.json({campaigns: campaigns});
+              // res.send({campaigns: new Array()});
             });
         } else {
           res.json({success: false, message: "Must include query params: getAll (true|false) and limit (defaults to 20), or a campaign_id."});
