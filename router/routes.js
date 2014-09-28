@@ -63,16 +63,29 @@ module.exports = function(express, app, db, passport) {
 
   // Register a user to a campaign
   router.route('/register')
+    /**
+     *  expects...
+        "campaign" : {
+          "id" : (num)
+        }
+     */
     .post(checkTokenOrFindUserOrCreateUser, function(req, res){
 
       // One of these two are returned by checkTokenOrFindUserOrCreateUser
-      var user = req.user || req.token.user;
+        if (!_.isUndefined(req.user)) {
+          var user = req.user
+        } else if (!_.isUndefined(req.token) && !_.isUndefined(req.token.user)) {
+          var user = req.token.user;
+        }
+
+        // If no campaign id, complain
+        if (_.isUndefined(req.body.campaign.id)) res.send({success: false, message: "Must include a campaign id in this form: 'campaign': { 'id': (num) }"});
 
       // Register user to this campaign
       // Get the campaign
       // (Do I really need to grab the whole campaign? Can't I just use the campaginId?)
       // (Maybe I can define my own relationship setter that takes an optional userId and campaignId)
-      db.Campaign.find({ id:req.body.campaign.id }).complete(function(err, campaign){
+      db.Campaign.find({ where: { id: req.body.campaign.id } }).complete(function(err, campaign){
         // Register user to campaign
         user.addRegistration(campaign)
         .success(function(campaign){
@@ -80,8 +93,17 @@ module.exports = function(express, app, db, passport) {
           // Return list of user's registrations
           user.getRegistrations()
             .success(function(registrations){
-              obj = user.addUserTokenToResponse({ registrations: registrations }, req);
-              res.send(obj);
+              // obj = user.addUserTokenToResponse({ registrations: registrations }, req);
+              user.dataValues.campaignsJoined = registrations;
+              user.selectedValues.campaignsJoined = registrations;
+              // If a token was generated, send it back as a property 'token' on the user obj
+              if (!_.isUndefined(req.token)) {
+                req.token.user = user.id;
+                user.selectedValues.token = req.token;
+                user.dataValues.token = req.token;
+              }
+
+              res.send(user);
             })
             .error(function(err){
               res.send(err);
