@@ -240,7 +240,7 @@ module.exports = function(express, app, db, passport) {
     // Query parameters:
     //    getAll      =   true|false
     //    limit       =   num, default (20)
-    //    campaign_id =   :campaign_id
+    //    campaign_ids =   :campaign_id
     .get(checkTokenOrFindUser, function(req, res){
         if (!_.isUndefined(req.user)) {
           var user = req.user
@@ -248,20 +248,34 @@ module.exports = function(express, app, db, passport) {
           var user = req.token.user;
         }
 
-        // Set up our defaults
+        // Turn campaign_ids into an array
+         var campaign_ids = (!_.isUndefined(req.query.campaign_ids)) ? req.query.campaign_ids.split(",") : null;
 
 
-        if (!_.isUndefined(user) && !_.isUndefined(req.query) && !_.isUndefined(req.query.campaign_id)) {
-          // If we've got a :campaign_id, use it to select specific campaign(s)
-          user
-            .find({ where: { id: req.query.campaign_id } })
+        // Get a user's campaigns with the given Id
+        if (!_.isUndefined(user)) {
+          if (!_.isUndefined(req.query) && !_.isNull(campaign_ids)) {
+            // If we've got a :campaign_id, use it to select specific campaign(s)
+            user
+              .findAll({ where: { id: campaign_ids } })
+              .complete(function(err, campaigns) {
+                  if (!!err)
+                  res.send(err);
+
+                res.json(campaigns);
+              })
+          }
+
+        } else if( !_.isUndefined(req.query) && !_.isNull(campaign_ids) ) {
+          db.Campaign
+            .findAll({ where: {id: campaign_ids} })
             .complete(function(err, campaigns) {
-                if (!!err)
+              if (!!err)
                 res.send(err);
 
-              res.json(campaigns);
-            })
-
+              // res.json({campaigns: campaigns});
+              res.send({campaigns: campaigns});
+            });
         } else if (!_.isUndefined(req.query) && !_.isUndefined(req.query.getAll) && req.query.getAll === "true"){
           // Else get all the campaigns (LIMIT 20)
           var limit = req.query.limit || 20;
