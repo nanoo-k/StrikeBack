@@ -47,25 +47,37 @@ module.exports = function(req, res, next){
 		// Place token, expires and user in res.json if creds pass
 
 		  // Check for existence of user
-		  if (_.isUndefined(req.body.user)) {
-		  	next();
-		  } else {
+		  if (!_.isUndefined(req.body.user)) {
 		  	  // I don't want this to be findOrCreate. I want the user to say, "I'm looking for an existing user, not creating a new one."
-			  db.User.find({ username: req.body.user.username })
+		  	  if (_.isUndefined(req.body.user.username)) res.send({success: false, message: "Forgot to include username."});
+		  	  if (_.isUndefined(req.body.user.password)) res.send({success: false, message: "Forgot to include password."});
+			  
+			  db.User.find({ where: { username: req.body.user.username } })
 	  			// .error(function(err){
 	  			// 	res.send(err);
 	  			// })
-		        .success(function(err, user){
-	        		if (!!err)
-	              		res.send(err);
-
-	              	if (user.verifyPassword(req.body.user.password)){
+		        .success(function(user){
+	              	if (!user.verifyPassword(req.body.user.password)){
 	              		res.send({success: false, message: "Wrong password"});
 	              	} else {
 	              		req.token = user.createUserToken();
 						next();
 	              	}
 	      		});
+		  } else if (!_.isUndefined(req.query.username)) {
+		  	if (_.isUndefined(req.query.password)) res.send({success: false, message: "Included username but not password."});
+
+	  		  db.User.find({ where: { username: req.query.username } })
+		        .success(function(user){
+	              	if (!user.verifyPassword(req.query.password)){
+	              		res.send({success: false, message: "Wrong password"});
+	              	} else {
+	              		req.token = user.createUserToken();
+						next();
+	              	}
+	      		});
+		  } else {
+		  	next();
 		  }
 	}
 }
