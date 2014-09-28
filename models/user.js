@@ -9,9 +9,10 @@ module.exports = function(sequelize, DataTypes) {
     username: {
         type: DataTypes.STRING,
         set:  function(req) {
-        	usernameField = (!_.isUndefined(req.body.user)) ? req.body.user.username : req.body.username;
-        	// usernameField = req.body.username || req.body.user.username;
-            this.setDataValue('username', req.body[usernameField]);
+        	
+          // Username is either in the req's user obj or just in the req's body.
+          usernameField = (!_.isUndefined(req.body.user)) ? req.body.user.username : req.body.username;
+          this.setDataValue('username', req.body[usernameField]);
         }
     },
     password: {

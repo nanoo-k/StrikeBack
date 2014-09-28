@@ -263,7 +263,7 @@ module.exports = function(express, app, db, passport) {
 
       // Set defaults
       email = req.body.email,
-      phone = req.body.telephone || req.body.telephone,
+      phone = req.body.phone,
       username = req.body.username,
       password = req.body.password;
 
@@ -283,7 +283,7 @@ module.exports = function(express, app, db, passport) {
               // create the user
               db.User
                 .create({
-                  username: username,
+                  username: req,
                   password: password,
                   phone: phone || null,
                   email: email || null
