@@ -249,24 +249,90 @@ module.exports = function(express, app, db, passport) {
         }
     });
 
-  // on routes that end in /users
+  /**
+    *  expects...
+      {
+        username:   (phone|email),
+        password:   (string),
+        telephone:  (string),
+        email:      (string)  
+      }
+    */
   router.route('/users')
-    .post(function(req, res){
-        var user = db.User.build({
-          username: req,
-          phone: req.body.phone || null,
-          email: req.body.email || null,
-          password: req.body.password
-        });
+    .post(function(req, res, next){
 
-        user
-          .save()
-          .complete(function(err, user) {
-            if (!!err) 
-                res.send(err);
-            obj = user.addUserTokenToResponse({}, req);
-            res.json(user);
-          });
+      // Set defaults
+      email = req.body.email,
+      phone = req.body.telephone || req.body.telephone,
+      username = req.body.username,
+      password = req.body.password;
+
+
+      db.User.find({ where : ['email=? or phone=? ', email, phone] }).complete(function(err, user){
+          // if there are any errors, return the error
+          if (err)
+              return next(err);
+
+          // check to see if theres already a user with that email
+          if (user) {
+              // return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+              // return done(null, false, {'message': 'That email is already taken.'});
+              return res.status(401).send({ success : false, message : 'Either your email address or telephone are already registered.' });
+          } else {
+              // if there is no user with that email
+              // create the user
+              db.User
+                .create({
+                  username: username,
+                  password: password,
+                  phone: phone || null,
+                  email: email || null
+                })
+                .success(function(user){
+                  // return done(null, user, {'message': 'Success! You\'re in.' });
+                    var expires = moment().add('days', 7).valueOf();
+                    var token = jwt.encode({
+                      iss: user.id,
+                      exp: expires
+                    }, app.get('jwtTokenSecret'));
+                     
+                    // This sends the token, expires and user info
+                    res.json({
+                      token : token,
+                      expires: expires,
+                      user: user
+                    });
+                })
+                .error(function(err){
+                  return res.send(err);
+              });
+          }
+      });
+
+
+      // passport.authenticate('local-signup', function(err, user, info) {
+      //   if (err) {
+      //     return next(err); // will generate a 500 error
+      //   }
+        
+      //   if (! user) {
+      //     return res.status(401).send({ success : false, message : info.message });
+      //   }
+          
+      //   var expires = moment().add('days', 7).valueOf();
+      //   var token = jwt.encode({
+      //     iss: user.id,
+      //     exp: expires
+      //   }, app.get('jwtTokenSecret'));
+         
+      //   // This sends the token, expires and user info
+      //   res.json({
+      //     token : token,
+      //     expires: expires,
+      //     user: user.toJSON()
+      //   });
+
+      // })(req, res, next)
     })
 
     // User gets info about themselves from login or token

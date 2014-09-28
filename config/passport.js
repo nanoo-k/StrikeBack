@@ -33,53 +33,52 @@ module.exports = function(passport, db) {
     // we are using named strategies since we have one for login and one for signup
     // by default, if there was no name, it would just be called 'local'
 
-    passport.use('local-signup', new LocalStrategy({
-        // by default, local strategy uses username and password, we will override with email
-        usernameField : 'username',
-        passwordField : 'password',
-        emailField : 'email',
-        telephoneField : 'telephone',
-        passReqToCallback : true // allows us to pass back the entire request to the callback
-    },
-    function(req, username, password, email, telephone, done) {
+    // passport.use('local-signup', new LocalStrategy({
+    //     // by default, local strategy uses username and password, we will override with email
+    //     usernameField : 'username',
+    //     passwordField : 'password',
+    //     emailField : 'email',
+    //     telephoneField : 'telephone',
+    //     passReqToCallback : true // allows us to pass back the entire request to the callback
+    // },
+    // function(req, username, password, email, telephone, done) {
 
-        // asynchronous
-        // User.findOne wont fire unless data is sent back
-        process.nextTick(function() {
+    //     // asynchronous
+    //     // User.findOne wont fire unless data is sent back
+    //     // process.nextTick(function() {
 
-            // find a user whose username is the same as the body username
-            // we are checking to see if the user trying to login already exists
-            db.User.find({ where :{ username: username } }).complete(function(err, user){
-                // if there are any errors, return the error
-                if (err)
-                    return done(err);
+    //         // find a user whose username is the same as the body username
+    //         // we are checking to see if the user trying to login already exists
+    //         db.User.find({ where : ['email = ' + email + ' or telephone = ' + telephone] }).complete(function(err, user){
+    //             // if there are any errors, return the error
+    //             if (err)
+    //                 return done(err);
 
-                // check to see if theres already a user with that email
-                if (user) {
-                    // return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
-                    // return done(null, false, {'message': 'That email is already taken.'});
-                    return done(null, false, {'message': 'That email is already taken.'});
-                } else {
-
-                    // if there is no user with that email
-                    // create the user
-                    db.User
-                      .create({
-                        username: username,
-                        password: password,
-                        telephone: telephone || null,
-                        email: email || null
-                      })
-                      .success(function(user){
-                        return done(null, user, {'message': 'Success! You\'re in.' });
-                      })
-                      .error(function(err){
-                        return done(err);
-                      });
-                }
-            });
-        });
-    }));
+    //             // check to see if theres already a user with that email
+    //             if (user) {
+    //                 // return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+    //                 // return done(null, false, {'message': 'That email is already taken.'});
+    //                 return done(null, false, {'message': 'Either your email address or telephone are already registered.'});
+    //             } else {
+    //                 // if there is no user with that email
+    //                 // create the user
+    //                 db.User
+    //                   .create({
+    //                     username: username,
+    //                     password: password,
+    //                     telephone: telephone || null,
+    //                     email: email || null
+    //                   })
+    //                   .success(function(user){
+    //                     return done(null, user, {'message': 'Success! You\'re in.' });
+    //                   })
+    //                   .error(function(err){
+    //                     return done(err);
+    //                 });
+    //             }
+    //         });
+    //     // });
+    // }));
 
 // =========================================================================
     // LOCAL LOGIN =============================================================
