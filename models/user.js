@@ -12,7 +12,10 @@ module.exports = function(sequelize, DataTypes) {
         	
           // Username is either in the req's user obj or just in the req's body.
           usernameField = (!_.isUndefined(req.body.user)) ? req.body.user.username : req.body.username;
-          this.setDataValue('username', req.body[usernameField]);
+          // Set the user value
+          user = (!_.isUndefined(req.body.user)) ? req.body.user : req.body;
+          // The previous two steps let us do user[usernameField]
+          this.setDataValue('username', user[usernameField]);
         }
     },
     password: {
