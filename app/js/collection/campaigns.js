@@ -14,6 +14,10 @@ define([
         url: function(){
             // return "/api/users/" + this.get("Id");
             return "/api/campaigns";
+        },
+
+        parse: function(response, options){
+            return response.campaigns;
         }
 
         // selectPost: function(post){
