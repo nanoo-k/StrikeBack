@@ -11,6 +11,7 @@ define([
 
     var CampaignView = Backbone.Marionette.ItemView.extend({
         template: _.template('<a href="/campaigns/<%= id %>"><%= name %></a>') ,
+        // template: _.template('<a href="/campaign_link">Campaign</a>') ,
         tagName: "li"   
     });
 
@@ -24,8 +25,12 @@ define([
         initialize: function(options){
             this.collection = new Campaigns();
             this.collection.fetch({
+                data: $.param({
+                    getAll: true,
+                    limit: 20
+                }),
                 success: $.proxy(function(){
-                    console.log(this.collection);
+                    // Do something here once the collection is fetched?
                 }, this)
             });
         }
