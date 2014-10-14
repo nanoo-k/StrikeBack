@@ -23,13 +23,13 @@ define([
                 // If this is a new campaign, we're POSTing to this API
                 return "/api/campaigns/";
             }            
-        },
+        }
 
-        relations: [{
-            type: Backbone.HasMany,
-            key: 'owners',
-            relatedModel: 'User'
-        }]
+        // relations: [{
+        //     type: Backbone.HasMany,
+        //     key: 'owners',
+        //     relatedModel: 'User'
+        // }]
 
         // select: function(){
         //     this.set({selected: true});
