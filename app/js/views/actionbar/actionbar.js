@@ -10,17 +10,25 @@ define([
 ], function ($, _, Backbone, Template) {
 
     var ActionBarView = Backbone.Marionette.ItemView.extend({
-        // el: "#thing",
 
         initialize: function(){
             this.setElement('#action-bar');
         },
+        
+        template: _.template(Template),
 
-        onRender: function (argument) {
-            console.log();
+        events: {
+            "click .sign-in" : "onSignIn"
         },
 
-        template: _.template(Template)
+        onRender: function (argument) {
+            // console.log();
+        },
+
+        onSignIn: function(e){
+            e.preventDefault();
+            console.log('sign in');
+        }
 
     });
 
