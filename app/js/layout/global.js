@@ -9,6 +9,8 @@ define([
     'text!/js/template/global.ejs',
     'js/views/actionbar/actionbar.js',
     'less!/style/global.less',
+    'css!/js/bower_components/foundation/css/foundation.css',
+    'foundation-js',
     'marionette'
 ], function ($, _, Backbone, ActionBar, Modal, Template, ActionBarView) {
 

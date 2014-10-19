@@ -29,7 +29,8 @@
     "numeraljs": "1.5.3",
     "d3": "~3.4.8",
     "datejs": "*",
-    "gridster": "0.5.1"
+    "gridster": "0.5.1",
+    "foundation": "~5.4.6"
   },
   "devDependencies": {}
 }

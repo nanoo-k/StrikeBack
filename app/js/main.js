@@ -30,14 +30,16 @@ require.config({
     paths: {
         backbone: 'bower_components/backbone/backbone',
         'backbone-relational': 'bower_components/backbone-relational/backbone-relational',
-        'jquery' : 'bower_components/jquery/jquery',
+        'jquery' : 'bower_components/jquery/dist/jquery.min',
         'underscore': 'bower_components/underscore/underscore',
         'text': 'bower_components/requirejs-text/text',
         'modernizr': 'bower_components/modernizr/modernizr',
-        'less': 'bower_components/less/dist/less-1.5.0.js',
+        'less': 'bower_components/less/dist/less-1.5.0',
         require: 'bower_components/requirejs/require',
         'tag-it': 'bower_components/tag-it/js/tag-it',
-        'marionette': 'bower_components/marionette/lib/backbone.marionette'
+        'marionette': 'bower_components/marionette/lib/backbone.marionette',
+        // 'foundation-css': 'bower_components/foundation/css/foundation.css',
+        'foundation-js': 'bower_components/foundation/js/foundation.min'
     }
 
 });
