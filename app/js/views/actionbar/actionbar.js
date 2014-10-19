@@ -10,10 +10,10 @@ define([
 ], function ($, _, Backbone, Template) {
 
     var ActionBarView = Backbone.Marionette.ItemView.extend({
-        el: "#thing",
+        // el: "#thing",
 
         initialize: function(){
-            // this.setElement('#action-bar');
+            this.setElement('#action-bar');
         },
 
         onRender: function (argument) {
