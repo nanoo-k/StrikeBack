@@ -6,8 +6,9 @@ define([
     'layout/global',
     'collection/campaigns',
     'text!/js/template/index.ejs',
+    'js/views/actionbar/actionbar.js',
     'marionette'
-], function ( $, _, layout, Campaigns, Template) {
+], function ( $, _, layout, Campaigns, Template, ActionBar) {
 
     var CampaignView = Backbone.Marionette.ItemView.extend({
         template: _.template('<a href="/campaigns/<%= id %>"><%= name %></a>') ,
@@ -33,6 +34,8 @@ define([
                     // Do something here once the collection is fetched?
                 }, this)
             });
+
+            layout.regions.actionBar(new ActionBar().render());
         }
 
         // events: {

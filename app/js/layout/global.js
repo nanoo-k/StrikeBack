@@ -4,12 +4,13 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'region/navigation',
+    'region/actionbar',
     'region/modal',
     'text!/js/template/global.ejs',
+    'js/views/actionbar/actionbar.js',
     'less!/style/global.less',
     'marionette'
-], function ($, _, Backbone, ActionBar, Modal, Template) {
+], function ($, _, Backbone, ActionBar, Modal, Template, ActionBarView) {
 
     var GlobalLayout = Backbone.Marionette.Layout.extend({
         template: _.template(Template),
@@ -22,7 +23,12 @@ define([
             modal: Modal
         },
 
+        initialize: function(){
+            // this.actionBar.show(new ActionBarView().reder());
+        },
+
         onRender: function(){
+            // this.actionBar.show(new ActionBarView().reder());
         },
 
         title: function(title) {
@@ -34,26 +40,6 @@ define([
     var layout = new GlobalLayout();
     layout.render();
 
-    // new Nav({
-    //     model: new Backbone.Model({
-    //         pages: [
-    //             {
-    //                 name: "Dashboard",
-    //                 // icon: '/images/icons/nav-icon-dashboard.png',
-    //                 page: "dashboard"
-    //             },
-    //             {
-    //                 name: "You",
-    //                 // icon: '/images/icons/nav-icon-org.png',
-    //                 page: "you"
-    //             },
-    //             {
-    //                 name: "Campaign",
-    //                 page: "campaign"
-    //             }
-    //         ]
-    //     })
-    // }).render();
 
     return layout;
 });
