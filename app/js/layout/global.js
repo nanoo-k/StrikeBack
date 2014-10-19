@@ -11,6 +11,7 @@ define([
     'less!/style/global.less',
     'css!/js/bower_components/foundation/css/foundation.css',
     'foundation-js',
+    'js/bower_components/foundation/js/foundation/foundation.reveal.js',
     'marionette'
 ], function ($, _, Backbone, ActionBar, Modal, Template, ActionBarView) {
 
@@ -31,6 +32,7 @@ define([
 
         onRender: function(){
             // this.actionBar.show(new ActionBarView().reder());
+            $(document).foundation();
         },
 
         title: function(title) {
