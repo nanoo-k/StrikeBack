@@ -38,7 +38,6 @@ require.config({
         require: 'bower_components/requirejs/require',
         'tag-it': 'bower_components/tag-it/js/tag-it',
         'marionette': 'bower_components/marionette/lib/backbone.marionette',
-        // 'foundation-css': 'bower_components/foundation/css/foundation.css',
         'foundation-js': 'bower_components/foundation/js/foundation.min'
     }
 

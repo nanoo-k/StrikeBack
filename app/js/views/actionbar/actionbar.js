@@ -4,11 +4,14 @@ define([
     'jquery',
     'underscore',
     'backbone',
+    'layout/global',
+    '/js/views/modals/sign-up.js',
+    '/js/views/modals/sign-in.js',
     'model/user',
     'text!/js/template/actionbar/actionbar.ejs',
     'less!/style/global.less',
     'marionette'
-], function ($, _, Backbone, User, Template) {
+], function ($, _, Backbone, layout, SignUp_Modal, SignIn_Modal, User, Template) {
 
     var ActionBarView = Backbone.Marionette.ItemView.extend({
 
@@ -23,13 +26,16 @@ define([
             "click .sign-up" : "onSignUp"
         },
 
-        onRender: function (argument) {
-        },
-
         onSignUp: function(e){
-            e.preventDefault();
+            // e.preventDefault();
+
+            this.modal = new SignUp_Modal().render();
+            $(document).foundation();
 
             // Load modal popup that requests user to sign up
+            // this.modal.render();
+            // layout.modal.show(this.modal);
+            
             // $('#buttonForModal').click(function() {
                // $('#myModal').reveal();
             // });
@@ -38,6 +44,11 @@ define([
         onSignIn: function(e){
             // Prevent the link from doing anything.
             e.preventDefault();
+
+            // Load modal popup that requests user to sign in            
+            this.modal = new SignIn_Modal().render();
+            $(document).foundation();
+
 
             // Load modal popup that requsts user to sign in
             // $('#buttonForModal').click(function() {

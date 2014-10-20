@@ -9,11 +9,12 @@ define([
         el: "#modal",
 
         initialize: function(){
-
+            // console.log('modal  init');
         },
 
         onRender: function(){
-            
+
+            // console.log('modal  render');
         }
        
     });

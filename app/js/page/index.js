@@ -6,7 +6,7 @@ define([
     'layout/global',
     'collection/campaigns',
     'text!/js/template/index.ejs',
-    'js/views/actionbar/actionbar.js',
+    '/js/views/actionbar/actionbar.js',
     'marionette'
 ], function ( $, _, layout, Campaigns, Template, ActionBar) {
 

@@ -4,7 +4,7 @@ define([
     'jquery',
     'underscore',
     'model/user',
-    'text!/js/template/modals/sign-up.ejs',
+    'text!/js/template/modals/sign-in.ejs',
     'marionette'
 ], function ( $, _, User, Template){
 
@@ -33,6 +33,6 @@ define([
 
     });
 
-    return Modal;
+    return Modal ;
 
 });

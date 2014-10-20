@@ -7,12 +7,11 @@ define([
     'region/actionbar',
     'region/modal',
     'text!/js/template/global.ejs',
-    'js/views/actionbar/actionbar.js',
+    '/js/views/actionbar/actionbar.js',
     'less!/style/global.less',
     'css!/js/bower_components/foundation/css/foundation.css',
     'foundation-js',
     'js/bower_components/foundation/js/foundation/foundation.reveal.js',
-    // 'js/bower_components/foundation/js/foundation/foundation.forms.js',
     'marionette'
 ], function ($, _, Backbone, ActionBar, Modal, Template, ActionBarView) {
 
