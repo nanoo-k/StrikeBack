@@ -7,7 +7,7 @@ define([
     'region/actionbar',
     'region/modal',
     'text!/js/template/global.ejs',
-    'js/views/actionbar/actionbar.js',
+    '/js/views/actionbar/actionbar.js',
     'less!/style/global.less',
     'css!/js/bower_components/foundation/css/foundation.css',
     '/js/bower_components/foundation/js/foundation/foundation.js',
@@ -22,11 +22,9 @@ define([
 
         regions: {
             content: "#content",
+            // actionBar: '#action-bar',
             actionBar: ActionBar,
             modal: Modal
-        },
-
-        initialize: function(){
         },
 
         onRender: function(){

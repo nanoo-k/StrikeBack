@@ -12,7 +12,7 @@ define([
 
         // Need to instantiate a campaign model
         initialize: function(options){
-            // this.setElement("#modal");
+            this.setElement("#modal");
             // this.collection = new Campaigns();
             // this.collection.fetch({
             //     data: $.param({

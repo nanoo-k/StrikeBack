@@ -5,8 +5,8 @@ define([
     'underscore',
     'backbone',
     'layout/global',
-    '/js/views/modals/sign-up.js',
-    '/js/views/modals/sign-in.js',
+    'js/views/modals/sign-up.js',
+    'js/views/modals/sign-in.js',
     'model/user',
     'text!/js/template/actionbar/actionbar.ejs',
     'less!/style/global.less',
@@ -29,7 +29,8 @@ define([
         onSignUp: function(e){
             // e.preventDefault();
 
-            layout.modal.show( new SignUp_Modal() );
+            layout.regions.modal( new SignUp_Modal().render() );
+            // layout.modal.show( new SignUp_Modal() );
             // this.modal = new SignUp_Modal().render();
             $(document).foundation();
 
