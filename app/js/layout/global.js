@@ -12,6 +12,7 @@ define([
     'css!/js/bower_components/foundation/css/foundation.css',
     'foundation-js',
     'js/bower_components/foundation/js/foundation/foundation.reveal.js',
+    // 'js/bower_components/foundation/js/foundation/foundation.forms.js',
     'marionette'
 ], function ($, _, Backbone, ActionBar, Modal, Template, ActionBarView) {
 
@@ -27,11 +28,10 @@ define([
         },
 
         initialize: function(){
-            // this.actionBar.show(new ActionBarView().reder());
         },
 
         onRender: function(){
-            // this.actionBar.show(new ActionBarView().reder());
+            // Load foundation
             $(document).foundation();
         },
 

@@ -27,21 +27,21 @@ define([
         },
 
         onSignUp: function(e){
-            // e.preventDefault();
+            e.preventDefault();
 
             // Load modal popup that requests user to sign up
             // $('#buttonForModal').click(function() {
-               $('#myModal').reveal();
+               // $('#myModal').reveal();
             // });
         },
 
         onSignIn: function(e){
             // Prevent the link from doing anything.
-            // e.preventDefault();
+            e.preventDefault();
 
             // Load modal popup that requsts user to sign in
             // $('#buttonForModal').click(function() {
-               $('#myModal').reveal();
+               // $('#myModal').reveal();
             // });
         }
 
