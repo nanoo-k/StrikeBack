@@ -29,7 +29,8 @@ define([
         onSignUp: function(e){
             // e.preventDefault();
 
-            this.modal = new SignUp_Modal().render();
+            layout.modal.show( new SignUp_Modal() );
+            // this.modal = new SignUp_Modal().render();
             $(document).foundation();
 
             // Load modal popup that requests user to sign up
@@ -46,7 +47,8 @@ define([
             e.preventDefault();
 
             // Load modal popup that requests user to sign in            
-            this.modal = new SignIn_Modal().render();
+            // this.modal = new SignIn_Modal().render();
+            layout.modal.show( new SignIn_Modal() );
             $(document).foundation();
 
 

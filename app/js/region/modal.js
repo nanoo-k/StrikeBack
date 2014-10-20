@@ -15,7 +15,7 @@ define([
         onRender: function(){
 
             // console.log('modal  render');
-        }
+        },
        
     });
 

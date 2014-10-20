@@ -6,7 +6,6 @@ require.config({
         '*': {
             less: 'bower_components/require-less/less',
             css: 'bower_components/require-css/css'
-
         }
     },
     shim: {
@@ -24,7 +23,7 @@ require.config({
             deps: [
                 'backbone'
             ]
-        },
+        }
 
     },
     paths: {
@@ -37,8 +36,7 @@ require.config({
         'less': 'bower_components/less/dist/less-1.5.0',
         require: 'bower_components/requirejs/require',
         'tag-it': 'bower_components/tag-it/js/tag-it',
-        'marionette': 'bower_components/marionette/lib/backbone.marionette',
-        'foundation-js': 'bower_components/foundation/js/foundation.min'
+        'marionette': 'bower_components/marionette/lib/backbone.marionette'
     }
 
 });

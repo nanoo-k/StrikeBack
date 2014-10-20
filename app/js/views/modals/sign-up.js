@@ -12,7 +12,8 @@ define([
 
         // Need to instantiate a campaign model
         initialize: function(options){
-            this.setElement("#modal");
+            // this.setElement("#modal");
+
             // this.collection = new Campaigns();
             // this.collection.fetch({
             //     data: $.param({
@@ -22,14 +23,25 @@ define([
             //     success: $.proxy(function(){
             //         // Do something here once the collection is fetched?
             //     }, this)
-            // });
+            // }); 
         },
 
         onRender: function(){
-            console.log('rendered');
+            // this.$el.find('#join').on('click', $.proxy(this.onJoin, this));
         },
 
-        template: _.template(Template)
+        events: {
+            'click #join': 'onJoin',
+            'click .me': 'onJoin'
+        },
+
+        template: _.template(Template),
+
+        onJoin: function(e){
+            // Get all the params needed for making a user
+                // username option, email, phone, pass
+            console.log();
+        }
 
     });
 
