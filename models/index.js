@@ -4,7 +4,7 @@ var fs        = require('fs')
   , lodash    = require('lodash')
   , db        = {}
 
-var sequelize = new Sequelize('Bears', 'postgres', 'tuttut', {
+var sequelize = new Sequelize('Bears', 'thepeople', '', {
                         host: 'localhost',
                         dialect: 'postgres',
                         port: 5432
