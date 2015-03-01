@@ -25,7 +25,8 @@ define(['underscore', 'backbone', 'jquery'], function (_, Backbone, $) {
         },
 
         index: function() {
-            this.loadPage("index");
+            // this.loadPage("index");
+            console.log('Reached index');
         },
 
         campaign: function(id) {
