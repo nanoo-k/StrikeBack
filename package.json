@@ -39,6 +39,6 @@
   },
   "scripts": {
     "env": "env",
-    "sass-foundation": "node-sass app/stylesheets/app.scss app/stylesheets/app.css"
+    "sass-foundation": "node-sass app/stylesheets/app.scss app/web/stylesheets/app.css"
   }
 }
