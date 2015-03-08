@@ -39,6 +39,8 @@
   },
   "scripts": {
     "env": "env",
-    "sass-foundation": "node-sass app/stylesheets/app.scss app/web/stylesheets/app.css"
+    "sass-foundation": "node-sass app/stylesheets/app.scss app/web/stylesheets/app.css",
+    "app-uglify": "uglifyjs app/js/strikestarter/*.js app/js/strikestarter/**/*.js -o app/web/javascripts/app_compiled.js -beautify",
+    "cp-templates": "for file in $(find app/js/strikestarter/**/*.html -type f -exec basename {} \\;); do cp app/js/strikestarter/**/$file app/web/templates/$file; done;"
   }
 }
