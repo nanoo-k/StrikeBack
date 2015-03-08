@@ -1,0 +1,52 @@
+// This is a copy of the foundation original, edited to suit our needs
+
+@charset "UTF-8";
+// Foundation by ZURB
+// foundation.zurb.com
+// Licensed under MIT Open Source
+
+// Make sure the charset is set appropriately
+
+// Import normalize and settings
+
+@import "normalize.scss";
+// @import "_settings.scss";
+
+// Behold, here are all the Foundation components.
+  @import "../../js/bower_components/foundation/scss/foundation/components/grid";
+  // @import "../../js/bower_components/foundation/scss/foundation/components/accordion";
+  @import "../../js/bower_components/foundation/scss/foundation/components/alert-boxes";
+  // @import "../../js/bower_components/foundation/scss/foundation/components/block-grid";
+  // @import "../../js/bower_components/foundation/scss/foundation/components/breadcrumbs";
+  @import "../../js/bower_components/foundation/scss/foundation/components/button-groups";
+  @import "../../js/bower_components/foundation/scss/foundation/components/buttons";
+  // @import "../../js/bower_components/foundation/scss/foundation/components/clearing";
+  @import "../../js/bower_components/foundation/scss/foundation/components/dropdown";
+  @import "../../js/bower_components/foundation/scss/foundation/components/dropdown-buttons";
+  @import "../../js/bower_components/foundation/scss/foundation/components/flex-video";
+  @import "../../js/bower_components/foundation/scss/foundation/components/forms";
+  @import "../../js/bower_components/foundation/scss/foundation/components/icon-bar";
+  @import "../../js/bower_components/foundation/scss/foundation/components/inline-lists";
+  // @import "../../js/bower_components/foundation/scss/foundation/components/joyride";
+  // @import "../../js/bower_components/foundation/scss/foundation/components/keystrokes";
+  // @import "../../js/bower_components/foundation/scss/foundation/components/labels";
+  // @import "../../js/bower_components/foundation/scss/foundation/components/magellan";
+  // @import "../../js/bower_components/foundation/scss/foundation/components/orbit";
+  // @import "../../js/bower_components/foundation/scss/foundation/components/pagination";
+  @import "../../js/bower_components/foundation/scss/foundation/components/panels";
+  // @import "../../js/bower_components/foundation/scss/foundation/components/pricing-tables";
+  @import "../../js/bower_components/foundation/scss/foundation/components/progress-bars";
+  @import "../../js/bower_components/foundation/scss/foundation/components/range-slider";
+  @import "../../js/bower_components/foundation/scss/foundation/components/reveal";
+  @import "../../js/bower_components/foundation/scss/foundation/components/side-nav";
+  @import "../../js/bower_components/foundation/scss/foundation/components/split-buttons";
+  @import "../../js/bower_components/foundation/scss/foundation/components/sub-nav";
+  @import "../../js/bower_components/foundation/scss/foundation/components/switches";
+  @import "../../js/bower_components/foundation/scss/foundation/components/tables";
+  @import "../../js/bower_components/foundation/scss/foundation/components/tabs";
+  @import "../../js/bower_components/foundation/scss/foundation/components/thumbs";
+  @import "../../js/bower_components/foundation/scss/foundation/components/tooltips";
+  @import "../../js/bower_components/foundation/scss/foundation/components/top-bar";
+  @import "../../js/bower_components/foundation/scss/foundation/components/type";
+  // @import "../../js/bower_components/foundation/scss/foundation/components/offcanvas";
+  // @import "../../js/bower_components/foundation/scss/foundation/components/visibility";
