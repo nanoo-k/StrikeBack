@@ -16,7 +16,7 @@ strikestarter.controller('Homepage', [ '$scope', '$sce', 'Campaigns', function($
 
     promise
         .success( $.proxy(function(data, status, headers, config){
-            console.log(data.data);
+            console.log(data);
             
             // Bind to the Site obj
             // angular.extend(this, data.data);
