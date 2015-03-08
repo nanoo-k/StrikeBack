@@ -1,11 +1,15 @@
 <!doctype html>
 <!--[if lte IE 8]><html class="ie8"><![endif]-->
-<!--[if !IE]><!--><html ng-app="strikestarter" ng-model="glb"><!--<![endif]-->
+<!--[if !IE]><!--><html ng-app="strikestarter" ng-controller="Global as glb" ng-model="glb"><!--<![endif]-->
 <head lang="en-US">
     <base href="/">
     <title>StrikeStarter</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script type="text/javascript">
+        // TODO: Ensure this is appropriate when we determine the final home for the api
+        var createURI = function (path) { return '//' + window.location.host + (path ? path : ''); };
+    </script>
     <%- include base/stylesheets.ejs %>
 </head>
 <body>
