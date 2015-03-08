@@ -39,26 +39,4 @@ strikestarter.controller('Homepage', [ '$scope', '$sce', 'Campaigns', function($
             console.log(error); // Log error
         });
 
-    /**
-     *  Utilities
-     */
-
-    // Ensure columns are of equal height
-    $scope.ensureColumnWidth = function () {
-        var mainContentHeight = $('.Main-Content').outerHeight();
-        var sidebarHeight = $('.Sidebar').outerHeight();
-
-        // Check which is larger and set that as the min height
-        var minHeight = (mainContentHeight > sidebarHeight) ? mainContentHeight : sidebarHeight;
-
-        $('.Main-Content').css({'min-height': minHeight});
-        $('.Sidebar').css({'min-height': minHeight});    
-    };
-
-    $scope.clearColumnMinWidth = function () {
-        var minHeight = 0;
-        $('.Main-Content').css({'min-height': minHeight});
-        $('.Sidebar').css({'min-height': minHeight});   
-    };
-
 }]);
