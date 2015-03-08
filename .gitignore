@@ -1,3 +1,9 @@
+# Ignore log
 npm-debug.log
+
+# Ignore node and bower packages
 app/js/bower_components/*
 node_modules/*
+
+# Ignore compiled code
+app/web/*
