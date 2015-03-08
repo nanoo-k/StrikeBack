@@ -5,6 +5,7 @@
 . Install posgreSQL
 . Create DB called "Bears" on port 5432 with password of your choosing
 . Be sure to configure index.js with host, dialect, port, DBname, username and pass
+. Install Ruby (to handle SCSS)
 
 #Windows
 
