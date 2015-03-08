@@ -25,7 +25,8 @@ strikestarter.factory('Campaigns', [ '$http', function($http){
 
             return $http({
                 method: 'GET',
-                url: url
+                url: url,
+                params: {getAll: true, limit: 20}
             });
         }
     };
