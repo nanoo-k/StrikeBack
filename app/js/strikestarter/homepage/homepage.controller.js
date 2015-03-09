@@ -28,13 +28,8 @@ strikestarter.controller('Homepage', [ '$scope', '$sce', 'Campaigns', function($
 
         }, Global)) // Pass in the Campaigns object for the data to bind to
         .error( function(data, status, headers, config) {
-            var error = 'error';
-            error += '/n data: ' + data;
-            error += '/n status: ' + status;
-            error += '/n headers: ' + headers;
-            error += '/n config: ' + config;
             
-            console.log(error); // Log error
+            console.log(data); // Log error
         });
 
 }]);
