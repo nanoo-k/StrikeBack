@@ -1,2 +1,5 @@
-<p>blahlbahlbahlbah</p>
-<p>{{ glb.thing }}</p>
+<div class="columns small-12 medium-4" ng-repeat="campaign in glb.campaigns">
+    <div>{{ campaign.name }}</div>
+    <div>{{ campaign.callToAction }}</div>
+    <div>{{ campaign.target }}</div>
+</div>
