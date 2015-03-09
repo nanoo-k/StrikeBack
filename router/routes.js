@@ -335,7 +335,7 @@ module.exports = function(express, app, db, passport) {
       {
         username:   (phone|email),
         password:   (string),
-        telephone:  (string),
+        phone:      (string),
         email:      (string)  
       }
     */
