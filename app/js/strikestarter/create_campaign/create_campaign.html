@@ -1,0 +1,76 @@
+<div ng-click="createUser()">Create User</div>
+<div ng-click="loginUser()">Login User</div>
+<div ng-click="createCampaign()">Create Campaign</div>
+
+
+<!-- <div ng-controller="User as user"> -->
+<div>
+  <form novalidate name="registrationForm" class="simple-form">
+    
+    Username:
+    <input
+        type="radio"
+        ng-model="user.username"
+        name="username"
+        value="email"
+        id="username-email"
+        ng-required="!user.username"
+        /><label for="username-email">email</label>
+
+    <input
+        type="radio"
+        ng-model="user.username"
+        name="username"
+        value="phone"
+        id="username-phone"
+        ng-required="!user.username"
+        /><label for="username-phone">phone</label>
+    <p
+        class="help-block"
+        ng-show="registrationForm.username.$invalid"
+        >Choose whether username will be your email or phone number</p>
+
+    <label for="email">Email:</label><input
+        type="email"
+        name="email"
+        ng-model="user.email"
+        ng-required="registrationForm.username.$viewValue === 'email'"
+        /><br />
+    <p
+        class="help-block"
+        ng-show="registrationForm.email.$invalid"
+        >Valid Email Address Required</p>
+    
+    <label for="phone">Phone:</label>
+    <input
+        type="phone"
+        name="phone"
+        ng-model="user.phone"
+        ng-required="registrationForm.username.$viewValue === 'phone'"
+        /><br />
+    <p
+        class="help-block"
+        ng-show="registrationForm.phone.$invalid"
+        >Valid Phone Number Required</p>
+    
+    <label for="password">Password:</label>
+    <input
+        type="password"
+        name="password"
+        ng-model="registrationForm.password"
+        required
+        ng-minlength="4"
+        /><br />
+    <p
+        class="help-block"
+        ng-show="registrationForm.password.$invalid"
+    >Password must be minimum of 6 characters</p>
+
+    <input
+        type="submit"
+        class="button small"
+        ng-disabled="registrationForm.$invalid"
+        ng-submit="registerUser(user.username, user.email, user.phone, user.password)"
+        value="Register" />
+  </form>
+</div>
