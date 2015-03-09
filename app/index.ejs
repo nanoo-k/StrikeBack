@@ -13,12 +13,9 @@
     <%- include base/stylesheets.ejs %>
 </head>
 <body>
+    <sb-header></sb-header> 
     <div class="row">
-        <div class="columns small-12">Header</div>
-        <div class="columns small-12"><ng-view></ng-view></div>
-        <div class="columns small-12 medium-4">1</div>
-        <div class="columns small-12 medium-4">2</div>
-        <div class="columns small-12 medium-4">3</div>
+        <ng-view></ng-view>
     </div>
     <%- include base/javascripts.ejs %>
 </body>
