@@ -19,6 +19,12 @@ strikestarter.config([ '$routeProvider', '$locationProvider', function($routePro
             controller: "Homepage"
         }
     )
+    .when("/create/campaign/",
+        {
+            templateUrl: path + "create_campaign.html",
+            controller: "CreateCampaign"       
+        }
+    )
     .otherwise({
         template: "<div>This route doesn't exist</div>"
     });

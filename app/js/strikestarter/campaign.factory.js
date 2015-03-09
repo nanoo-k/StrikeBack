@@ -2,7 +2,6 @@
  *  campaigns.factory.js
  */
 
-
 strikestarter.factory('Campaigns', [ '$http', function($http){
 
     /**
@@ -18,7 +17,7 @@ strikestarter.factory('Campaigns', [ '$http', function($http){
         /**
          *  Get the campaigns
          */
-        getCampaigns: function() {
+        getCampaigns: function () {
 
             var url = createURI('/api/campaigns/');
 
