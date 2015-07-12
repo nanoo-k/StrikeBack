@@ -22,7 +22,8 @@ strikestarter.config([ '$stateProvider', '$urlRouterProvider', '$locationProvide
             controller: "Homepage"
         })
         .state('createCampaign', {
-            url: path + 'create_campaign.html',
+            url: '/create/campaign/',
+            templateUrl: path + 'create_campaign.html',
             controller: "CreateCampaign"
         });
 }]);
