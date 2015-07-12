@@ -44,6 +44,6 @@
     "env": "env",
     "sass:foundation": "node-sass app/stylesheets/app.scss app/web/stylesheets/app.css",
     "uglify:app": "uglifyjs app/js/dependencies/*.js app/js/strikestarter/*.js app/js/strikestarter/**/*.js -o app/web/javascripts/app_compiled.js -beautify",
-    "compile:templates": "for file in $(find app/js/strikestarter/**/*.html -type f -exec basename {} \\;); do cp app/js/strikestarter/**/$file app/web/templates/$file; done;"
+    "compile:templates": "sh npm_scripts/compile-templates.sh",
   }
 }
