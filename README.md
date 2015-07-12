@@ -34,7 +34,7 @@ Then check your connection to the DB server using `psql`:
 (Run all commands from a Node.js Command Prompt from the project's root directory)
 
 . Run `node server.js`
-. Navigate to the `localhost:8080`
+. Navigate to the `127.0.0.1:1234`
 
 
 
