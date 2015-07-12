@@ -3,6 +3,7 @@ port: 5432
 
 pgAdmin as GUI
 
+From PC:
 
 From H:\Program Files\PostgreSQL\9.3\bin
 initdb.exe "H:\Program Files\PostgreSQL\9.3\data"
