@@ -25,5 +25,10 @@ strikestarter.config([ '$stateProvider', '$urlRouterProvider', '$locationProvide
             url: '/create/campaign/',
             templateUrl: path + 'create_campaign.html',
             controller: "CreateCampaign"
+        })
+        .state('loginUser', {
+            url: '/login/',
+            templateUrl: path + 'login_user.html',
+            controller: "LoginUser"
         });
 }]);
