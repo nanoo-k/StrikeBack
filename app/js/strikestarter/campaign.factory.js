@@ -31,7 +31,7 @@ strikestarter.factory('Campaigns', [ '$http', function($http){
         /**
          *  Create a campaign
          */
-        createCampaign: function (name, call_to_action, target, access_token) {
+        createCampaign: function (campaign_name, call_to_action, campaign_target, access_token) {
             var url = createURI('/api/campaigns/');
 
             return $http({
@@ -39,9 +39,9 @@ strikestarter.factory('Campaigns', [ '$http', function($http){
                 url: url,
                 data: {
                     "campaign" : {
-                        "name": name,
+                        "name": campaign_name,
                         "callToAction": call_to_action,
-                        "target": target
+                        "target": campaign_target
                     },
                     "user": {
                         "access_token": access_token
