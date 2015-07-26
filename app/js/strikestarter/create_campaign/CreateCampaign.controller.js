@@ -93,53 +93,53 @@ strikestarter.controller('CreateCampaign', [ '$scope', '$sce', function($scope, 
     /**
      *  Create user
      */
-    $scope.createUser = $.proxy(function () {
+    // $scope.createUser = function () {
         
 
-        var email = "scott@gmail.com";
-        var phone = 4155187878;
-        var username = 'email';
-        var password = 'ab12!@';
+    //     var email = "scott@gmail.com";
+    //     var phone = 4155187878;
+    //     var username = 'email';
+    //     var password = 'ab12!@';
 
-        var promise = this.user.registerUser(email, phone, username, password );
+    //     var promise = this.user.registerUser(email, phone, username, password );
 
-        promise
-            .success( $.proxy(function(data, status, headers, config){
+    //     promise
+    //         .success( $.proxy( function (data, status, headers, config) {
 
-                // Save user token and data to Global.user obj
-                this.user = data;
-                console.log(this.user);
+    //             // Save user token and data to Global.user obj
+    //             this.user = data;
+    //             console.log(this.user);
 
-            }, this.Global))
-            .error( function(data, status, headers, config) {
+    //         }, this.Global))
+    //         .error( function (data, status, headers, config) {
 
-                console.log(data); // Log error
+    //             console.log(data); // Log error
             
-            });
-    }, this);
+    //         });
+    // };
 
     /**
      *  Login user
      */
-    $scope.loginUser = $.proxy(function () {
+    // $scope.loginUser = $.proxy(function () {
         
-        var username = "scott@gmail.com";
-        var password = "ab12!@";
+    //     // var username = "scott@gmail.com";
+    //     // var password = "ab12!@";
 
-        var promise = this.user.loginUser(username, password );
+    //     var promise = this.user.loginUser(username, password );
 
-        promise
-            .success( $.proxy(function(data, status, headers, config){
+    //     promise
+    //         .success( $.proxy(function(data, status, headers, config){
 
-                // Save user token and data to Global.user obj
-                this.user = data;
-                console.log(this.user);
+    //             // Save user token and data to Global.user obj
+    //             this.user = data;
+    //             console.log(this.user);
 
-            }, this.Global))
-            .error( function(data, status, headers, config) {
-                console.log(data); // Log error
-            });
-    }, this);
+    //         }, this.Global))
+    //         .error( function(data, status, headers, config) {
+    //             console.log(data); // Log error
+    //         });
+    // }, this);
 
     // $scope.createCampaign = function () {
     //     console.log('whats up');
