@@ -24,7 +24,7 @@ strikestarter.controller('LoginUser', [ '$scope', '$sce', function ($scope, $sce
         // user.phone = phone.$viewValue;
         // user.password = password.$viewValue;
 
-        var promise = this.$parent.glb.user.loginUser(username, password)
+        var promise = this.$parent.glb.user.loginUser(username, password);
 
         // console.log('made it');
 
