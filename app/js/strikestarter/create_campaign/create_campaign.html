@@ -1,21 +1,21 @@
-<div ng-click="createUser()">Create User</div>
+<!-- <div ng-click="createUser()">Create User</div>
 <div ng-click="loginUser()">Login User</div>
-<div ng-click="createCampaign()">Create Campaign</div>
+<div ng-click="createCampaign()">Create Campaign</div> -->
 
 
 <!-- <div ng-controller="User as user"> -->
-<div>
+<div data-ng-controller="CreateCampaign as cc">
   <form novalidate name="registrationForm" class="simple-form">
     
-    Username:
+<!--Username:
     <input
         type="radio"
         ng-model="user.username"
         name="username"
         value="email"
-        id="username-email"
+        id="username"
         ng-required="!user.username"
-        /><label for="username-email">email</label>
+        /><label for="username">Username</label>
 
     <input
         type="radio"
@@ -51,8 +51,19 @@
     <p
         class="help-block"
         ng-show="registrationForm.phone.$invalid"
-        >Valid Phone Number Required</p>
+        >Valid Phone Number Required</p> -->
     
+    <!-- <label for="email">Email:</label><input
+        type="email"
+        name="email"
+        ng-model="user.email"
+        ng-required="registrationForm.username.$viewValue === 'email'"
+        /><br />
+    <p
+        class="help-block"
+        ng-show="registrationForm.email.$invalid"
+        >Valid Email Address Required</p>
+
     <label for="password">Password:</label>
     <input
         type="password"
@@ -64,13 +75,67 @@
     <p
         class="help-block"
         ng-show="registrationForm.password.$invalid"
+    >Password must be minimum of 6 characters</p> -->
+
+    <label for="email">Give the campaign a name:</label><input
+        type="text"
+        name="campaignName"
+        ng-model="cc.campaign.name"
+        /><br />
+    <p
+        class="help-block"
+        ng-show="registrationForm.campaignName.$invalid"
+        >Campaign needs a name</p>
+
+    <label for="email">Describe the campaign:</label><input
+        type="text"
+        name="callToAction"
+        ng-model="cc.campaign.callToAction"
+        /><br />
+    <p
+        class="help-block"
+        ng-show="registrationForm.callToAction.$invalid"
+        >Campaign needs a call to action</p>
+
+    <label for="email">How many people do you need to join?:</label><input
+        type="number"
+        name="target"
+        ng-model="cc.campaign.target"
+        /><br />
+    <p
+        class="help-block"
+        ng-show="registrationForm.target.$invalid"
+        >Campaign needs a target number of registrants</p>
+
+    <label for="email">Username:</label><input
+        type="text"
+        name="username"
+        ng-model="cc.user.data.username"
+        ng-required="registrationForm.username.$viewValue === 'username'"
+        /><br />
+    <p
+        class="help-block"
+        ng-show="registrationForm.username.$invalid"
+        >Valid Email Address Required</p>
+
+    <label for="password">Password:</label>
+    <input
+        type="password"
+        name="password"
+        ng-model="cc.user.data.password"
+        required
+        ng-minlength="4"
+        /><br />
+    <p
+        class="help-block"
+        ng-show="registrationForm.password.$invalid"
     >Password must be minimum of 6 characters</p>
 
+        <!-- ng-disabled="registrationForm.$invalid" -->
     <input
         type="submit"
         class="button small"
-        ng-disabled="registrationForm.$invalid"
-        ng-submit="registerUser(user.username, user.email, user.phone, user.password)"
-        value="Register" />
+        data-ng-click="onCreateCampaign(cc.campaign.name, cc.campaign.callToAction, cc.campaign.target, cc.user.data.username, cc.user.data.password)"
+        value="Create Campaign" />
   </form>
 </div>
