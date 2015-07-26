@@ -1,0 +1,9 @@
+I'm almost back up and running. Getting some weird errors related to foundation (no errors shown, just missing most of the foundation css) but nothing that holds me back.
+
+I need a strategy for building the rest of the front-end. Here's what it could be:
+
+• Create a User factory that has methods for getting its own token, loging itself in, loging itself, creating a campaign and joining a campaign. Attach this code to a user object so that I don't need to recreate it everywhere.
+
+Why make Users the basis of Campaigns rather than the other way around?
+
+...Well. I need to instantiate a user whenever someone comes to the site. That user object will then change attributes about itself but never delete itself. I can instantiate the user in the Global controller.
