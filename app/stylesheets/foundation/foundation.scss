@@ -12,6 +12,11 @@
 @import "normalize.scss";
 @import "_settings.scss";
 
+.row {
+  display: block;
+}
+@import "../../js/bower_components/foundation/css/foundation.css";
+
 // Behold, here are all the Foundation components.
   @import "../../js/bower_components/foundation/scss/foundation/components/grid";
   // @import "../../js/bower_components/foundation/scss/foundation/components/accordion";

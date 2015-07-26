@@ -1,0 +1,38 @@
+<!-- <div ng-controller="User as user"> -->
+<div data-ng-controller="LoginUser as lu">
+  <form novalidate name="registrationForm" class="simple-form">
+
+    <label for="username">Username:</label><input
+        type="username"
+        name="username"
+        data-ng-model="lu.user.data.username"
+        data-ng-required="registrationForm.username.$viewValue === 'username'"
+        /><br />
+    <p
+        class="help-block"
+        ng-show="registrationForm.username.$invalid"
+        >You forgot to include your username</p>
+
+    <label for="password">Password:</label><input
+        type="password"
+        name="password"
+        data-ng-model="lu.user.data.password"
+        required
+        data-ng-minlength="4"
+        /><br />
+    <p
+        class="help-block"
+        data-ng-show="registrationForm.password.$invalid"
+    >You forgot to include your password</p>
+
+    <input
+        type="submit"
+        class="button small"
+        data-ng-disabled="registrationForm.$invalid"
+        data-ng-click="loginUser(lu.user.data.username, lu.user.data.password)"
+        value="Login" />
+
+  </form>
+<!-- <div data-ng-click="loginUser()">Login User</div>
+<div data-ng-click="createUser(registrationForm.username, registrationForm.email, registrationForm.phone, registrationForm.password)">Create User</div> -->
+</div>

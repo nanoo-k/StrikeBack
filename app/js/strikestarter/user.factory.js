@@ -44,6 +44,73 @@ strikestarter.factory('User', [ '$http', function($http){
                     "password": password 
                 }
             });
+        },
+
+        /**
+         *  The `username` property tells whether the username
+         *  is the email or phone number. So this is a getter
+         *  method to sift through that trouble for you.
+         */
+        getUsername: function() {
+            switch (this.username) {
+                case 'phone':
+                    return this.phone;
+                    break;
+                case 'email':
+                    return this.email;
+                    break;
+                default:
+                    return 'No username is set.';
+                    break;
+            }
+        },
+
+        /**
+         *  Create a campaign
+         */
+        createCampaign: function (name, call_to_action, target, access_token) {
+            var url = createURI('/api/campaigns/');
+
+            return $http({
+                method: 'POST',
+                url: url,
+                data: {
+                    "campaign" : {
+                        "name": name,
+                        "callToAction": call_to_action,
+                        "target": target
+                    },
+                    "user": {
+                        "access_token": access_token
+                    }
+                }
+            })
+        },
+
+        /**
+         *  Create a campaign
+         */
+        joinCampaign: function (name, call_to_action, target, access_token) {
+            var url = createURI('/api/campaigns/');
+
+            return $http({
+                method: 'POST',
+                url: url,
+                data: {
+                    "campaign" : {
+                        "name": name,
+                        "callToAction": call_to_action,
+                        "target": target
+                    },
+                    "user": {
+                        "access_token": access_token
+                    }
+                }
+            })
+        },
+
+        isEmpty: function () {
+            return (_.isUndefined(this.data)) ? true : false;
         }
     };
 

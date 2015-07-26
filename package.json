@@ -44,6 +44,7 @@
     "env": "env",
     "sass:foundation": "node-sass app/stylesheets/app.scss app/web/stylesheets/app.css",
     "uglify:app": "uglifyjs app/js/dependencies/*.js app/js/strikestarter/*.js app/js/strikestarter/**/*.js -o app/web/javascripts/app_compiled.js -beautify",
-    "compile:templates": "sh npm_scripts/compile-templates.sh"
+    "compile:templates": "sh npm_scripts/compile-templates.sh",
+    "build:app": "npm run compile:templates && npm run uglify:app"
   }
 }
