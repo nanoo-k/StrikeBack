@@ -83,6 +83,12 @@ strikestarter.controller('CreateCampaign', [ '$scope', '$sce', function($scope, 
             }, this));
     };
 
+    /**
+     *  View helpers
+     */
+    $scope.hasNoUserToken = function (token) {
+        return (_.isUndefined(token)) ? true : false;
+    }
 
     /**
      *  Create user
