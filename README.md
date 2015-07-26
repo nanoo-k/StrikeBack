@@ -59,3 +59,14 @@ Ensure it installed by running `which psql` from the terminal. If all is well, y
 `createuser thepeople -l -d`
 
 `createdb -p 5432 Bears --owner thepeople`
+
+
+## Handle Postgres commands to run from Command Line
+
+`\dt` to list all tables in a DB
+`\l` to list all databases
+
+
+# Users
+u: scott@gmail.com
+p: ab12!@
