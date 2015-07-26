@@ -15,9 +15,30 @@ strikestarter.controller('CreateCampaign', [ '$scope', '$sce', function($scope, 
     /**
      *  Create campaign
      */
-    $scope.createCampaign = $.proxy(function () {
+    $scope.onCreateCampaign = function (campaign_name, call_to_action, campaign_target, username, password) {
 
-        if (this['Global']['user'] === void 0) return console.log('Not logged in.');
+        // if (this['Global']['user']['username'] === void 0) return console.log('Not logged in.');
+
+        var access_token = this.cc.user.data.token;
+
+        if (_.isUndefined(access_token)) {
+            if (!_.isUndefined(username) && !_.isUndefined(password)) {
+
+                this.loginUser(this.createCampaign);
+
+            } else {
+                // Alert user of issue
+                alert('Since you are not logged in you must include both a username and password.');
+
+                // Prevent rest of script from running
+                return;
+            }
+        } else {
+            this.createCampaign();
+        }
+
+    };
+
 
         var promise = this.campaigns.createCampaign('Strike Disaster', 'We want you to avoid disaster. ...by striking!', 20, this.Global.user.token);
         promise
