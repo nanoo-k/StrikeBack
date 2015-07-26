@@ -39,15 +39,24 @@ strikestarter.controller('CreateCampaign', [ '$scope', '$sce', function($scope, 
 
     };
 
+    $scope.createCampaign = function () {
+        var cc = this.$parent.glb.campaigns;
+        var access_token = this.cc.user.data.token;
+        var promise = cc.createCampaign(cc.name, cc.callToAction, cc.target, access_token);
 
-        var promise = this.campaigns.createCampaign('Strike Disaster', 'We want you to avoid disaster. ...by striking!', 20, this.Global.user.token);
         promise
-            .success( $.proxy(function(data, status, headers, config){
+            .success( $.proxy( function (data, status, headers, config) {
                 console.log(data);
-            }, this.Global))
-            .error( function(data, status, headers, config) {
+
+                // $scope.$parent.glb.campaigns
+
+            }, this))
+
+            .error( function (data, status, headers, config) {
                 console.log(data); // Log error
             });
+    };
+
 
     }, this);
 
