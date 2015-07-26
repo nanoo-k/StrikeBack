@@ -11,3 +11,6 @@ app/web/*
 # Ignore mac files
 .DS_Store
 **/*/.DS_Store
+
+# Ignore notes
+notes/progress/*
