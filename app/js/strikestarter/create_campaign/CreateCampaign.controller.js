@@ -7,10 +7,8 @@
 strikestarter.controller('CreateCampaign', [ '$scope', '$sce', function($scope, $sce){
 
     // Assign the site model to this controller's `site` attr
-    this.campaigns = Campaigns;
+    this.campaigns = $scope.$parent.glb.campaigns;
     this.user = $scope.$parent.glb.user;
-
-    this.Global = $scope.$parent.glb;
 
     /**
      *  Create campaign
