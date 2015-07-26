@@ -4,7 +4,7 @@
 
 // var strikestarter = angular.module('strikestarter');
 
-strikestarter.controller('CreateCampaign', [ '$scope', '$sce', 'Campaigns', 'User', function($scope, $sce, Campaigns, User){
+strikestarter.controller('CreateCampaign', [ '$scope', '$sce', function($scope, $sce){
 
     // Assign the site model to this controller's `site` attr
     this.campaigns = Campaigns;
