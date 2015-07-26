@@ -57,8 +57,32 @@ strikestarter.controller('CreateCampaign', [ '$scope', '$sce', function($scope, 
             });
     };
 
+    $scope.loginUser = function (callBack) {
+        var u = this.cc.user.data;
+        var promise = this.$parent.glb.user.loginUser(u.username, u.password);
 
-    }, this);
+        promise
+            .success( $.proxy(function (data, status, headers, config) {
+
+                // Save user token and data to Global.user obj
+                // this.user = data;
+                console.log(this.user);
+
+                this.$parent.glb.user.data = data.user;
+                this.$parent.glb.user.data.token = data.token;
+                this.$parent.glb.user.data.expires = data.expires;
+
+                callBack();
+
+            }, this))
+            .error( $.proxy( function (data, status, headers, config) {
+                console.log(data); // Log error
+
+                alert(data);
+                return;
+            }, this));
+    };
+
 
     /**
      *  Create user
